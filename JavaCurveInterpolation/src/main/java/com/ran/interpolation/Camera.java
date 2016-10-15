@@ -5,14 +5,15 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Camera {
+
     private static final Point3D DEFAULT_VERT_VECTOR = new Point3D(0.0, 0.0, 1.0);
     private static final double LEFT = -4.0,
-                                RIGHT = 4.0,
-                                BOTTOM = -3.0,
-                                TOP = 3.0,
-                                ANGLE_UP_EDGE = 5.0 * Math.PI / 12.0;
+            RIGHT = 4.0,
+            BOTTOM = -3.0,
+            TOP = 3.0,
+            ANGLE_UP_EDGE = 5.0 * Math.PI / 12.0;
     private static final int WIDTH = 800,
-                             HEIGHT = 600;
+            HEIGHT = 600;
 
     private double angleXOY;
     private double angleZ;
@@ -22,7 +23,8 @@ public class Camera {
     private double distanceReverse;
     private Camera defaultCamera = null;
 
-    private Camera() { }
+    private Camera() {
+    }
 
     private Camera(Point3D position, double angleXOY, double angleZ, double distanceReverse) {
         defaultCamera = new Camera();
@@ -30,7 +32,7 @@ public class Camera {
         defaultCamera.angleXOY = this.angleXOY = angleXOY;
         defaultCamera.angleZ = this.angleZ = angleZ;
         defaultCamera.normVector = countNormVector();
-        defaultCamera.distanceReverse  = this.distanceReverse = distanceReverse;
+        defaultCamera.distanceReverse = this.distanceReverse = distanceReverse;
         defaultCamera.vertVector = vertVector = DEFAULT_VERT_VECTOR;
     }
 
@@ -56,8 +58,7 @@ public class Camera {
             double distanceReverse = Double.parseDouble(tok.nextToken());
 
             return new Camera(position, angleXOY, angleZ, distanceReverse);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -108,9 +109,9 @@ public class Camera {
 
     public void zoom(double step) {
         position = new Point3D(
-            position.getX() + normVector.getX() * step,
-            position.getY() + normVector.getY() * step,
-            position.getZ() + normVector.getZ() * step
+                position.getX() + normVector.getX() * step,
+                position.getY() + normVector.getY() * step,
+                position.getZ() + normVector.getZ() * step
         );
     }
 
@@ -120,10 +121,10 @@ public class Camera {
     }
 
     public Point2DInt findDisplayCoordinates(Point3D source) {
-		int x = (int)Math.round((source.getX() - LEFT) / (RIGHT - LEFT) * WIDTH);
-		int y = (int)Math.round((TOP - source.getY()) / (TOP - BOTTOM) * HEIGHT);
-		return new Point2DInt(x, y);
-	}
+        int x = (int) Math.round((source.getX() - LEFT) / (RIGHT - LEFT) * WIDTH);
+        int y = (int) Math.round((TOP - source.getY()) / (TOP - BOTTOM) * HEIGHT);
+        return new Point2DInt(x, y);
+    }
 
     public void defaultPosition() {
         this.angleXOY = defaultCamera.angleXOY;

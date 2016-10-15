@@ -1,6 +1,7 @@
 package com.ran.interpolation;
 
 public class Point2DInt {
+
     private int x, y;
 
     public Point2DInt(int x, int y) {

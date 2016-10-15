@@ -9,27 +9,27 @@ import java.awt.event.ActionListener;
 
 public class LabFrame extends JFrame {
 
-	private static final double ANGLE_STEP = Math.PI / 36.0,
-								SIZE_STEP = 1.2,
-								MOVE_STEP = 0.25;
+    private static final double ANGLE_STEP = Math.PI / 36.0,
+            SIZE_STEP = 1.2,
+            MOVE_STEP = 0.25;
 
-	private DrawPanel drawPanel = null;
+    private DrawPanel drawPanel = null;
 
-	public LabFrame() {
-		Figure figure = Figure.figureFromFile("values/figure.txt");
+    public LabFrame() {
+        Figure figure = Figure.figureFromFile("values/figure.txt");
         Camera camera = Camera.cameraFromFile("values/camera.txt");
-		drawPanel = new DrawPanel(figure, camera);
+        drawPanel = new DrawPanel(figure, camera);
 
         initUserInterface();
 
-		setTitle("Computer graphics Lab1");
-		setResizable(false);
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension dim = getSize();
-		setLocation(new Point((screen.width - dim.width) / 2, (screen.height - dim.height) / 2));
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+        setTitle("Computer graphics Lab1");
+        setResizable(false);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = getSize();
+        setLocation(new Point((screen.width - dim.width) / 2, (screen.height - dim.height) / 2));
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
     private void initUserInterface() {
         setLayout(new BorderLayout());
@@ -56,12 +56,11 @@ public class LabFrame extends JFrame {
         }
         combo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                JComboBox<String> box = (JComboBox<String>)event.getSource();
-                String str = (String)box.getSelectedItem();
+                JComboBox<String> box = (JComboBox<String>) event.getSource();
+                String str = (String) box.getSelectedItem();
                 if (str.equals("Not chosen")) {
                     drawPanel.setCurrentVertice(-1);
-                }
-                else {
+                } else {
                     drawPanel.setCurrentVertice(Integer.parseInt(str) - 1);
                 }
                 drawPanel.repaint();
@@ -145,12 +144,12 @@ public class LabFrame extends JFrame {
         panel.add(buttonSmoothing);
 
         panel.add(new JLabel("Distance"));
-        int value = (int)(drawPanel.getCamera().getDistanceReverse() * 100);
+        int value = (int) (drawPanel.getCamera().getDistanceReverse() * 100);
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 200, value);
         slider.setPreferredSize(def.getPreferredSize());
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                drawPanel.getCamera().setDistanceReverse(((JSlider)e.getSource()).getValue() / 100.0);
+                drawPanel.getCamera().setDistanceReverse(((JSlider) e.getSource()).getValue() / 100.0);
                 drawPanel.repaint();
             }
         });
@@ -163,28 +162,29 @@ public class LabFrame extends JFrame {
         pack();
     }
 
-	private JButton makeButton(String name, final Affine affine) {
-		JButton button = new JButton(name);
-		ActionListener listener = new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				Point3D vertice = drawPanel.getCurrentVertice();
-				drawPanel.getFigure().applyAffine(affine.overPoint(vertice));
-				drawPanel.repaint();
-			}
-		};
-		button.addActionListener(listener);
-		return button;
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch(Exception e) {}
-				LabFrame frame = new LabFrame();
-			}
-		});
-	}
-	
+    private JButton makeButton(String name, Affine affine) {
+        JButton button = new JButton(name);
+        ActionListener listener = new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                Point3D vertice = drawPanel.getCurrentVertice();
+                drawPanel.getFigure().applyAffine(affine.overPoint(vertice));
+                drawPanel.repaint();
+            }
+        };
+        button.addActionListener(listener);
+        return button;
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                }
+                LabFrame frame = new LabFrame();
+            }
+        });
+    }
+
 }
