@@ -1,4 +1,4 @@
-package com.ran.interpolation;
+package com.ran.dissertation.oldcode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,6 @@ public class DrawPanel extends JPanel {
     }
 
     private class Mover implements MouseMotionListener {
-
         public void mouseDragged(MouseEvent event) {
             int nextX = event.getX();
             int nextY = event.getY();
@@ -66,7 +65,6 @@ public class DrawPanel extends JPanel {
     }
 
     private class Zoomer implements MouseWheelListener {
-
         public void mouseWheelMoved(MouseWheelEvent event) {
             int notches = event.getWheelRotation();
             camera.zoom(notches * ZOOM_STEP);
