@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class ThreeDoubleVector implements Comparable<ThreeDoubleVector>, AlgebraicObject<ThreeDoubleVector> {
 
+    public static final ThreeDoubleVector ZERO_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 0.0, 0.0);
+    
     private final DoubleVector doubleVector;
     
     public ThreeDoubleVector(double x, double y, double z) {
@@ -89,6 +91,10 @@ public class ThreeDoubleVector implements Comparable<ThreeDoubleVector>, Algebra
     @Override
     public double scalarMultiply(ThreeDoubleVector other) {
         return this.doubleVector.scalarMultiply(other.getDoubleVector());
+    }
+    
+    public double mixedMultiply(ThreeDoubleVector middle, ThreeDoubleVector right) {
+        return this.scalarMultiply(middle.multiply(right));
     }
 
     @Override

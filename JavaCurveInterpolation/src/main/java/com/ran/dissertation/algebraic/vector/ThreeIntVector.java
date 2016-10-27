@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class ThreeIntVector implements Comparable<ThreeIntVector>, AlgebraicObject<ThreeIntVector> {
 
+    public static final ThreeIntVector ZERO_THREE_INT_VECTOR = new ThreeIntVector(0, 0, 0);
+    
     private final IntVector intVector;
     
     public ThreeIntVector(int x, int y, int z) {

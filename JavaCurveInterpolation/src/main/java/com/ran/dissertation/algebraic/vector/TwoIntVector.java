@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class TwoIntVector implements Comparable<TwoIntVector>, AlgebraicObject<TwoIntVector> {
 
+    public static final TwoIntVector ZERO_TWO_INT_VECTOR = new TwoIntVector(0, 0);
+    
     private final IntVector intVector;
     
     public TwoIntVector(int x, int y) {

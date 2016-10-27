@@ -16,20 +16,15 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     private final Function<Double, T> function;
     private final double minParameterValue;
     private final double maxParameterValue;
-    private final boolean boundless;
     
     public DoubleFunction(Function<Double, T> function, double minParameterValue, double maxParameterValue) {
         this.function = function;
         this.minParameterValue = minParameterValue;
         this.maxParameterValue = maxParameterValue;
-        this.boundless = false;
     }
 
     public DoubleFunction(Function<Double, T> function) {
-        this.function = function;
-        this.minParameterValue = -Double.MAX_VALUE;
-        this.maxParameterValue = Double.MAX_VALUE;
-        this.boundless = true;
+        this(function, -Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     public double getMinParameterValue() {

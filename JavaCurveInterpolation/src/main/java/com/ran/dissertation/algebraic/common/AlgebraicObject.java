@@ -23,4 +23,8 @@ public interface AlgebraicObject<T> {
         return this.multiply(1.0 / norm);
     }
     
+    default boolean isZero() {
+        return (ArithmeticOperations.doubleEquals(this.getNorm(), 0.0));
+    }
+    
 }
