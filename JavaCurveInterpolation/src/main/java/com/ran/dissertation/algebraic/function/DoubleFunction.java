@@ -1,8 +1,14 @@
 package com.ran.dissertation.algebraic.function;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
+import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.exception.FunctionParameterOutOfBoundsException;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicObject<DoubleFunction<T>>, Function<Double, T> {
@@ -10,15 +16,20 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     private final Function<Double, T> function;
     private final double minParameterValue;
     private final double maxParameterValue;
+    private final boolean boundless;
     
     public DoubleFunction(Function<Double, T> function, double minParameterValue, double maxParameterValue) {
         this.function = function;
         this.minParameterValue = minParameterValue;
         this.maxParameterValue = maxParameterValue;
+        this.boundless = false;
     }
 
     public DoubleFunction(Function<Double, T> function) {
-        this(function, Double.MIN_VALUE, Double.MAX_VALUE);
+        this.function = function;
+        this.minParameterValue = -Double.MAX_VALUE;
+        this.maxParameterValue = Double.MAX_VALUE;
+        this.boundless = true;
     }
 
     public double getMinParameterValue() {
@@ -39,6 +50,53 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
             throw new FunctionParameterOutOfBoundsException(point, minParameterValue, maxParameterValue);
         }
         return function.apply(point);
+    }
+    
+    public List<T> applyForList(List<Double> points) {
+        List<T> values = new ArrayList<>(points.size());
+        Iterator<T> iterator = iteratorForList(points);
+        while (iterator.hasNext()) {
+            values.add(iterator.next());
+        }
+        return values;
+    }
+    
+    public Map<Double, T> mapForList(List<Double> points) {
+        Map<Double, T> pointsToValues = new HashMap<>(points.size());
+        for (double point: points) {
+            pointsToValues.put(point, apply(point));
+        }
+        return pointsToValues;
+    }
+    
+    public Iterator<T> iteratorForList(List<Double> points) {
+        return new Iterator<T>() {
+            private final Iterator<Double> doubleIterator = points.iterator();
+            @Override
+            public boolean hasNext() {
+                return doubleIterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                Double nextDouble = doubleIterator.next();
+                if (nextDouble == null) {
+                    return null;
+                } else {
+                    return apply(nextDouble);
+                }
+            }
+        };
+    }
+    
+    public Iterator<T> iteratorForGrid(double firstPoint, double lastPoint, double step) {
+        List<Double> points = new ArrayList<>();
+        double currentPoint = firstPoint;
+        while (ArithmeticOperations.doubleLessOrEquals(currentPoint, lastPoint)) {
+            points.add(currentPoint);
+            currentPoint += step;
+        }
+        return iteratorForList(points);
     }
     
     @Override
