@@ -1,5 +1,6 @@
 package com.ran.dissertation.ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
@@ -7,18 +8,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.util.Set;
 import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static final Color FRAME_COLOR = Color.BLACK;
+    
+    //public static final int WIDTH = 800;
+    //public static final int HEIGHT = 600;
     
     public ImagePanel() {
         initComponents();
         initListeners();
-        setSize(WIDTH, HEIGHT);
+        //setSize(WIDTH, HEIGHT);
     }
 
     @SuppressWarnings("unchecked")
@@ -74,10 +76,6 @@ public class ImagePanel extends JPanel {
         imagePanelListenerSupport.addImagePanelListener(listener);
     }
     
-//    public Set<ImagePanelListener> getImagePanelListeners() {
-//        return imagePanelListenerSupport.getImagePanelListeners();
-//    }
-    
     public void removeImagePanelListener(ImagePanelListener listener) {
         imagePanelListenerSupport.removeImagePanelListener(listener);
     }
@@ -92,11 +90,13 @@ public class ImagePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics graphics) {
-        int imageWidth = getWidth() + 1;
-        int imageHeight = getHeight() + 1;
+        int imageWidth = getWidth();
+        int imageHeight = getHeight();
         BufferedImage image = (BufferedImage) createImage(imageWidth, imageHeight);
         Graphics2D graphics2D = (Graphics2D) image.getGraphics();
         imagePanelPaintStrategy.paint(graphics2D, imageWidth, imageHeight);
+        graphics2D.setColor(FRAME_COLOR);
+        graphics2D.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
         graphics.drawImage(image, 0, 0, this);
     }
     

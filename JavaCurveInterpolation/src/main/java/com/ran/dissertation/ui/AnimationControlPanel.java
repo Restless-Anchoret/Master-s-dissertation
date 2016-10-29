@@ -50,16 +50,15 @@ public class AnimationControlPanel extends JPanel {
 
     private void initListeners() {
         startAnimationButton.addActionListener(event -> {
-            AnimationStrategy animationStrategy = animationsComboBox.getSelectedValue();
-            if (animationStrategy != null) {
-                animationStrategy.startAnimation();
-            }
+            animationControlPanelListenerSupport.fireStartAnimationButtonClicked(chosenAnimationStrategy);
         });
         stopAnimationButton.addActionListener(event -> {
-            AnimationStrategy animationStrategy = animationsComboBox.getSelectedValue();
-            if (animationStrategy != null) {
-                animationStrategy.stopAnimation();
-            }
+            animationControlPanelListenerSupport.fireStopAnimationButtonClicked(chosenAnimationStrategy);
+        });
+        animationsComboBox.getComboBox().addItemListener(event -> {
+            AnimationStrategy previousAnimationStrategy = chosenAnimationStrategy;
+            chosenAnimationStrategy = animationsComboBox.getSelectedValue();
+            animationControlPanelListenerSupport.fireChosenAnimationChanged(chosenAnimationStrategy, previousAnimationStrategy);
         });
     }
     
@@ -69,6 +68,17 @@ public class AnimationControlPanel extends JPanel {
     private javax.swing.JButton stopAnimationButton;
     // End of variables declaration//GEN-END:variables
 
+    private AnimationControlPanelListenerSupport animationControlPanelListenerSupport = new AnimationControlPanelListenerSupport();
+    private AnimationStrategy chosenAnimationStrategy = null;
+    
+    public void addAnimationControlPanelListener(AnimationControlPanelListener listener) {
+        animationControlPanelListenerSupport.addAnimationControlPanelListener(listener);
+    }
+    
+    public void removeAnimationControlPanelListener(AnimationControlPanelListener listener) {
+        animationControlPanelListenerSupport.removeAnimationControlPanelListener(listener);
+    }
+    
     public void setAnimations(List<SelectItem<AnimationStrategy>> animationStrategiesSelectItems) {
         animationsComboBox.setSelectItems(animationStrategiesSelectItems);
     }
