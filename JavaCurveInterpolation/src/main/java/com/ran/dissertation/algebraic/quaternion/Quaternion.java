@@ -11,12 +11,15 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
     public static final Quaternion ZERO_QUATERNION = new Quaternion(0.0, ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR);
     public static final Quaternion IDENTITY_QUANTERNION = new Quaternion(1.0, ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR);
     
+    public static Quaternion createFromVector(ThreeDoubleVector vector) {
+        return new Quaternion(0.0, vector);
+    }
+    
     private final double scalar;
     private final ThreeDoubleVector vector;
     
     public Quaternion(double w, double x, double y, double z) {
-        this.scalar = w;
-        this.vector = new ThreeDoubleVector(x, y, z);
+        this(w, new ThreeDoubleVector(x, y, z));
     }
     
     public Quaternion(double scalar, ThreeDoubleVector vector) {

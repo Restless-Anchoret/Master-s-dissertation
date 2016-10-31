@@ -1,28 +1,27 @@
 package com.ran.dissertation.world;
 
-import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
-
 public class FigureEdge {
 
-    private ThreeDoubleVector firstVertice;
-    private ThreeDoubleVector secondVertice;
+    private final int firstVerticeIndex;
+    private final int secondVerticeIndex;
 
-    public FigureEdge(ThreeDoubleVector firstVertice, ThreeDoubleVector secondVertice) {
-        this.firstVertice = firstVertice;
-        this.secondVertice = secondVertice;
+    public FigureEdge(int firstVerticeIndex, int secondVerticeIndex) {
+        this.firstVerticeIndex = firstVerticeIndex;
+        this.secondVerticeIndex = secondVerticeIndex;
     }
 
-    public ThreeDoubleVector getFirstVertice() {
-        return firstVertice;
+    public int getFirstVerticeIndex() {
+        return firstVerticeIndex;
     }
 
-    public ThreeDoubleVector getSecondVertice() {
-        return secondVertice;
+    public int getSecondVerticeIndex() {
+        return secondVerticeIndex;
     }
 
     @Override
     public String toString() {
-        return "FigureEdge{" + "firstVertice=" + firstVertice + ", secondVertice=" + secondVertice + '}';
+        return "FigureEdge{" + "firstVerticeIndex=" + firstVerticeIndex +
+                ", secondVerticeIndex=" + secondVerticeIndex + '}';
     }
     
 }

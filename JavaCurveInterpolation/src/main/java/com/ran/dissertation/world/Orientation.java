@@ -15,6 +15,7 @@ public class Orientation {
     
     private final ThreeDoubleVector offset;
     private final Quaternion rotation;
+    private final Quaternion conjugateRotation;
 
     public Orientation(ThreeDoubleVector offset, Quaternion rotation) {
         if (!rotation.isIdentity()) {
@@ -22,6 +23,7 @@ public class Orientation {
         }
         this.offset = offset;
         this.rotation = rotation;
+        this.conjugateRotation = rotation.getConjugate();
     }
 
     public ThreeDoubleVector getOffset() {
@@ -30,6 +32,15 @@ public class Orientation {
 
     public Quaternion getRotation() {
         return rotation;
+    }
+
+    public Quaternion getConjugateRotation() {
+        return conjugateRotation;
+    }
+
+    @Override
+    public String toString() {
+        return "Orientation{" + "offset=" + offset + ", rotation=" + rotation + '}';
     }
     
 }
