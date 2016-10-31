@@ -12,15 +12,12 @@ import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
 
+    public static final Color BACKGROUND_COLOR = Color.WHITE;
     public static final Color FRAME_COLOR = Color.BLACK;
-    
-    //public static final int WIDTH = 800;
-    //public static final int HEIGHT = 600;
     
     public ImagePanel() {
         initComponents();
         initListeners();
-        //setSize(WIDTH, HEIGHT);
     }
 
     @SuppressWarnings("unchecked")
@@ -94,6 +91,8 @@ public class ImagePanel extends JPanel {
         int imageHeight = getHeight();
         BufferedImage image = (BufferedImage) createImage(imageWidth, imageHeight);
         Graphics2D graphics2D = (Graphics2D) image.getGraphics();
+        graphics2D.setColor(BACKGROUND_COLOR);
+        graphics2D.fillRect(0, 0, imageWidth - 1, imageHeight - 1);
         imagePanelPaintStrategy.paint(graphics2D, imageWidth, imageHeight);
         graphics2D.setColor(FRAME_COLOR);
         graphics2D.drawRect(0, 0, imageWidth - 1, imageHeight - 1);

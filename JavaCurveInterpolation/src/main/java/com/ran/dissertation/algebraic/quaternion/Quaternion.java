@@ -128,6 +128,10 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
                 .add(this.getVector().multiply(middle.getVector()).multiply(-right.getScalar()));
         return new Quaternion(resultScalar, resultVector);
     }
+    
+    public boolean isIdentity() {
+        return ArithmeticOperations.doubleEquals(getQuaternionNorm(), 1.0);
+    }
 
     @Override
     public String toString() {
