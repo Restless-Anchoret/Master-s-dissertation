@@ -9,8 +9,16 @@ public class Orientation {
     public static final Orientation INITIAL_ORIENTATION =
             new Orientation(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, Quaternion.IDENTITY_QUANTERNION);
     
-    public static final Orientation createForOffset(ThreeDoubleVector offset) {
+    public static Orientation createForOffset(ThreeDoubleVector offset) {
         return new Orientation(offset, Quaternion.IDENTITY_QUANTERNION);
+    }
+    
+    public static Orientation createForRotation(ThreeDoubleVector axis, double angle) {
+        return createForOffsetAndRotation(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, axis, angle);
+    }
+    
+    public static Orientation createForOffsetAndRotation(ThreeDoubleVector offset, ThreeDoubleVector axis, double angle) {
+        return new Orientation(offset, new Quaternion(Math.cos(angle), axis.normalized().multiply(Math.sin(angle))));
     }
     
     private final ThreeDoubleVector offset;

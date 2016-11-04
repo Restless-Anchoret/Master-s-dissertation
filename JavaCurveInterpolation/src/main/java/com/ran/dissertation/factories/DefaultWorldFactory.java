@@ -1,7 +1,7 @@
 package com.ran.dissertation.factories;
 
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
-import com.ran.dissertation.world.Animation;
+import com.ran.dissertation.world.AnimatedObject;
 import com.ran.dissertation.world.Camera;
 import com.ran.dissertation.world.DisplayableObject;
 import com.ran.dissertation.world.Orientation;
@@ -23,6 +23,7 @@ public class DefaultWorldFactory implements WorldFactory {
     @Override
     public World createWorld() {
         FigureFactory figureFactory = FigureFactory.getInstance();
+        AnimationFactory animationFactory = AnimationFactory.getInstance();
         List<DisplayableObject> displayableObjects = Arrays.asList(
                 new DisplayableObject(figureFactory.makePlainGrid(8, 8, 1.0, 1.0),
                         Orientation.INITIAL_ORIENTATION, Color.GRAY),
@@ -31,9 +32,12 @@ public class DefaultWorldFactory implements WorldFactory {
                 new DisplayableObject(figureFactory.makeCube(2.0),
                         Orientation.createForOffset(new ThreeDoubleVector(-3.0, -3.0, 2.0)))
         );
-        List<Animation> animations = Arrays.asList();
+        List<AnimatedObject> animatedObjects = Arrays.asList(
+                new AnimatedObject(figureFactory.makeCube(2.0),
+                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(3.0, -3.0, 2.0), 100))
+        );
         Camera camera = new Camera();
-        return new World(displayableObjects, animations, camera);
+        return new World(displayableObjects, animatedObjects, camera);
     }
     
 }
