@@ -15,13 +15,17 @@ public class OrientationMapper {
     
     private OrientationMapper() { }
     
+    public ThreeDoubleVector orientVertice(ThreeDoubleVector initialVertice, Orientation orientation) {
+        return orientation.getRotation()
+                .multiply(Quaternion.createFromVector(initialVertice))
+                .multiply(orientation.getConjugateRotation())
+                .getVector().add(orientation.getOffset());
+    }
+    
     public List<ThreeDoubleVector> orientVertices(List<ThreeDoubleVector> initialVertices, Orientation orientation) {
         return initialVertices.stream().sequential()
-                .map(vertice -> orientation.getRotation()
-                    .multiply(Quaternion.createFromVector(vertice))
-                    .multiply(orientation.getConjugateRotation())
-                    .getVector().add(orientation.getOffset())
-        ).collect(Collectors.toList());
+                .map(vertice -> orientVertice(vertice, orientation))
+                .collect(Collectors.toList());
     }
     
 }

@@ -3,6 +3,7 @@ package com.ran.dissertation.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,22 +38,25 @@ public class ImagePanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initListeners() {
-        addMouseListener(new MouseAdapter() {
+        addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent event) {
-                imagePanelListenerSupport.fireMouseMoved(ImagePanel.this, event.getX(), event.getY());
+                previousX = event.getX();
+                previousY = event.getY();
             }
             @Override
             public void mouseDragged(MouseEvent event) {
                 int x = event.getX();
                 int y = event.getY();
                 if ((event.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedLeftMouseButton(ImagePanel.this, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedLeftMouseButton(ImagePanel.this, previousX, previousY, x, y);
                 } else if ((event.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, previousX, previousY, x, y);
                 } else if ((event.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedRightMouseButton(ImagePanel.this, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedRightMouseButton(ImagePanel.this, previousX, previousY, x, y);
                 }
+                previousX = x;
+                previousY = y;
             }
         });
         addMouseWheelListener(new MouseAdapter() {
@@ -66,8 +70,11 @@ public class ImagePanel extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
+    private int previousX;
+    private int previousY;
     private ImagePanelListenerSupport imagePanelListenerSupport = new ImagePanelListenerSupport();
-    private ImagePanelPaintStrategy imagePanelPaintStrategy = (graphics, width, height) -> { };
+    private ImagePanelPaintStrategy imagePanelPaintStrategy = (paintDelegate, width, height) -> { };
+    private PaintDelegate paintDelegate = new PaintDelegate();
     
     public void addImagePanelListener(ImagePanelListener listener) {
         imagePanelListenerSupport.addImagePanelListener(listener);
@@ -91,9 +98,13 @@ public class ImagePanel extends JPanel {
         int imageHeight = getHeight();
         BufferedImage image = (BufferedImage) createImage(imageWidth, imageHeight);
         Graphics2D graphics2D = (Graphics2D) image.getGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.setColor(BACKGROUND_COLOR);
         graphics2D.fillRect(0, 0, imageWidth - 1, imageHeight - 1);
-        imagePanelPaintStrategy.paint(graphics2D, imageWidth, imageHeight);
+        if (imageWidth > 2 && imageHeight > 2) {
+            paintDelegate.setGraphics(graphics2D);
+            imagePanelPaintStrategy.paint(paintDelegate, imageWidth, imageHeight);
+        }
         graphics2D.setColor(FRAME_COLOR);
         graphics2D.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
         graphics.drawImage(image, 0, 0, this);

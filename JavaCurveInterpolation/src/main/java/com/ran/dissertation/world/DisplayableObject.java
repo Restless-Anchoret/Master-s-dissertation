@@ -7,8 +7,8 @@ import java.util.List;
 public class DisplayableObject {
 
     private static final Color DEFAULT_FIGURE_COLOR = Color.BLACK;
-    private static final int DEFAULT_EDGE_PAINT_WIDTH = 1;
-    private static final int DEFAULT_VERTICE_PAINT_RADIUS = 3;
+    private static final int DEFAULT_EDGE_PAINT_WIDTH = 2;
+    private static final int DEFAULT_VERTICE_PAINT_RADIUS = 2;
     
     private final Figure figure;
     private Orientation orientation;

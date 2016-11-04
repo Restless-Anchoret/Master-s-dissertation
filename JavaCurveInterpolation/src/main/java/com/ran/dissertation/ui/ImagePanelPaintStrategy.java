@@ -1,10 +1,8 @@
 package com.ran.dissertation.ui;
 
-import java.awt.Graphics2D;
-
 @FunctionalInterface
 public interface ImagePanelPaintStrategy {
 
-    void paint(Graphics2D graphics, int width, int height);
+    void paint(PaintDelegate paintDelegate, int width, int height);
     
 }

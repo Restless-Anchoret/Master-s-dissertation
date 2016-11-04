@@ -2,10 +2,9 @@ package com.ran.dissertation.ui;
 
 public interface ImagePanelListener {
     
-    void mouseMoved(ImagePanel imagePanel, int x, int y);
-    void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int x, int y);
-    void mouseDraggedMiddleMouseButton(ImagePanel imagePanel, int x, int y);
-    void mouseDraggedRightMouseButton(ImagePanel imagePanel, int x, int y);
+    void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY);
+    void mouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY);
+    void mouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY);
     void mouseWheelMoved(ImagePanel imagePanel, int notches);
 
 }

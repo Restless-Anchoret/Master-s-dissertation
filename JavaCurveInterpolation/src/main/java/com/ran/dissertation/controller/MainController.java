@@ -1,15 +1,23 @@
 package com.ran.dissertation.controller;
 
+import com.ran.dissertation.factories.WorldFactory;
 import com.ran.dissertation.ui.MainFrame;
-import java.awt.EventQueue;
+import com.ran.dissertation.world.World;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainController {
 
+    private final WorldFactory worldFactory;
+    private World world;
     private MainFrame mainFrame;
+
+    public MainController(WorldFactory worldFactory) {
+        this.worldFactory = worldFactory;
+    }
     
-    private void startApplication() {
+    public void startApplication() {
+        world = worldFactory.createWorld();
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -22,13 +30,9 @@ public class MainController {
             exception.printStackTrace();
         }
         mainFrame = new MainFrame();
+        mainFrame.getImagePanel().setImagePanelPaintStrategy(new DefaultPaintStrategy(world));
+        mainFrame.getImagePanel().addImagePanelListener(new DefaultCameraController(world.getCamera()));
         mainFrame.setVisible(true);
-    }
-    
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            new MainController().startApplication();
-        });
     }
     
 }

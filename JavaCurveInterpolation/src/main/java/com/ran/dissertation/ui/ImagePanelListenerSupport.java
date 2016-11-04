@@ -20,27 +20,21 @@ public class ImagePanelListenerSupport {
         imagePanelListeners.remove(listener);
     }
     
-    public void fireMouseMoved(ImagePanel imagePanel, int x, int y) {
+    public void fireMouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseMoved(imagePanel, x, y);
+            listener.mouseDraggedLeftMouseButton(imagePanel, previousX, previousY, nextX, nextY);
         }
     }
     
-    public void fireMouseDraggedLeftMouseButton(ImagePanel imagePanel, int x, int y) {
+    public void fireMouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedLeftMouseButton(imagePanel, x, y);
+            listener.mouseDraggedMiddleMouseButton(imagePanel, previousX, previousY, nextX, nextY);
         }
     }
     
-    public void fireMouseDraggedMiddleMouseButton(ImagePanel imagePanel, int x, int y) {
+    public void fireMouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedMiddleMouseButton(imagePanel, x, y);
-        }
-    }
-    
-    public void fireMouseDraggedRightMouseButton(ImagePanel imagePanel, int x, int y) {
-        for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedRightMouseButton(imagePanel, x, y);
+            listener.mouseDraggedRightMouseButton(imagePanel, previousX, previousY, nextX, nextY);
         }
     }
     
