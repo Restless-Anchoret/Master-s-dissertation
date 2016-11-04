@@ -1,13 +1,14 @@
 package com.ran.dissertation.factories;
 
+import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.world.Animation;
 import com.ran.dissertation.world.Camera;
 import com.ran.dissertation.world.DisplayableObject;
-import com.ran.dissertation.world.Figure;
+import com.ran.dissertation.world.Orientation;
 import com.ran.dissertation.world.World;
+import java.awt.Color;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DefaultWorldFactory implements WorldFactory {
 
@@ -18,20 +19,21 @@ public class DefaultWorldFactory implements WorldFactory {
     }
     
     private DefaultWorldFactory() { }
-    
-    public World makeWorldFromFigures(List<Figure> figures) {
-        return new World(figures.stream()
-                .map(figure -> new DisplayableObject(figure))
-                .collect(Collectors.toList()),
-                Collections.EMPTY_LIST,
-                new Camera()
-        );
-    }
 
     @Override
     public World createWorld() {
         FigureFactory figureFactory = FigureFactory.getInstance();
-        return makeWorldFromFigures(Arrays.asList(figureFactory.makePlainGrid(10, 10, 1.0, 1.0)));
+        List<DisplayableObject> displayableObjects = Arrays.asList(
+                new DisplayableObject(figureFactory.makePlainGrid(8, 8, 1.0, 1.0),
+                        Orientation.INITIAL_ORIENTATION, Color.GRAY),
+                new DisplayableObject(figureFactory.makeGrid(4, 4, 1, 2.0, 2.0, 2.0),
+                        Orientation.createForOffset(new ThreeDoubleVector(12.0, 0.0, 1.0))),
+                new DisplayableObject(figureFactory.makeCube(2.0),
+                        Orientation.createForOffset(new ThreeDoubleVector(-3.0, -3.0, 2.0)))
+        );
+        List<Animation> animations = Arrays.asList();
+        Camera camera = new Camera();
+        return new World(displayableObjects, animations, camera);
     }
     
 }

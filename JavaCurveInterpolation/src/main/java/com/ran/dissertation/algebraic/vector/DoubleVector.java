@@ -104,7 +104,7 @@ public class DoubleVector implements Comparable<DoubleVector>, AlgebraicObject<D
     @Override
     public double scalarMultiply(DoubleVector other) {
         checkDimensions(this, other);
-        int result = 0;
+        double result = 0;
         for (int i = 0; i < getDimension(); i++) {
             result += this.getCoordinate(i) * other.getCoordinate(i);
         }

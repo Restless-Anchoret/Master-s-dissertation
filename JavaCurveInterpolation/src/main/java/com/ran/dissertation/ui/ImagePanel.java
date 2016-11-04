@@ -50,9 +50,9 @@ public class ImagePanel extends JPanel {
                 int y = event.getY();
                 if ((event.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
                     imagePanelListenerSupport.fireMouseDraggedLeftMouseButton(ImagePanel.this, previousX, previousY, x, y);
-                } else if ((event.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, previousX, previousY, x, y);
                 } else if ((event.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
+                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, previousX, previousY, x, y);
+                } else if ((event.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
                     imagePanelListenerSupport.fireMouseDraggedRightMouseButton(ImagePanel.this, previousX, previousY, x, y);
                 }
                 previousX = x;

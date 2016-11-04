@@ -48,7 +48,7 @@ public class DefaultCameraController implements ImagePanelListener {
 
     @Override
     public void mouseWheelMoved(ImagePanel imagePanel, int notches) {
-        camera.zoom(notches * zoomStep);
+        camera.zoom(-notches * zoomStep);
         imagePanel.repaint();
     }
 

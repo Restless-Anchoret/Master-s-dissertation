@@ -10,7 +10,7 @@ public class Camera {
     private static final double DEFAULT_ANGLE_Z = 0.0;
     private static final ThreeDoubleVector DEFAULT_POSITION = new ThreeDoubleVector(0.0, 6.0, 4.0);
     private static final ThreeDoubleVector DEFAULT_VERTICAL_VECTOR = new ThreeDoubleVector(0.0, 0.0, 1.0);
-    private static final double DEFAULT_DISTANCE_BEHIND = 0.5;
+    private static final double DEFAULT_DISTANCE_BEHIND = 4.0;
     private static final double DEFAULT_DISPLAY_WIDTH = 8.0;
     
     private double angleXOY;
