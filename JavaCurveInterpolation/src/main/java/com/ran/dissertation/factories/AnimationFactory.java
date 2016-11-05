@@ -20,11 +20,14 @@ public class AnimationFactory {
     }
     
     public List<Orientation> makeZRotationAnimation(ThreeDoubleVector offset, int frames) {
-        ThreeDoubleVector zAxis = new ThreeDoubleVector(0.0, 0.0, 1.0);
+        return makeRotationAnimation(offset, new ThreeDoubleVector(0.0, 0.0, 1.0), frames);
+    }
+    
+    public List<Orientation> makeRotationAnimation(ThreeDoubleVector offset, ThreeDoubleVector axis, int frames) {
         List<Orientation> orientations = new ArrayList<>(frames);
         for (int i = 0; i < frames; i++) {
             double angle = 2 * Math.PI * i / frames;
-            orientations.add(Orientation.createForOffsetAndRotation(offset, zAxis, angle));
+            orientations.add(Orientation.createForOffsetAndRotation(offset, axis, angle));
         }
         return orientations;
     }

@@ -13,12 +13,22 @@ public class Orientation {
         return new Orientation(offset, Quaternion.IDENTITY_QUANTERNION);
     }
     
+    public static Orientation createForOffset(double x, double y, double z) {
+        return new Orientation(new ThreeDoubleVector(x, y, z), Quaternion.IDENTITY_QUANTERNION);
+    }
+    
     public static Orientation createForRotation(ThreeDoubleVector axis, double angle) {
         return createForOffsetAndRotation(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, axis, angle);
     }
     
     public static Orientation createForOffsetAndRotation(ThreeDoubleVector offset, ThreeDoubleVector axis, double angle) {
         return new Orientation(offset, new Quaternion(Math.cos(angle), axis.normalized().multiply(Math.sin(angle))));
+    }
+    
+    public static Orientation createForOffsetAndRotation(double offsetX, double offsetY, double offsetZ,
+            ThreeDoubleVector axis, double angle) {
+        return new Orientation(new ThreeDoubleVector(offsetX, offsetY, offsetZ),
+                new Quaternion(Math.cos(angle), axis.normalized().multiply(Math.sin(angle))));
     }
     
     private final ThreeDoubleVector offset;

@@ -28,13 +28,16 @@ public class DefaultWorldFactory implements WorldFactory {
                 new DisplayableObject(figureFactory.makePlainGrid(8, 8, 1.0, 1.0),
                         Orientation.INITIAL_ORIENTATION, Color.GRAY),
                 new DisplayableObject(figureFactory.makeGrid(4, 4, 1, 2.0, 2.0, 2.0),
-                        Orientation.createForOffset(new ThreeDoubleVector(12.0, 0.0, 1.0))),
+                        Orientation.createForOffset(12.0, 0.0, 1.0)),
                 new DisplayableObject(figureFactory.makeCube(2.0),
-                        Orientation.createForOffset(new ThreeDoubleVector(-3.0, -3.0, 2.0)))
+                        Orientation.createForOffset(-3.0, -3.0, 2.0))
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
                 new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(3.0, -3.0, 2.0), 100))
+                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(3.0, -3.0, 2.0), 720)),
+                new AnimatedObject(figureFactory.makeCube(2.0),
+                        animationFactory.makeRotationAnimation(new ThreeDoubleVector(3.0, 3.0, 2.0),
+                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120))
         );
         Camera camera = new Camera();
         return new World(displayableObjects, animatedObjects, camera);

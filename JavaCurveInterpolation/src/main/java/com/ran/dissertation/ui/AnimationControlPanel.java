@@ -81,6 +81,7 @@ public class AnimationControlPanel extends JPanel {
     
     public void setAnimations(List<SelectItem<AnimationStrategy>> animationStrategiesSelectItems) {
         animationsComboBox.setSelectItems(animationStrategiesSelectItems);
+        chosenAnimationStrategy = animationsComboBox.getSelectedValue();
     }
     
 }
