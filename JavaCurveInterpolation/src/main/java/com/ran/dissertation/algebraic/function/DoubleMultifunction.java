@@ -35,7 +35,7 @@ public class DoubleMultifunction<T extends AlgebraicObject<T>> extends DoubleFun
         return new Iterator<T>() {
             private final Iterator<DoubleFunction<T>> doubleFunctionsIterator = doubleFunctions.iterator();
             private DoubleFunction<T> currentFunction = null;
-            private double nextIndex = 0;
+            private int nextIndex = 0;
             @Override
             public boolean hasNext() {
                 return nextIndex <= segments;

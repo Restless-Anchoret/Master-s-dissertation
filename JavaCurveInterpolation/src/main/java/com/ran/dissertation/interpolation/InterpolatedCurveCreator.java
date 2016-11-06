@@ -99,10 +99,10 @@ public class InterpolatedCurveCreator {
         double s2 = r2.scalarMultiply(r3);
         
         double firstAtan2 = Math.atan2(n1Norm, s1);
-        double phi = (n1.scalarMultiply(n) > 0 ? firstAtan2 : 2 * Math.PI - firstAtan2);
+        double phi = -(n1.scalarMultiply(n) > 0 ? firstAtan2 : 2 * Math.PI - firstAtan2);
         
         double secondAtan2 = Math.atan2(n2Norm, s2);
-        double psi = (n2.scalarMultiply(n) > 0 ? secondAtan2 : 2 * Math.PI - secondAtan2);
+        double psi = -(n2.scalarMultiply(n) > 0 ? secondAtan2 : 2 * Math.PI - secondAtan2);
         
         return new SegmentsBuildingResult(new Pair<>(
                 new DoubleFunction<>(point -> RotationCreator.getInstance().createRotation(n, point * phi), 0.0, 1.0),

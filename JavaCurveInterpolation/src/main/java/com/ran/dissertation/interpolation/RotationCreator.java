@@ -24,7 +24,7 @@ public class RotationCreator {
         
         double[][] matrix = new double[][] {
             {n1 * n1 + (1.0 - n1 * n1) * cos, n1 * n2 * vers - n3 * sin,       n1 * n3 * vers + n2 * sin      },
-            {n2 * n1 + n3 * sin,              n2 * n2 + (1.0 - n2 * n2) * cos, n2 * n3 * vers - n1 * sin      },
+            {n2 * n1 * vers + n3 * sin,              n2 * n2 + (1.0 - n2 * n2) * cos, n2 * n3 * vers - n1 * sin      },
             {n3 * n1 * vers - n2 * sin,       n3 * n2 * vers + n1 * sin,       n3 * n3 + (1.0 - n3 * n3) * cos}
         };
         return new DoubleMatrix(matrix);
