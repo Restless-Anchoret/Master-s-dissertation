@@ -1,5 +1,6 @@
 package com.ran.dissertation.world;
 
+import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import java.util.Collections;
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.List;
 public class Figure {
     
     private final List<ThreeDoubleVector> vertices;
-    private final List<FigureEdge> figureEdges;
+    private final List<Pair<Integer, Integer>> figureEdges;
 
-    public Figure(List<ThreeDoubleVector> vertices, List<FigureEdge> figureEdges) {
+    public Figure(List<ThreeDoubleVector> vertices, List<Pair<Integer, Integer>> figureEdges) {
         this.vertices = vertices;
         this.figureEdges = figureEdges;
     }
@@ -18,7 +19,7 @@ public class Figure {
         return Collections.unmodifiableList(vertices);
     }
 
-    public List<FigureEdge> getFigureEdges() {
+    public List<Pair<Integer, Integer>> getFigureEdges() {
         return Collections.unmodifiableList(figureEdges);
     }
 

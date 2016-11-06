@@ -1,8 +1,8 @@
 package com.ran.dissertation.factories;
 
+import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import com.ran.dissertation.world.Figure;
-import com.ran.dissertation.world.FigureEdge;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class FigureFactory {
     public Figure makeGrid(int xCellsQuantity, int yCellsQuantity, int zCellsQuantity,
             double xCellWidth, double yCellWidth, double zCellWidth) {
         List<ThreeDoubleVector> vertices = new ArrayList<>();
-        List<FigureEdge> figureEdges = new ArrayList<>();
+        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>();
         
         double xHalfSize = xCellWidth * xCellsQuantity / 2.0;
         double yHalfSize = yCellWidth * yCellsQuantity / 2.0;
@@ -36,13 +36,13 @@ public class FigureFactory {
                     vertices.add(new ThreeDoubleVector(x, y, z));
                     indexes[i][j][k] = currentIndex;
                     if (i > 0) {
-                        figureEdges.add(new FigureEdge(indexes[i - 1][j][k], currentIndex));
+                        figureEdges.add(new Pair(indexes[i - 1][j][k], currentIndex));
                     }
                     if (j > 0) {
-                        figureEdges.add(new FigureEdge(indexes[i][j - 1][k], currentIndex));
+                        figureEdges.add(new Pair(indexes[i][j - 1][k], currentIndex));
                     }
                     if (k > 0) {
-                        figureEdges.add(new FigureEdge(indexes[i][j][k - 1], currentIndex));
+                        figureEdges.add(new Pair(indexes[i][j][k - 1], currentIndex));
                     }
                     currentIndex++;
                 }

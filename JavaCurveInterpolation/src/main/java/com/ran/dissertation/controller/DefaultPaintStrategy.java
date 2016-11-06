@@ -1,5 +1,6 @@
 package com.ran.dissertation.controller;
 
+import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import com.ran.dissertation.algebraic.vector.TwoDoubleVector;
@@ -8,7 +9,6 @@ import com.ran.dissertation.ui.ImagePanelPaintStrategy;
 import com.ran.dissertation.ui.PaintDelegate;
 import com.ran.dissertation.world.Camera;
 import com.ran.dissertation.world.DisplayableObject;
-import com.ran.dissertation.world.FigureEdge;
 import com.ran.dissertation.world.World;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +34,9 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
             PaintDelegate paintDelegate, int width, int height) {
         List<TwoIntVector> displayCoordinates = convertWorldCoordinatesToDiplayCoordinates(
                 displayableObject.getCurrentFigureVertices(), camera, width, height);
-        for (FigureEdge figureEdge: displayableObject.getFigure().getFigureEdges()) {
-            TwoIntVector firstPoint = displayCoordinates.get(figureEdge.getFirstVerticeIndex());
-            TwoIntVector secondPoint = displayCoordinates.get(figureEdge.getSecondVerticeIndex());
+        for (Pair<Integer, Integer> figureEdge: displayableObject.getFigure().getFigureEdges()) {
+            TwoIntVector firstPoint = displayCoordinates.get(figureEdge.getLeft());
+            TwoIntVector secondPoint = displayCoordinates.get(figureEdge.getRight());
             paintDelegate.putLine(firstPoint, secondPoint, displayableObject.getColor(),
                     displayableObject.getEdgePaintWidth());
         }
