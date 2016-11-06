@@ -4,6 +4,7 @@ import com.ran.dissertation.algebraic.common.AlgebraicObject;
 import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.exception.AlgebraicException;
 import com.ran.dissertation.algebraic.exception.CreationException;
+import com.ran.dissertation.algebraic.vector.DoubleVector;
 import java.util.Arrays;
 
 public class DoubleMatrix implements AlgebraicObject<DoubleMatrix> {
@@ -20,6 +21,22 @@ public class DoubleMatrix implements AlgebraicObject<DoubleMatrix> {
         double[][] matrix = new double[dimension][dimension];
         for (int i = 0; i < dimension; i++) {
             matrix[i][i] = 1.0;
+        }
+        return new DoubleMatrix(matrix);
+    }
+    
+    public static DoubleMatrix createFromColumnVector(DoubleVector doubleVector) {
+        double[][] matrix = new double[doubleVector.getDimension()][1];
+        for (int i = 0; i < doubleVector.getDimension(); i++) {
+            matrix[i][0] = doubleVector.getCoordinate(i);
+        }
+        return new DoubleMatrix(matrix);
+    }
+    
+    public static DoubleMatrix createFromLineVector(DoubleVector doubleVector) {
+        double[][] matrix = new double[1][doubleVector.getDimension()];
+        for (int i = 0; i < doubleVector.getDimension(); i++) {
+            matrix[0][i] = doubleVector.getCoordinate(i);
         }
         return new DoubleMatrix(matrix);
     }
@@ -146,6 +163,33 @@ public class DoubleMatrix implements AlgebraicObject<DoubleMatrix> {
     @Override
     public double scalarMultiply(DoubleMatrix other) {
         throw new UnsupportedOperationException();
+    }
+    
+    public DoubleVector multiply(DoubleVector vector) {
+        DoubleMatrix vectorMatrix = createFromColumnVector(vector);
+        return this.multiply(vectorMatrix).asColumnVector();
+    }
+    
+    public DoubleVector asColumnVector() {
+        if (getColumns() != 1) {
+            throw new AlgebraicException("Double matrix must contain only one column for converting it to column vector");
+        }
+        double[] coordinates = new double[getLines()];
+        for (int i = 0; i < getLines(); i++) {
+            coordinates[i] = get(i, 0);
+        }
+        return new DoubleVector(coordinates);
+    }
+    
+    public DoubleVector asLineVector() {
+        if (getLines() != 1) {
+            throw new AlgebraicException("Double matrix must contain only one line for converting it to line vector");
+        }
+        double[] coordinates = new double[getColumns()];
+        for (int i = 0; i < getColumns(); i++) {
+            coordinates[i] = get(0, i);
+        }
+        return new DoubleVector(coordinates);
     }
 
     @Override

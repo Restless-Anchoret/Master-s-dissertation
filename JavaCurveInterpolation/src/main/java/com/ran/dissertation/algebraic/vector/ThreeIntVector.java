@@ -1,6 +1,7 @@
 package com.ran.dissertation.algebraic.vector;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
+import com.ran.dissertation.algebraic.exception.CreationException;
 import java.util.Objects;
 
 public class ThreeIntVector implements Comparable<ThreeIntVector>, AlgebraicObject<ThreeIntVector> {
@@ -13,7 +14,10 @@ public class ThreeIntVector implements Comparable<ThreeIntVector>, AlgebraicObje
         this.intVector = new IntVector(x, y, z);
     }
     
-    private ThreeIntVector(IntVector intVector) {
+    public ThreeIntVector(IntVector intVector) {
+        if (intVector.getDimension() != 3) {
+            throw new CreationException("IntVector must be three-dimensional for creating ThreeIntVector");
+        }
         this.intVector = intVector;
     }
     
@@ -29,7 +33,7 @@ public class ThreeIntVector implements Comparable<ThreeIntVector>, AlgebraicObje
         return intVector.getCoordinate(2);
     }
     
-    private IntVector getIntVector() {
+    public IntVector getIntVector() {
         return intVector;
     }
 

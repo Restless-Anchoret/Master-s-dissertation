@@ -4,7 +4,7 @@ import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 
 public class Camera {
 
-    private static final double ANGLE_Z_UP_EDGE = 5.0 * Math.PI / 12.0;
+    private static final double ANGLE_Z_UP_EDGE = 23.0 * Math.PI / 48.0;
     
     private static final double DEFAULT_ANGLE_XOY = 0.0;
     private static final double DEFAULT_ANGLE_Z = 0.0;
@@ -98,7 +98,7 @@ public class Camera {
     }
 
     private void updateNormVector() {
-        normVector = new ThreeDoubleVector(Math.sin(angleXOY), Math.cos(angleXOY), Math.sin(angleZ)).normalized();
+        normVector = new ThreeDoubleVector(Math.sin(angleXOY), Math.cos(angleXOY), Math.tan(angleZ)).normalized();
     }
     
 }

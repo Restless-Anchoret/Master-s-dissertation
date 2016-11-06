@@ -1,9 +1,12 @@
 package com.ran.dissertation.factories;
 
 import com.ran.dissertation.algebraic.common.Pair;
+import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.interpolation.InterpolatedCurveCreator;
 import com.ran.dissertation.world.Figure;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FigureFactory {
@@ -62,6 +65,75 @@ public class FigureFactory {
     
     public Figure makeCube(double width) {
         return makeParallelepiped(width, width, width);
+    }
+    
+    public Figure makeOval(ThreeDoubleVector center, ThreeDoubleVector firstAxis,
+            ThreeDoubleVector secondAxis, int segments) {
+        List<ThreeDoubleVector> vertices = new ArrayList<>();
+        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>();
+        for (int i = 0; i < segments; i++) {
+            double angle = 2 * Math.PI * i / segments;
+            ThreeDoubleVector vertice = firstAxis.multiply(Math.sin(angle))
+                    .add(secondAxis.multiply(Math.cos(angle)))
+                    .add(center);
+            vertices.add(vertice);
+            figureEdges.add(new Pair(i, (i + 1) % segments));
+        }
+        return new Figure(vertices, figureEdges);
+    }
+    
+    public Figure makeMultiFigure(List<Figure> figures) {
+        List<ThreeDoubleVector> vertices = new ArrayList<>();
+        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>();
+        int currentVerticesQuantity = 0;
+        for (Figure figure: figures) {
+            for (ThreeDoubleVector vertice: figure.getVertices()) {
+                vertices.add(vertice);
+            }
+            for (Pair<Integer, Integer> figureEdge: figure.getFigureEdges()) {
+                figureEdges.add(new Pair<>(figureEdge.getLeft() + currentVerticesQuantity,
+                        figureEdge.getRight() + currentVerticesQuantity));
+            }
+            currentVerticesQuantity += figure.getVertices().size();
+        }
+        return new Figure(vertices, figureEdges);
+    }
+    
+    public Figure makeSphereFrame(ThreeDoubleVector center, double radius, int segments) {
+        ThreeDoubleVector xAxis = new ThreeDoubleVector(radius, 0.0, 0.0);
+        ThreeDoubleVector yAxis = new ThreeDoubleVector(0.0, radius, 0.0);
+        ThreeDoubleVector zAxis = new ThreeDoubleVector(0.0, 0.0, radius);
+        
+        Figure xyCircle = makeOval(center, xAxis, yAxis, segments);
+        Figure xzCircle = makeOval(center, xAxis, zAxis, segments);
+        Figure yzCircle = makeOval(center, yAxis, zAxis, segments);
+        
+        return makeMultiFigure(Arrays.asList(xyCircle, xzCircle, yzCircle));
+    }
+    
+    public Figure makeGlobe(ThreeDoubleVector center, double radius, int meridiansHalfQuantity) {
+        ThreeDoubleVector zAxis = new ThreeDoubleVector(0.0, 0.0, radius);
+        List<Figure> circles = new ArrayList<>(meridiansHalfQuantity);
+        for (int i = 0; i < meridiansHalfQuantity; i++) {
+            double angle = Math.PI * i / meridiansHalfQuantity;
+            ThreeDoubleVector meridianAxis = new ThreeDoubleVector(
+                    radius * Math.sin(angle), radius * Math.cos(angle), 0.0);
+            circles.add(makeOval(center, zAxis, meridianAxis, meridiansHalfQuantity * 2));
+        }
+        return makeMultiFigure(circles);
+    }
+    
+    public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve =
+                InterpolatedCurveCreator.getInstance().interpolateCurve(verticesForInterpolation, degree, 0.0, 1.0);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
+        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
+        for (int i = 0; i < segments; i++) {
+            figureEdges.add(new Pair(i, i + 1));
+        }
+        return new Figure(vertices, figureEdges);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ran.dissertation.algebraic.vector;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
+import com.ran.dissertation.algebraic.exception.CreationException;
 import java.util.Objects;
 
 public class TwoDoubleVector implements Comparable<TwoDoubleVector>, AlgebraicObject<TwoDoubleVector> {
@@ -13,7 +14,10 @@ public class TwoDoubleVector implements Comparable<TwoDoubleVector>, AlgebraicOb
         this.doubleVector = new DoubleVector(x, y);
     }
     
-    private TwoDoubleVector(DoubleVector doubleVector) {
+    public TwoDoubleVector(DoubleVector doubleVector) {
+        if (doubleVector.getDimension() != 2) {
+            throw new CreationException("DoubleVector must be two-dimensional for creating TwoDoubleVector");
+        }
         this.doubleVector = doubleVector;
     }
     
@@ -25,7 +29,7 @@ public class TwoDoubleVector implements Comparable<TwoDoubleVector>, AlgebraicOb
         return doubleVector.getCoordinate(1);
     }
     
-    private DoubleVector getDoubleVector() {
+    public DoubleVector getDoubleVector() {
         return doubleVector;
     }
 

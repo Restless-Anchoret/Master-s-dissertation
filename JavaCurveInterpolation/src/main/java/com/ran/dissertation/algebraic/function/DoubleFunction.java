@@ -1,7 +1,6 @@
 package com.ran.dissertation.algebraic.function;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
-import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.exception.FunctionParameterOutOfBoundsException;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
 import java.util.ArrayList;
@@ -56,6 +55,15 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
         return values;
     }
     
+    public List<T> applyForGrid(double firstPoint, double lastPoint, int segments) {
+        List<T> values = new ArrayList<>(segments + 1);
+        Iterator<T> iterator = iteratorForGrid(firstPoint, lastPoint, segments);
+        while (iterator.hasNext()) {
+            values.add(iterator.next());
+        }
+        return values;
+    }
+    
     public Map<Double, T> mapForList(List<Double> points) {
         Map<Double, T> pointsToValues = new HashMap<>(points.size());
         for (double point: points) {
@@ -84,12 +92,10 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
         };
     }
     
-    public Iterator<T> iteratorForGrid(double firstPoint, double lastPoint, double step) {
-        List<Double> points = new ArrayList<>();
-        double currentPoint = firstPoint;
-        while (ArithmeticOperations.doubleLessOrEquals(currentPoint, lastPoint)) {
-            points.add(currentPoint);
-            currentPoint += step;
+    public Iterator<T> iteratorForGrid(double firstPoint, double lastPoint, int segments) {
+        List<Double> points = new ArrayList<>(segments + 1);
+        for (int i = 0; i <= segments; i++) {
+            points.add(firstPoint + (lastPoint - firstPoint) * i / segments);
         }
         return iteratorForList(points);
     }
@@ -146,7 +152,9 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     
     public DoubleFunction<T> superposition(DoubleFunction<SingleDouble> singleDoubleFunction) {
         return new DoubleFunction<>(
-                point -> this.apply(singleDoubleFunction.apply(point).getValue())
+                point -> this.apply(singleDoubleFunction.apply(point).getValue()),
+                singleDoubleFunction.getMinParameterValue(),
+                singleDoubleFunction.getMaxParameterValue()
         );
     }
     

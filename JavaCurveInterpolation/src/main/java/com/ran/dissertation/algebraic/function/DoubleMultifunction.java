@@ -31,14 +31,14 @@ public class DoubleMultifunction<T extends AlgebraicObject<T>> extends DoubleFun
     }
 
     @Override
-    public Iterator<T> iteratorForGrid(double firstPoint, double lastPoint, double step) {
+    public Iterator<T> iteratorForGrid(double firstPoint, double lastPoint, int segments) {
         return new Iterator<T>() {
             private final Iterator<DoubleFunction<T>> doubleFunctionsIterator = doubleFunctions.iterator();
             private DoubleFunction<T> currentFunction = null;
-            private double nextPoint = firstPoint;
+            private double nextIndex = 0;
             @Override
             public boolean hasNext() {
-                return (ArithmeticOperations.doubleLessOrEquals(nextPoint, lastPoint));
+                return nextIndex <= segments;
             }
 
             @Override
@@ -46,6 +46,7 @@ public class DoubleMultifunction<T extends AlgebraicObject<T>> extends DoubleFun
                 if (!hasNext()) {
                     return null;
                 }
+                double nextPoint = firstPoint + (lastPoint - firstPoint) * nextIndex / segments;
                 while (currentFunction == null || ArithmeticOperations.doubleGreater(nextPoint, currentFunction.getMaxParameterValue())) {
                     currentFunction = doubleFunctionsIterator.next();
                     if (currentFunction == null) {
@@ -53,7 +54,7 @@ public class DoubleMultifunction<T extends AlgebraicObject<T>> extends DoubleFun
                     }
                 }
                 T result = currentFunction.apply(nextPoint);
-                nextPoint += step;
+                nextIndex++;
                 return result;
             }
         };
