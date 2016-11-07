@@ -1,9 +1,13 @@
 package com.ran.dissertation.factories;
 
+import com.ran.dissertation.algebraic.function.DoubleFunction;
+import com.ran.dissertation.algebraic.quaternion.Quaternion;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.interpolation.InterpolatedOrientationCurveCreator;
 import com.ran.dissertation.world.Orientation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnimationFactory {
 
@@ -30,6 +34,17 @@ public class AnimationFactory {
             orientations.add(Orientation.createForOffsetAndRotation(offset, axis, angle));
         }
         return orientations;
+    }
+    
+    public List<Orientation> makeInterpolatedOrientationCurveAnimation(List<Quaternion> quaternions,
+            int degree, int frames, ThreeDoubleVector offset) {
+        DoubleFunction<Quaternion> interpolatedCurve =
+                InterpolatedOrientationCurveCreator.getInstance().interpolateOrientationCurve(quaternions, degree, 0.0, 1.0);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<Quaternion> orientationQuaternions = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, frames - 1);
+        return orientationQuaternions.stream().map(quaternion -> new Orientation(offset, quaternion))
+                .collect(Collectors.toList());
     }
     
 }
