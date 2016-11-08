@@ -28,8 +28,8 @@ public class DefaultCameraController implements ImagePanelListener {
     
     @Override
     public void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
-        camera.moveX((nextX - previousX) * moveStep);
-        camera.moveY((nextY - previousY) * moveStep);
+        camera.moveRight((nextX - previousX) * moveStep);
+        camera.moveForward((nextY - previousY) * moveStep);
         imagePanel.repaint();
     }
 

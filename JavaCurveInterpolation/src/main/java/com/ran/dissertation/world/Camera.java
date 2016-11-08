@@ -88,6 +88,26 @@ public class Camera {
     public void moveZ(double step) {
         position = new ThreeDoubleVector(position.getX(), position.getY(), position.getZ() + step);
     }
+    
+    public void moveRight(double step) {
+        position = new ThreeDoubleVector(position.getX() + step * Math.cos(-angleXOY),
+                position.getY() + step * Math.sin(-angleXOY), position.getZ());
+    }
+    
+    public void moveLeft(double step) {
+        position = new ThreeDoubleVector(position.getX() - step * Math.cos(-angleXOY),
+                position.getY() - step * Math.sin(-angleXOY), position.getZ());
+    }
+    
+    public void moveForward(double step) {
+        position = new ThreeDoubleVector(position.getX() + step * Math.sin(angleXOY),
+                position.getY() + step * Math.cos(angleXOY), position.getZ());
+    }
+    
+    public void moveBack(double step) {
+        position = new ThreeDoubleVector(position.getX() - step * Math.sin(angleXOY),
+                position.getY() - step * Math.cos(angleXOY), position.getZ());
+    }
 
     public void zoom(double step) {
         position = new ThreeDoubleVector(
