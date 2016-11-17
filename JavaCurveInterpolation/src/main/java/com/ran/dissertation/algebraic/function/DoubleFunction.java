@@ -1,6 +1,7 @@
 package com.ran.dissertation.algebraic.function;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
+import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.exception.FunctionParameterOutOfBoundsException;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     
     @Override
     public T apply(Double point) {
-        if (point < minParameterValue || point > maxParameterValue) {
+        if (ArithmeticOperations.doubleLess(point, minParameterValue) ||
+                ArithmeticOperations.doubleGreater(point, maxParameterValue)) {
             throw new FunctionParameterOutOfBoundsException(point, minParameterValue, maxParameterValue);
         }
         return function.apply(point);

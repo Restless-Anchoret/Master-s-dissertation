@@ -1,10 +1,13 @@
 package com.ran.dissertation.interpolation;
 
+import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.quaternion.Quaternion;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.world.Orientation;
+import java.util.function.Function;
 
 public class OrientationArcsBuilder {
 
@@ -18,27 +21,34 @@ public class OrientationArcsBuilder {
     
     public Result buildArcsBetweenQuaternionsOnThreeDimensionalSphere(
             Quaternion p1, Quaternion p2, Quaternion p3) {
-        Quaternion h = p1.quaternionVectorMultiply(p2, p3).normalized();
-        Quaternion hConjugate = h.getConjugate();
-        
-        Quaternion r1 = p1.multiply(hConjugate);
-        Quaternion r2 = p2.multiply(hConjugate);
-        Quaternion r3 = p3.multiply(hConjugate);
-        
-        ThreeDoubleVector m1 = r1.getVector();
-        ThreeDoubleVector m2 = r2.getVector();
-        ThreeDoubleVector m3 = r3.getVector();
-        
-        ArcsBuilder.Result arcsBuilderResult = ArcsBuilder.getInstance()
-                .buildArcsBetweenVerticesOnSphere(m1, m2, m3);
-        
-        DoubleFunction<Quaternion> firstRotation = buildRotationFunction(
-                arcsBuilderResult.getFirstRotation(), m1, r1.getConjugate());
-        DoubleFunction<Quaternion> secondRotation = buildRotationFunction(
-                arcsBuilderResult.getSecondRotation(), m2, r2.getConjugate());
-        
-        return new Result(firstRotation, secondRotation,
-                arcsBuilderResult.getFirstAngle(), arcsBuilderResult.getSecondAngle());
+        Quaternion hNotNormalized = p1.quaternionVectorMultiply(p2, p3);
+        if (ArithmeticOperations.doubleEquals(hNotNormalized.getNorm(), 0.0)) {
+            Pair<Double, DoubleFunction<Quaternion>> firstArc = buildArcOnBigCircle(p1, p2);
+            Pair<Double, DoubleFunction<Quaternion>> secondArc = buildArcOnBigCircle(p2, p3);
+            return new Result(firstArc.getRight(), secondArc.getRight(), firstArc.getLeft(), secondArc.getLeft());
+        } else {
+            Quaternion h = p1.quaternionVectorMultiply(p2, p3).normalized();
+            Quaternion hConjugate = h.getConjugate();
+            
+            Quaternion r1 = p1.multiply(hConjugate);
+            Quaternion r2 = p2.multiply(hConjugate);
+            Quaternion r3 = p3.multiply(hConjugate);
+            
+            ThreeDoubleVector m1 = r1.getVector();
+            ThreeDoubleVector m2 = r2.getVector();
+            ThreeDoubleVector m3 = r3.getVector();
+            
+            ArcsBuilder.Result arcsBuilderResult = ArcsBuilder.getInstance()
+                    .buildArcsBetweenVerticesOnSphere(m1, m2, m3);
+            
+            DoubleFunction<Quaternion> firstRotation = buildRotationFunction(
+                    arcsBuilderResult.getFirstRotation(), m1, r1.getConjugate());
+            DoubleFunction<Quaternion> secondRotation = buildRotationFunction(
+                    arcsBuilderResult.getSecondRotation(), m2, r2.getConjugate());
+                
+            return new Result(firstRotation, secondRotation,
+                    arcsBuilderResult.getFirstAngle(), arcsBuilderResult.getSecondAngle());
+        }
     }
     
     private DoubleFunction<Quaternion> buildRotationFunction(DoubleFunction<DoubleMatrix> matrixRotation,
@@ -52,6 +62,33 @@ public class OrientationArcsBuilder {
                 },
                 0.0, 1.0
         );
+    }
+    
+    private Pair<Double, DoubleFunction<Quaternion>> buildArcOnBigCircle(Quaternion p1, Quaternion p2) {
+        Quaternion r = p2.multiply(p1.getConjugate());
+        ThreeDoubleVector axis = r.getVector().normalized();
+        double sin = r.getVector().getNorm();
+        double cos = r.getScalar();
+        double angle = countAngle(sin, cos);
+        DoubleFunction<Quaternion> rotation = new DoubleFunction<>(
+                point -> Orientation.createForRotation(axis, angle * point).getRotation(),
+                0.0, 1.0
+        );
+        return new Pair<>(angle, rotation);
+    }
+    
+    private double countAngle(double sin, double cos) {
+        if (ArithmeticOperations.doubleEquals(cos, 0.0)) {
+            return (ArithmeticOperations.doubleEquals(sin, 1.0) ? Math.PI / 2.0 : -Math.PI / 2.0);
+        } else {
+            double bigAngle = Math.atan(sin / cos);
+            double signum = Math.signum(bigAngle);
+            double smallAngle = Math.abs(bigAngle) % (2.0 * Math.PI);
+            if (signum < 0) {
+                smallAngle -= 2.0 * Math.PI;
+            }
+            return signum * smallAngle;
+        }
     }
     
     public static class Result {
