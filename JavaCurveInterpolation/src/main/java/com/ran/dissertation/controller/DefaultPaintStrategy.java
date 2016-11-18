@@ -1,5 +1,6 @@
 package com.ran.dissertation.controller;
 
+import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
@@ -37,11 +38,16 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
         for (Pair<Integer, Integer> figureEdge: displayableObject.getFigure().getFigureEdges()) {
             TwoIntVector firstPoint = displayCoordinates.get(figureEdge.getLeft());
             TwoIntVector secondPoint = displayCoordinates.get(figureEdge.getRight());
+            if (firstPoint == null || secondPoint == null) {
+                continue;
+            }
             paintDelegate.putLine(firstPoint, secondPoint, displayableObject.getColor(),
                     displayableObject.getEdgePaintWidth());
         }
         for (TwoIntVector point: displayCoordinates) {
-            paintDelegate.putCircle(point, displayableObject.getVerticePaintRadius());
+            if (point != null) {
+                paintDelegate.putCircle(point, displayableObject.getVerticePaintRadius());
+            }
         }
     }
     
@@ -97,10 +103,14 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
         DoubleMatrix projectionCoordinatesMatrix = convertMatrix.multiply(viewCoordinatesMatrix);
         List<TwoDoubleVector> projectionCoordinates = new ArrayList<>(projectionCoordinatesMatrix.getColumns());
         for (int i = 0; i < projectionCoordinatesMatrix.getColumns(); i++) {
-            double homogeneousCoordinate = projectionCoordinatesMatrix.get(2, i);
-            double x = projectionCoordinatesMatrix.get(0, i) / homogeneousCoordinate;
-            double y = projectionCoordinatesMatrix.get(1, i) / homogeneousCoordinate;
-            projectionCoordinates.add(new TwoDoubleVector(x, y));
+            if (ArithmeticOperations.doubleGreaterOrEquals(viewCoordinatesMatrix.get(2, i) / viewCoordinatesMatrix.get(3, i), 0.0)) {
+                projectionCoordinates.add(null);
+            } else {
+                double homogeneousCoordinate = projectionCoordinatesMatrix.get(2, i);
+                double x = projectionCoordinatesMatrix.get(0, i) / homogeneousCoordinate;
+                double y = projectionCoordinatesMatrix.get(1, i) / homogeneousCoordinate;
+                projectionCoordinates.add(new TwoDoubleVector(x, y));
+            }
         }
         return projectionCoordinates;
     }
@@ -113,6 +123,9 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
         double lensTop = lensHeight / 2.0;
         return projectionCoordinates.stream().sequential()
                 .map(point -> {
+                    if (point == null) {
+                        return null;
+                    }
                     int x = (int) Math.round((point.getX() - lensLeft) / lensWidth * displayWidth);
                     int y = (int) Math.round((lensTop - point.getY()) / lensHeight * displayHeight);
                     return new TwoIntVector(x, y);
