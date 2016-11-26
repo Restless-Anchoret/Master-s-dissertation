@@ -10,31 +10,36 @@ public class Camera {
     private static final double DEFAULT_ANGLE_Z = 0.0;
     private static final ThreeDoubleVector DEFAULT_POSITION = new ThreeDoubleVector(0.0, 6.0, 4.0);
     private static final ThreeDoubleVector DEFAULT_VERTICAL_VECTOR = new ThreeDoubleVector(0.0, 0.0, 1.0);
-    private static final double DEFAULT_DISTANCE_BEHIND = 4.0;
-    private static final double DEFAULT_DISPLAY_WIDTH = 8.0;
+    private static final double DEFAULT_REVERSED_DISTANCE_BEHIND = 0.25;
+    private static final double DEFAULT_LENS_WIDTH = 8.0;
     
     private double angleXOY;
     private double angleZ;
     private ThreeDoubleVector position;
     private ThreeDoubleVector normVector;
     private ThreeDoubleVector verticalVector;
-    private double distanceBehind;
+    private double reversedDistanceBehind;
     private double lensWidth;
-
+    
     public Camera(double angleXOY, double angleZ, ThreeDoubleVector position,
-            ThreeDoubleVector verticalVector, double distanceBehind, double lensWidth) {
+            ThreeDoubleVector verticalVector, double reversedDistanceBehind, double lensWidth) {
         this.angleXOY = angleXOY;
         this.angleZ = angleZ;
         this.position = position;
         this.verticalVector = verticalVector;
-        this.distanceBehind = distanceBehind;
+        this.reversedDistanceBehind = reversedDistanceBehind;
         this.lensWidth = lensWidth;
         updateNormVector();
+    }
+    
+    public Camera(ThreeDoubleVector position, double reversedDistanceBehind, double lensWidth) {
+        this(DEFAULT_ANGLE_XOY, DEFAULT_ANGLE_Z, position, DEFAULT_VERTICAL_VECTOR,
+                reversedDistanceBehind, lensWidth);
     }
 
     public Camera() {
         this(DEFAULT_ANGLE_XOY, DEFAULT_ANGLE_Z, DEFAULT_POSITION, DEFAULT_VERTICAL_VECTOR,
-                DEFAULT_DISTANCE_BEHIND, DEFAULT_DISPLAY_WIDTH);
+                DEFAULT_REVERSED_DISTANCE_BEHIND, DEFAULT_LENS_WIDTH);
     }
 
     public double getAngleXOY() {
@@ -57,12 +62,16 @@ public class Camera {
         return verticalVector;
     }
 
-    public double getDistanceBehind() {
-        return distanceBehind;
+    public double getReversedDistanceBehind() {
+        return reversedDistanceBehind;
     }
 
     public double getLensWidth() {
         return lensWidth;
+    }
+
+    public void setLensWidth(double lensWidth) {
+        this.lensWidth = lensWidth;
     }
 
     public void changeAngleXOY(double angle) {

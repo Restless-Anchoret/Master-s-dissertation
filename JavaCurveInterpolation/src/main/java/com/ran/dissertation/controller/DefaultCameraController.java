@@ -27,27 +27,27 @@ public class DefaultCameraController implements ImagePanelListener {
     }
     
     @Override
-    public void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         camera.moveRight((nextX - previousX) * moveStep);
         camera.moveForward((nextY - previousY) * moveStep);
         imagePanel.repaint();
     }
 
     @Override
-    public void mouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void mouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         camera.changeAngleXOY((previousX - nextX) * angleStep);
         camera.changeAngleZ((nextY - previousY) * angleStep);
         imagePanel.repaint();
     }
 
     @Override
-    public void mouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void mouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         camera.moveZ((nextY - previousY) * moveStep);
         imagePanel.repaint();
     }
 
     @Override
-    public void mouseWheelMoved(ImagePanel imagePanel, int notches) {
+    public void mouseWheelMoved(ImagePanel imagePanel, int x, int y, int width, int height, int notches) {
         camera.zoom(-notches * zoomStep);
         imagePanel.repaint();
     }

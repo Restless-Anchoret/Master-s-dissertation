@@ -1,4 +1,4 @@
-package com.ran.dissertation.main;
+package com.ran.dissertation.labs.lab1;
 
 import com.ran.dissertation.controller.MainController;
 import com.ran.dissertation.factories.DefaultWorldFactory;
@@ -6,7 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class Main {
+public class LabFirstMain {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -21,9 +21,9 @@ public class Main {
                     IllegalAccessException | UnsupportedLookAndFeelException exception) {
                 exception.printStackTrace();
             }
-            MainController mainController = new MainController(DefaultWorldFactory.getInstance());
+            LabFirstMainController mainController = new LabFirstMainController();
             mainController.startApplication();
         });
     }
-
+    
 }

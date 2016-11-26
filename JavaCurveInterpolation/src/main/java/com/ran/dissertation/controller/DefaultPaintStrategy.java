@@ -18,9 +18,17 @@ import java.util.stream.Collectors;
 
 public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
 
-    private final World world;
+    private World world;
 
     public DefaultPaintStrategy(World world) {
+        this.world = world;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
         this.world = world;
     }
     
@@ -94,11 +102,11 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
     }
     
     private List<TwoDoubleVector> convertViewCoordinatesToProjectionCoordinates(DoubleMatrix viewCoordinatesMatrix, Camera camera) {
-        double d = camera.getDistanceBehind();
+        double d = camera.getReversedDistanceBehind();
         DoubleMatrix convertMatrix = new DoubleMatrix(new double[][] {
             {1.0, 0.0, 0.0, 0.0},
             {0.0, 1.0, 0.0, 0.0},
-            {0.0, 0.0, -1.0 / d, 1.0}
+            {0.0, 0.0, -d, 1.0}
         });
         DoubleMatrix projectionCoordinatesMatrix = convertMatrix.multiply(viewCoordinatesMatrix);
         List<TwoDoubleVector> projectionCoordinates = new ArrayList<>(projectionCoordinatesMatrix.getColumns());

@@ -48,12 +48,14 @@ public class ImagePanel extends JPanel {
             public void mouseDragged(MouseEvent event) {
                 int x = event.getX();
                 int y = event.getY();
+                int width = getWidth();
+                int height = getHeight();
                 if ((event.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedLeftMouseButton(ImagePanel.this, previousX, previousY, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedLeftMouseButton(ImagePanel.this, previousX, previousY, x, y, width, height);
                 } else if ((event.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, previousX, previousY, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedMiddleMouseButton(ImagePanel.this, previousX, previousY, x, y, width, height);
                 } else if ((event.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
-                    imagePanelListenerSupport.fireMouseDraggedRightMouseButton(ImagePanel.this, previousX, previousY, x, y);
+                    imagePanelListenerSupport.fireMouseDraggedRightMouseButton(ImagePanel.this, previousX, previousY, x, y, width, height);
                 }
                 previousX = x;
                 previousY = y;
@@ -62,7 +64,8 @@ public class ImagePanel extends JPanel {
         addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent event) {
-                imagePanelListenerSupport.fireMouseWheelMoved(ImagePanel.this, event.getWheelRotation());
+                imagePanelListenerSupport.fireMouseWheelMoved(ImagePanel.this,
+                        event.getX(), event.getY(), getWidth(), getHeight(), event.getWheelRotation());
             }
         });
     }

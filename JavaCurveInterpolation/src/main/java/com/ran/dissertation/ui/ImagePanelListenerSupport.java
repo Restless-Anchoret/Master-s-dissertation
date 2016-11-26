@@ -20,27 +20,27 @@ public class ImagePanelListenerSupport {
         imagePanelListeners.remove(listener);
     }
     
-    public void fireMouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void fireMouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedLeftMouseButton(imagePanel, previousX, previousY, nextX, nextY);
+            listener.mouseDraggedLeftMouseButton(imagePanel, previousX, previousY, nextX, nextY, width, height);
         }
     }
     
-    public void fireMouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void fireMouseDraggedMiddleMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedMiddleMouseButton(imagePanel, previousX, previousY, nextX, nextY);
+            listener.mouseDraggedMiddleMouseButton(imagePanel, previousX, previousY, nextX, nextY, width, height);
         }
     }
     
-    public void fireMouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY) {
+    public void fireMouseDraggedRightMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseDraggedRightMouseButton(imagePanel, previousX, previousY, nextX, nextY);
+            listener.mouseDraggedRightMouseButton(imagePanel, previousX, previousY, nextX, nextY, width, height);
         }
     }
     
-    public void fireMouseWheelMoved(ImagePanel imagePanel, int notches) {
+    public void fireMouseWheelMoved(ImagePanel imagePanel, int x, int y, int width, int height, int notches) {
         for (ImagePanelListener listener: imagePanelListeners) {
-            listener.mouseWheelMoved(imagePanel, notches);
+            listener.mouseWheelMoved(imagePanel, x, y, width, height, notches);
         }
     }
     
