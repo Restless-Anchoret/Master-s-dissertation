@@ -29,7 +29,7 @@ public class LabFirstWorldFactory {
         double halfWidth = camera.getLensWidth() / 2.0;
         double left = camera.getPosition().getX() - halfWidth;
         double right= camera.getPosition().getX() + halfWidth;
-        DoubleFunction<SingleDouble> function = new DoubleFunction<>(x -> new SingleDouble(Math.sin(x) * 3.0));
+        DoubleFunction<SingleDouble> function = new DoubleFunction<>(getFunction());
         List<DisplayableObject> displayableObjects = Arrays.asList(
                 new DisplayableObject(figureFactory.makeGrid(10, 0, 10, 1.0, 0.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
@@ -41,6 +41,11 @@ public class LabFirstWorldFactory {
                         Color.BLACK, 1, 0)
         );
         return new World(displayableObjects, Collections.EMPTY_LIST, camera);
+    }
+    
+    private Function<Double, SingleDouble> getFunction() {
+        return x -> new SingleDouble(Math.cos(Math.cos(Math.cos(Math.cos(
+                x * x * x * x * x * x * x * x * x * x * x * x * x)))) * 3.0 / x * x * x);
     }
     
 }

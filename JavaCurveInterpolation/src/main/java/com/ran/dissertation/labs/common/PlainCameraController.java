@@ -1,7 +1,5 @@
 package com.ran.dissertation.labs.common;
 
-import com.ran.dissertation.controller.DefaultPaintStrategy;
-import com.ran.dissertation.labs.lab1.LabFirstWorldFactory;
 import com.ran.dissertation.ui.ImagePanel;
 import com.ran.dissertation.ui.ImagePanelListener;
 import com.ran.dissertation.world.Camera;
@@ -12,29 +10,19 @@ public class PlainCameraController implements ImagePanelListener {
     
     private final Camera camera;
     private final double zoomStep;
-    private final DefaultPaintStrategy paintStrategy;
 
-    public PlainCameraController(Camera camera, DefaultPaintStrategy paintStrategy, double zoomStep) {
+    public PlainCameraController(Camera camera, double zoomStep) {
         this.camera = camera;
-        this.paintStrategy = paintStrategy;
         this.zoomStep = zoomStep;
     }
     
-    public PlainCameraController(Camera camera, DefaultPaintStrategy paintStrategy) {
-        this(camera, paintStrategy, DEFAULT_ZOOM_STEP);
+    public PlainCameraController(Camera camera) {
+        this(camera, DEFAULT_ZOOM_STEP);
     }
     
     @Override
     public void mouseDraggedLeftMouseButton(ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
-        double lensWidth = camera.getLensWidth();
-        double lensHeight = lensWidth * height / width;
-        int diffX = previousX - nextX;
-        int diffY = nextY - previousY;
-        double movementX = lensWidth / width * diffX;
-        double movementZ = lensHeight / height * diffY;
-        camera.moveX(movementX);
-        camera.moveZ(movementZ);
-        paintStrategy.setWorld(LabFirstWorldFactory.getInstance().createWorldForCamera(camera, width));
+        moveCamera(camera, imagePanel, previousX, previousY, nextX, nextY, width, height);
         imagePanel.repaint();
     }
 
@@ -48,6 +36,22 @@ public class PlainCameraController implements ImagePanelListener {
 
     @Override
     public void mouseWheelMoved(ImagePanel imagePanel, int x, int y, int width, int height, int notches) {
+        zoomCamera(camera, imagePanel, x, y, width, height, notches);
+        imagePanel.repaint();
+    }
+    
+    protected void moveCamera(Camera camera, ImagePanel imagePanel, int previousX, int previousY, int nextX, int nextY, int width, int height) {
+        double lensWidth = camera.getLensWidth();
+        double lensHeight = lensWidth * height / width;
+        int diffX = previousX - nextX;
+        int diffY = nextY - previousY;
+        double movementX = lensWidth / width * diffX;
+        double movementZ = lensHeight / height * diffY;
+        camera.moveX(movementX);
+        camera.moveZ(movementZ);
+    }
+    
+    protected void zoomCamera(Camera camera, ImagePanel imagePanel, int x, int y, int width, int height, int notches) {
         double factor = Math.pow(zoomStep, -notches);
         double previousLensWidth = camera.getLensWidth();
         double previousLensHeight = previousLensWidth * height / width;
@@ -64,9 +68,6 @@ public class PlainCameraController implements ImagePanelListener {
         double movementZ = worldZ * (1.0 - factor);
         camera.moveX(movementX);
         camera.moveZ(movementZ);
-        
-        paintStrategy.setWorld(LabFirstWorldFactory.getInstance().createWorldForCamera(camera, width));
-        imagePanel.repaint();
     }
 
 }
