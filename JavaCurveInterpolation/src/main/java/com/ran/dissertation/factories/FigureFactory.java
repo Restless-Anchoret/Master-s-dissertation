@@ -2,8 +2,10 @@ package com.ran.dissertation.factories;
 
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
+import com.ran.dissertation.algebraic.vector.SingleDouble;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import com.ran.dissertation.interpolation.InterpolatedCurveCreator;
+import com.ran.dissertation.interpolation.InterpolatedPlainCurveCreator;
 import com.ran.dissertation.world.Figure;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,6 +136,24 @@ public class FigureFactory {
             figureEdges.add(new Pair(i, i + 1));
         }
         return new Figure(vertices, figureEdges);
+    }
+    
+    public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments) {
+        DoubleFunction<SingleDouble> splineFunction = InterpolatedPlainCurveCreator.getInstance()
+                .interpolatePlainCurve(pointsWithValues, degree);
+        double parameterStart = splineFunction.getMinParameterValue();
+        double parameterEnd = splineFunction.getMaxParameterValue();
+        List<ThreeDoubleVector> splinePointsWithValues = new ArrayList<>(segments + 1);
+        for (int i = 0; i <= segments; i++) {
+            double point = parameterStart + (parameterEnd - parameterStart) * i / segments;
+            double value = splineFunction.apply(point).getValue();
+            splinePointsWithValues.add(new ThreeDoubleVector(point, value, 0.0));
+        }
+        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
+        for (int i = 0; i < segments; i++) {
+            figureEdges.add(new Pair(i, i + 1));
+        }
+        return new Figure(splinePointsWithValues, figureEdges);
     }
 
 }

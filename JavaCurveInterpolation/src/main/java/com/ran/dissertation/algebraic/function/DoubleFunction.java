@@ -17,6 +17,10 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     private final double minParameterValue;
     private final double maxParameterValue;
     
+    public static <T extends AlgebraicObject<T>> DoubleFunction<T> createConstantFunction(T value) {
+        return new DoubleFunction<>(point -> value);
+    }
+    
     public DoubleFunction(Function<Double, T> function, double minParameterValue, double maxParameterValue) {
         this.function = function;
         this.minParameterValue = minParameterValue;
