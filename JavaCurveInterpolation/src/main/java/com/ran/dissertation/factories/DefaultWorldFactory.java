@@ -46,14 +46,14 @@ public class DefaultWorldFactory implements WorldFactory {
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
                 new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720)),
+                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720), true),
                 new AnimatedObject(figureFactory.makeCube(2.0),
                         animationFactory.makeRotationAnimation(new ThreeDoubleVector(-6.0, 3.0, 2.0),
-                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120)),
+                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120), true),
                 new AnimatedObject(figureFactory.makeCube(2.0 * Math.sqrt(3.0)),
                         animationFactory.makeInterpolatedOrientationCurveAnimation(
                                 makeQuaternionsForInterpolationList(), 1, 1000,
-                                new ThreeDoubleVector(0.0, 0.0, 14.0)))
+                                new ThreeDoubleVector(0.0, 0.0, 14.0)), false)
         );
         Camera camera = new Camera();
         return new World(displayableObjects, animatedObjects, camera);

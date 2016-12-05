@@ -8,19 +8,22 @@ public class AnimatedObject extends DisplayableObject {
     
     private List<Orientation> orientations;
     private int currentOrientationIndex = 0;
+    private boolean cyclic;
     
-    public AnimatedObject(Figure figure, List<Orientation> orientations, Color color, float edgePaintWidth, int verticePaintRadius) {
+    public AnimatedObject(Figure figure, List<Orientation> orientations, boolean cyclic,
+            Color color, float edgePaintWidth, int verticePaintRadius) {
         super(figure, (orientations.isEmpty() ? Orientation.INITIAL_ORIENTATION : orientations.get(0)),
                 color, edgePaintWidth, verticePaintRadius);
         this.orientations = (orientations.isEmpty() ? Collections.singletonList(Orientation.INITIAL_ORIENTATION) : orientations);
+        this.cyclic = cyclic;
     }
     
-    public AnimatedObject(Figure figure, List<Orientation> orientations, Color color) {
-        this(figure, orientations, color, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
+    public AnimatedObject(Figure figure, List<Orientation> orientations, boolean cyclic, Color color) {
+        this(figure, orientations, cyclic, color, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
     }
     
-    public AnimatedObject(Figure figure, List<Orientation> orientations) {
-        this(figure, orientations, DEFAULT_FIGURE_COLOR, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
+    public AnimatedObject(Figure figure, List<Orientation> orientations, boolean cyclic) {
+        this(figure, orientations, cyclic, DEFAULT_FIGURE_COLOR, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
     }
 
     public List<Orientation> getOrientations() {
@@ -29,6 +32,10 @@ public class AnimatedObject extends DisplayableObject {
 
     public int getCurrentOrientationIndex() {
         return currentOrientationIndex;
+    }
+
+    public boolean isCyclic() {
+        return cyclic;
     }
     
     public void goToNextOrientation() {

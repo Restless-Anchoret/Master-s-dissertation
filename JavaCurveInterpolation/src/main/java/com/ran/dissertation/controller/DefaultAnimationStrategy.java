@@ -40,6 +40,10 @@ public class DefaultAnimationStrategy implements AnimationStrategy {
         public void actionPerformed(ActionEvent e) {
             animatedObject.goToNextOrientation();
             imagePanel.repaint();
+            if (!animatedObject.isCyclic() && animatedObject.getCurrentOrientationIndex() ==
+                    animatedObject.getOrientations().size() - 1) {
+                timer.stop();
+            }
         }
     }
 

@@ -74,18 +74,17 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
         List<AnimatedObject> animatedObjects = Arrays.asList(
                 new AnimatedObject(figureForRotation, animationFactory.makeInterpolatedOrientationCurveAnimation(
                         quaternions, 2, 800, new ThreeDoubleVector(60.0, 0.0, 0.0)),
-                        Color.BLACK, 2.0f, 2)
+                        false, Color.BLACK, 2.0f, 2)
         );
 
         // Camera for plain curve interpolation presentation
 //        Camera camera = new Camera(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.25, 8.0);
 
         // Camera for sphere curve interpolation presentation
-//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 8.0, 5.0),
-//                0.0, 0.7);
+//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 7.0, 5.5), 0.0, 0.7);
         
         // Camera for orientation curve interpolation presentation
-        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(55.0, 8.0, 2.0), -0.5, 0.3);
+        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(54.5, 10.0, 2.5), -0.5, 0.3);
 
         return new World(displayableObjects, animatedObjects, camera);
     }
