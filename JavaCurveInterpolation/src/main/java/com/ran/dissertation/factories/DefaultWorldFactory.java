@@ -40,8 +40,8 @@ public class DefaultWorldFactory implements WorldFactory {
                         Orientation.createForOffset(0.0, 0.0, 4.0)),
                 new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(0.0, 0.0, 14.0),
-                        Color.LIGHT_GRAY, 1, 0)//,
-//                new DisplayableObject(figureFactory.makeSpline(makePointsWithValuesForInterpolationList(), 1, 100))
+                        Color.LIGHT_GRAY, 1, 0),
+                new DisplayableObject(figureFactory.makeSpline(makePointsWithValuesForInterpolationList(), 1, 100))
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
                 new AnimatedObject(figureFactory.makeCube(2.0),
@@ -110,12 +110,20 @@ public class DefaultWorldFactory implements WorldFactory {
     
     private List<Pair<Double, Double>> makePointsWithValuesForInterpolationList() {
         List<Pair<Double, Double>> pointsWithValues = Arrays.asList(
+                new Pair<>(23.0, 2.0),
                 new Pair<>(25.0, 4.0),
                 new Pair<>(27.0, 6.0),
                 new Pair<>(30.0, 3.0),
                 new Pair<>(35.0, 2.0),
-                new Pair<>(39.0, 8.0),
+                new Pair<>(39.0, -4.0),
                 new Pair<>(40.0, 1.0)
+//                new Pair<>(-2.0, 2.0),
+//                new Pair<>(0.0, 4.0),
+//                new Pair<>(2.0, 6.0),
+//                new Pair<>(5.0, 3.0),
+//                new Pair<>(10.0, 2.0),
+//                new Pair<>(14.0, 8.0),
+//                new Pair<>(15.0, 1.0)
         );
         return pointsWithValues;
     }

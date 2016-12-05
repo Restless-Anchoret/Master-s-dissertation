@@ -1,6 +1,7 @@
 package com.ran.dissertation.algebraic.vector;
 
 import com.ran.dissertation.algebraic.common.AlgebraicObject;
+import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 
 public class SingleDouble implements Comparable<SingleDouble>, AlgebraicObject<SingleDouble> {
 
@@ -36,7 +37,7 @@ public class SingleDouble implements Comparable<SingleDouble>, AlgebraicObject<S
             return false;
         }
         final SingleDouble other = (SingleDouble) obj;
-        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(other.value);
+        return ArithmeticOperations.doubleEquals(this.value, other.value);
     }
     
     @Override
