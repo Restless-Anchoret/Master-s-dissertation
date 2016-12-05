@@ -6,9 +6,11 @@ import com.ran.dissertation.algebraic.vector.SingleDouble;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import com.ran.dissertation.interpolation.InterpolatedCurveCreator;
 import com.ran.dissertation.interpolation.InterpolatedPlainCurveCreator;
+import com.ran.dissertation.interpolation.ParabolaBuilder;
 import com.ran.dissertation.world.Figure;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FigureFactory {
@@ -138,16 +140,52 @@ public class FigureFactory {
         return new Figure(vertices, figureEdges);
     }
     
-    public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments) {
+    public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
+            CoordinatesConverter coordinatesConverter) {
         DoubleFunction<SingleDouble> splineFunction = InterpolatedPlainCurveCreator.getInstance()
                 .interpolatePlainCurve(pointsWithValues, degree);
-        double parameterStart = splineFunction.getMinParameterValue();
-        double parameterEnd = splineFunction.getMaxParameterValue();
+        return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
+    }
+    
+    public Figure makeFigureByPoints(List<Pair<Double, Double>> pointsWithValues,
+            CoordinatesConverter coordinatesConverter) {
+        List<ThreeDoubleVector> vertices = new ArrayList<>(pointsWithValues.size());
+        for (Pair<Double, Double> pointWithValue: pointsWithValues) {
+            vertices.add(coordinatesConverter.convert(pointWithValue.getLeft(), pointWithValue.getRight()));
+        }
+        List<Pair<Integer, Integer>> figureEdges = Collections.EMPTY_LIST;
+        return new Figure(vertices, figureEdges);
+    }
+    
+    public Figure makeParabolaByPoints(Pair<Double, Double> firstPoint,
+            Pair<Double, Double> secondPoint, Pair<Double, Double> thirdPoint,
+            int segments, CoordinatesConverter converter) {
+        DoubleFunction<SingleDouble> parabolaFunction = ParabolaBuilder.getInstance()
+                .buildParabolaByThreePoints(firstPoint, secondPoint, thirdPoint);
+        return makeFigureByFunction(parabolaFunction, segments, converter);
+    }
+    
+    public Figure makeFigureByParabolas(List<Pair<Double, Double>> pointsWithValues,
+            int segmentsPerParabola, CoordinatesConverter converter) {
+        List<Figure> figures = new ArrayList<>(pointsWithValues.size() - 2);
+        for (int i = 0; i < pointsWithValues.size() - 2; i++) {
+            figures.add(makeParabolaByPoints(pointsWithValues.get(i), pointsWithValues.get(i + 1),
+                    pointsWithValues.get(i + 2), segmentsPerParabola, converter));
+        }
+        return makeMultiFigure(figures);
+    }
+    
+    public Figure makeFigureByFunction(DoubleFunction<SingleDouble> function,
+            int segments, //double leftEdge, double rightEdge,
+            CoordinatesConverter coordinatesConverter) {
+        List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
+        double parameterStart = function.getMinParameterValue();
+        double parameterEnd = function.getMaxParameterValue();
         List<ThreeDoubleVector> splinePointsWithValues = new ArrayList<>(segments + 1);
         for (int i = 0; i <= segments; i++) {
             double point = parameterStart + (parameterEnd - parameterStart) * i / segments;
-            double value = splineFunction.apply(point).getValue();
-            splinePointsWithValues.add(new ThreeDoubleVector(point, value, 0.0));
+            double value = function.apply(point).getValue();
+            splinePointsWithValues.add(coordinatesConverter.convert(point, value));
         }
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
         for (int i = 0; i < segments; i++) {

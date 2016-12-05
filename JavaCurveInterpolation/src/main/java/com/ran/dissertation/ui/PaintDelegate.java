@@ -21,11 +21,11 @@ public class PaintDelegate {
         graphics.setColor(color);
     }
     
-    public void setPaintWidth(int paintWidth) {
+    public void setPaintWidth(float paintWidth) {
         graphics.setStroke(new BasicStroke(paintWidth));
     }
     
-    public void putPixel(TwoIntVector point, Color color, int paintWidth) {
+    public void putPixel(TwoIntVector point, Color color, float paintWidth) {
         setColor(color);
         setPaintWidth(paintWidth);
         putPixel(point);
@@ -35,7 +35,7 @@ public class PaintDelegate {
         putLine(point, point);
     }
     
-    public void putLine(TwoIntVector firstPoint, TwoIntVector secondPoint, Color color, int paintWidth) {
+    public void putLine(TwoIntVector firstPoint, TwoIntVector secondPoint, Color color, float paintWidth) {
         setColor(color);
         setPaintWidth(paintWidth);
         putLine(firstPoint, secondPoint);

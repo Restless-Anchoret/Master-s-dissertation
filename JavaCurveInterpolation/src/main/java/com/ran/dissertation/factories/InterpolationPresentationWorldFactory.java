@@ -13,49 +13,51 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DefaultWorldFactory implements WorldFactory {
-
-    private static final DefaultWorldFactory INSTANCE = new DefaultWorldFactory();
-
-    public static DefaultWorldFactory getInstance() {
-        return INSTANCE;
-    }
-    
-    private DefaultWorldFactory() { }
+public class InterpolationPresentationWorldFactory implements WorldFactory {
 
     @Override
     public World createWorld() {
         FigureFactory figureFactory = FigureFactory.getInstance();
         AnimationFactory animationFactory = AnimationFactory.getInstance();
+        List<Pair<Double, Double>> pointsWithValues = makePointsWithValuesForInterpolationList();
         List<DisplayableObject> displayableObjects = Arrays.asList(
-                new DisplayableObject(figureFactory.makePlainGrid(8, 8, 1.0, 1.0),
+                new DisplayableObject(figureFactory.makeGrid(20, 0, 16, 1.0, 0.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
                         Color.LIGHT_GRAY),
-                new DisplayableObject(figureFactory.makeGrid(6, 6, 6, 2.0, 2.0, 2.0),
-                        Orientation.createForOffset(12.0, 0.0, 1.0)),
-                new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        Orientation.createForOffset(0.0, 0.0, 4.0),
-                        Color.LIGHT_GRAY, 1, 0),
-                new DisplayableObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
-                        Orientation.createForOffset(0.0, 0.0, 4.0)),
-                new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        Orientation.createForOffset(0.0, 0.0, 14.0),
-                        Color.LIGHT_GRAY, 1, 0),
-                new DisplayableObject(figureFactory.makeSpline(makePointsWithValuesForInterpolationList(), 1, 100,
-                        CoordinatesConverter.CONVERTER_TO_XZ))
+                new DisplayableObject(figureFactory.makeGrid(20, 0, 0, 1.0, 0.0, 0.0)),
+                new DisplayableObject(figureFactory.makeGrid(0, 0, 16, 0.0, 0.0, 1.0)),
+                new DisplayableObject(figureFactory.makeFigureByParabolas(pointsWithValues, 20,
+                        CoordinatesConverter.CONVERTER_TO_XZ),
+                        Orientation.INITIAL_ORIENTATION, Color.BLUE, 1.5f, 2),
+//                new DisplayableObject(figureFactory.makeGrid(6, 6, 6, 2.0, 2.0, 2.0),
+//                        Orientation.createForOffset(12.0, 0.0, 1.0)),
+//                new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
+//                        Orientation.createForOffset(0.0, 0.0, 4.0),
+//                        Color.LIGHT_GRAY, 1, 0),
+//                new DisplayableObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
+//                        Orientation.createForOffset(0.0, 0.0, 4.0)),
+//                new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
+//                        Orientation.createForOffset(0.0, 0.0, 14.0),
+//                        Color.LIGHT_GRAY, 1, 0),
+                new DisplayableObject(figureFactory.makeSpline(pointsWithValues, 1, 140,
+                        CoordinatesConverter.CONVERTER_TO_XZ),
+                        Orientation.INITIAL_ORIENTATION, Color.BLACK, 1.5f, 2),
+                new DisplayableObject(figureFactory.makeFigureByPoints(pointsWithValues,
+                        CoordinatesConverter.CONVERTER_TO_XZ),
+                        Orientation.INITIAL_ORIENTATION, Color.RED, 0, 4)
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
-                new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720)),
-                new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeRotationAnimation(new ThreeDoubleVector(-6.0, 3.0, 2.0),
-                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120)),
-                new AnimatedObject(figureFactory.makeCube(2.0 * Math.sqrt(3.0)),
-                        animationFactory.makeInterpolatedOrientationCurveAnimation(
-                                makeQuaternionsForInterpolationList(), 1, 1000,
-                                new ThreeDoubleVector(0.0, 0.0, 14.0)))
+//                new AnimatedObject(figureFactory.makeCube(2.0),
+//                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720)),
+//                new AnimatedObject(figureFactory.makeCube(2.0),
+//                        animationFactory.makeRotationAnimation(new ThreeDoubleVector(-6.0, 3.0, 2.0),
+//                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120)),
+//                new AnimatedObject(figureFactory.makeCube(2.0 * Math.sqrt(3.0)),
+//                        animationFactory.makeInterpolatedOrientationCurveAnimation(
+//                                makeQuaternionsForInterpolationList(), 1, 1000,
+//                                new ThreeDoubleVector(0.0, 0.0, 14.0)))
         );
-        Camera camera = new Camera();
+        Camera camera = new Camera(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.25, 8.0);
         return new World(displayableObjects, animatedObjects, camera);
     }
     
@@ -111,13 +113,14 @@ public class DefaultWorldFactory implements WorldFactory {
     
     private List<Pair<Double, Double>> makePointsWithValuesForInterpolationList() {
         List<Pair<Double, Double>> pointsWithValues = Arrays.asList(
-                new Pair<>(23.0, 2.0),
-                new Pair<>(25.0, 4.0),
-                new Pair<>(27.0, 6.0),
-                new Pair<>(30.0, 3.0),
-                new Pair<>(35.0, 2.0),
-                new Pair<>(39.0, -4.0),
-                new Pair<>(40.0, 1.0)
+                new Pair<>(-7.0, 1.0),
+                new Pair<>(-5.0, 1.0),
+                new Pair<>(-3.0, 1.0),
+                new Pair<>(-1.0, 3.0),
+                new Pair<>(1.0, 1.0),
+                new Pair<>(3.0, 1.0),
+                new Pair<>(5.0, -3.0),
+                new Pair<>(7.0, 0.0)
 //                new Pair<>(-2.0, 2.0),
 //                new Pair<>(0.0, 4.0),
 //                new Pair<>(2.0, 6.0),

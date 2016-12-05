@@ -46,7 +46,8 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
         }
         for (TwoIntVector point: displayCoordinates) {
             if (point != null) {
-                paintDelegate.putCircle(point, displayableObject.getVerticePaintRadius());
+                paintDelegate.putCircle(point, displayableObject.getVerticePaintRadius(),
+                        displayableObject.getColor());
             }
         }
     }

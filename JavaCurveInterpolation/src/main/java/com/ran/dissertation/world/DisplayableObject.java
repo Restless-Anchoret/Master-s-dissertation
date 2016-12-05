@@ -7,15 +7,15 @@ import java.util.List;
 public class DisplayableObject {
 
     protected static final Color DEFAULT_FIGURE_COLOR = Color.BLACK;
-    protected static final int DEFAULT_EDGE_PAINT_WIDTH = 1;
+    protected static final float DEFAULT_EDGE_PAINT_WIDTH = 1.0f;
     protected static final int DEFAULT_VERTICE_PAINT_RADIUS = 2;
     
     private final Figure figure;
     private Orientation orientation;
     private List<ThreeDoubleVector> currentFigureVertices = null;
     private final Color color;
-    private final int edgePaintWidth;
-    private final int verticePaintRadius;
+    private final float edgePaintWidth;
+    private int verticePaintRadius;
 
     public DisplayableObject(Figure figure) {
         this(figure, Orientation.INITIAL_ORIENTATION, DEFAULT_FIGURE_COLOR,
@@ -30,7 +30,7 @@ public class DisplayableObject {
         this(figure, orientation, color, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
     }
 
-    public DisplayableObject(Figure figure, Orientation orientation, Color color, int edgePaintWidth, int verticePaintRadius) {
+    public DisplayableObject(Figure figure, Orientation orientation, Color color, float edgePaintWidth, int verticePaintRadius) {
         this.figure = figure;
         this.orientation = orientation;
         this.color = color;
@@ -42,7 +42,7 @@ public class DisplayableObject {
         return color;
     }
 
-    public int getEdgePaintWidth() {
+    public float getEdgePaintWidth() {
         return edgePaintWidth;
     }
 

@@ -19,7 +19,9 @@ public class InterpolatedPlainCurveCreator {
     private InterpolatedPlainCurveCreator() { }
     
     public DoubleFunction<SingleDouble> interpolatePlainCurve(List<Pair<Double, Double>> pointsWithValues, int degree) {
+        validateVertices(pointsWithValues);
         int k = pointsWithValues.size();
+        ParabolaBuilder parabolaBuilder = ParabolaBuilder.getInstance();
         List<DoubleFunction<SingleDouble>> xFunctionsList = new ArrayList<>(k - 1);
         List<DoubleFunction<SingleDouble>> uFunctionsList = new ArrayList<>(k - 1);
         for (int i = 0; i < k - 1; i++) {
@@ -34,7 +36,7 @@ public class InterpolatedPlainCurveCreator {
         }
         List<DoubleFunction<SingleDouble>> parabolasList = new ArrayList<>(k - 2);
         for (int i = 0; i < k - 2; i++) {
-            parabolasList.add(buildParabola(pointsWithValues.get(i),
+            parabolasList.add(parabolaBuilder.buildParabolaByThreePoints(pointsWithValues.get(i),
                     pointsWithValues.get(i + 1), pointsWithValues.get(i + 2)));
         }
         List<DoubleFunction<SingleDouble>> pList = new ArrayList<>(k - 3);
@@ -85,41 +87,6 @@ public class InterpolatedPlainCurveCreator {
     
     private DoubleFunction<SingleDouble> buildReverseConvertFunction(double x0, double x1) {
         return new DoubleFunction<>(point -> new SingleDouble((point - x0) / (x1 - x0)), x0, x1);
-    }
-    
-    private DoubleFunction<SingleDouble> buildParabola(Pair<Double, Double> firstPoint,
-            Pair<Double, Double> secondPoint, Pair<Double, Double> thirdPoint) {
-        // Если на одной прямой, то вернуть прямую, иначе - параболу
-        double x1 = firstPoint.getLeft();
-        double x2 = secondPoint.getLeft();
-        double x3 = thirdPoint.getLeft();
-        
-        double f1 = firstPoint.getRight();
-        double f2 = secondPoint.getRight();
-        double f3 = thirdPoint.getRight();
-//        System.out.println("x: " + x1 + " " + x2 + " " + x3);
-//        System.out.println("f: " + f1 + " " + f2 + " " + f3);
-        
-        double a11 = x2 * x2 - x1 * x1;
-        double a12 = x2 - x1;
-        double a21 = x3 * x3 - x1 * x1;
-        double a22 = x3 - x1;
-//        System.out.println("a: " + a11 + " " + a12 + " " + a21 + " " + a22);
-        
-        double f1New = f2 - f1;
-        double f2New = f3 - f1;
-//        System.out.println("fNew: " + f1New + " " + f2New);
-        
-        double b = (f2New * a11 - f1New * a21) / (a22 * a11 - a12 * a21);
-        double a = (f1New  - a12 * b) / a11;
-        double c = f1 - x1 * x1 * a - x1 * b;
-//        System.out.println("a = " + a + "; b = " + b + "; c = " + c);
-        DoubleFunction<SingleDouble> function =
-                new DoubleFunction<>(point -> new SingleDouble(a * point * point + b * point + c), x1, x3);
-//        System.out.println("At x1: " + function.apply(x1));
-//        System.out.println("At x2: " + function.apply(x2));
-//        System.out.println("At x3: " + function.apply(x3));
-        return function;
     }
     
 }

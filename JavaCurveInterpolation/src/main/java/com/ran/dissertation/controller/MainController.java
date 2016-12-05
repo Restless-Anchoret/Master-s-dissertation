@@ -9,6 +9,8 @@ import com.ran.dissertation.world.AnimatedObject;
 import com.ran.dissertation.world.World;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainController {
 
@@ -19,9 +21,10 @@ public class MainController {
     public MainController(WorldFactory worldFactory) {
         this.worldFactory = worldFactory;
     }
-    
+
     public void startApplication() {
         world = worldFactory.createWorld();
+        tryToSetBetterLaf();
         mainFrame = new MainFrame();
         mainFrame.getImagePanel().setImagePanelPaintStrategy(new DefaultPaintStrategy(world));
         mainFrame.getImagePanel().addImagePanelListener(new DefaultCameraController(world.getCamera()));
@@ -29,7 +32,21 @@ public class MainController {
         mainFrame.getAnimationControlPanel().addAnimationControlPanelListener(new DefaultAnimationController());
         mainFrame.setVisible(true);
     }
-    
+
+    private void tryToSetBetterLaf() {
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException |
+                IllegalAccessException | UnsupportedLookAndFeelException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     private List<SelectItem<AnimationStrategy>> prepareAnimationSelectItemsForWorld(World world, ImagePanel imagePanel) {
         List<AnimatedObject> animatedObjects = world.getAnimatedObjects();
         List<SelectItem<AnimationStrategy>> selectItems = new ArrayList<>(animatedObjects.size());
@@ -40,5 +57,5 @@ public class MainController {
         }
         return selectItems;
     }
-    
+
 }

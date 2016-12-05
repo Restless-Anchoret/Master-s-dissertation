@@ -9,7 +9,7 @@ public class AnimatedObject extends DisplayableObject {
     private List<Orientation> orientations;
     private int currentOrientationIndex = 0;
     
-    public AnimatedObject(Figure figure, List<Orientation> orientations, Color color, int edgePaintWidth, int verticePaintRadius) {
+    public AnimatedObject(Figure figure, List<Orientation> orientations, Color color, float edgePaintWidth, int verticePaintRadius) {
         super(figure, (orientations.isEmpty() ? Orientation.INITIAL_ORIENTATION : orientations.get(0)),
                 color, edgePaintWidth, verticePaintRadius);
         this.orientations = (orientations.isEmpty() ? Collections.singletonList(Orientation.INITIAL_ORIENTATION) : orientations);
