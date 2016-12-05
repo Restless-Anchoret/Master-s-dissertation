@@ -2,8 +2,10 @@ package com.ran.dissertation.factories;
 
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
+import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.interpolation.ArcsBuilder;
 import com.ran.dissertation.interpolation.InterpolatedCurveCreator;
 import com.ran.dissertation.interpolation.InterpolatedPlainCurveCreator;
 import com.ran.dissertation.interpolation.ParabolaBuilder;
@@ -176,7 +178,7 @@ public class FigureFactory {
     }
     
     public Figure makeFigureByFunction(DoubleFunction<SingleDouble> function,
-            int segments, //double leftEdge, double rightEdge,
+            int segments,
             CoordinatesConverter coordinatesConverter) {
         List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
         double parameterStart = function.getMinParameterValue();
@@ -187,11 +189,44 @@ public class FigureFactory {
             double value = function.apply(point).getValue();
             splinePointsWithValues.add(coordinatesConverter.convert(point, value));
         }
+        return new Figure(splinePointsWithValues, makeEdgesSimpleList(segments));
+    }
+    
+    public Figure makeArcOnSphereByPoints(ThreeDoubleVector firstPoint,
+            ThreeDoubleVector secondPoint, ThreeDoubleVector thirdPoint, int halfSegments) {
+        ArcsBuilder.Result arcBuilderResult = ArcsBuilder.getInstance()
+                .buildArcsBetweenVerticesOnSphere(firstPoint, secondPoint, thirdPoint);
+        List<ThreeDoubleVector> vertices = new ArrayList<>(halfSegments * 2 + 1);
+        vertices.add(firstPoint);
+        for (DoubleFunction<DoubleMatrix> rotation:
+                Arrays.asList(arcBuilderResult.getFirstRotation(), arcBuilderResult.getSecondRotation())) {
+            ThreeDoubleVector rotationStart = (rotation == arcBuilderResult.getFirstRotation() ? firstPoint : secondPoint);
+            for (int i = 1; i <= halfSegments; i++) {
+                double parameter = (double)i / (double)halfSegments;
+                DoubleMatrix currentRotation = rotation.apply(parameter);
+                ThreeDoubleVector currentVertice = new ThreeDoubleVector(
+                        currentRotation.multiply(rotationStart.getDoubleVector()));
+                vertices.add(currentVertice);
+            }
+        }
+        return new Figure(vertices, makeEdgesSimpleList(halfSegments * 2));
+    }
+    
+    public Figure makeFigureByArcs(List<ThreeDoubleVector> vertices, int halfSegmentsPerArc) {
+        List<Figure> figures = new ArrayList<>(vertices.size() - 2);
+        for (int i = 0; i < vertices.size() - 2; i++) {
+            figures.add(makeArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1),
+                    vertices.get(i + 2), halfSegmentsPerArc));
+        }
+        return makeMultiFigure(figures);
+    }
+    
+    private List<Pair<Integer, Integer>> makeEdgesSimpleList(int segments) {
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
         for (int i = 0; i < segments; i++) {
             figureEdges.add(new Pair(i, i + 1));
         }
-        return new Figure(splinePointsWithValues, figureEdges);
+        return figureEdges;
     }
 
 }

@@ -21,6 +21,12 @@ public class Camera {
     private double reversedDistanceBehind;
     private double lensWidth;
     
+    public static Camera createForPositionAndAngles(ThreeDoubleVector position,
+            double angleXOY, double angleZ) {
+        return new Camera(angleXOY, angleZ, position, DEFAULT_VERTICAL_VECTOR,
+                DEFAULT_REVERSED_DISTANCE_BEHIND, DEFAULT_LENS_WIDTH);
+    }
+    
     public Camera(double angleXOY, double angleZ, ThreeDoubleVector position,
             ThreeDoubleVector verticalVector, double reversedDistanceBehind, double lensWidth) {
         this.angleXOY = angleXOY;
