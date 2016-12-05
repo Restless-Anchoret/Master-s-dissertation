@@ -22,7 +22,7 @@ public class Orientation {
     }
     
     public static Orientation createForOffsetAndRotation(ThreeDoubleVector offset, ThreeDoubleVector axis, double angle) {
-        return new Orientation(offset, new Quaternion(Math.cos(angle), axis.normalized().multiply(Math.sin(angle))));
+        return new Orientation(offset, new Quaternion(Math.cos(angle / 2.0), axis.normalized().multiply(Math.sin(angle / 2.0))));
     }
     
     public static Orientation createForOffsetAndRotation(double offsetX, double offsetY, double offsetZ,

@@ -60,26 +60,26 @@ public class DefaultWorldFactory implements WorldFactory {
     }
     
     private List<ThreeDoubleVector> makeVerticesForInterpolationList() {
-//        return Arrays.asList(
-//                new ThreeDoubleVector(0.0, 0.0, 3.0),
-//                new ThreeDoubleVector(0.0, 3.0, 0.0),
-//                new ThreeDoubleVector(3.0, 0.0, 0.0),
-//                new ThreeDoubleVector(0.0, 0.0, -3.0),
-//                new ThreeDoubleVector(0.0, -3.0, 0.0),
-//                new ThreeDoubleVector(-3.0, 0.0, 0.0)
-//        );
         return Arrays.asList(
-                getVectorForAngles(0.0, 0.0, 3.0),
-                getVectorForAngles(Math.PI * 0.125, 0.0, 3.0),
-                getVectorForAngles(Math.PI * 0.25, 0.0, 3.0),
-                getVectorForAngles(Math.PI * 0.5, Math.PI / 20.0, 3.0),
-                getVectorForAngles(Math.PI * 0.75, Math.PI / 20.0, 3.0),
-                getVectorForAngles(Math.PI * 1.0, Math.PI / 20.0, 3.0),
-                getVectorForAngles(Math.PI * 1.25, Math.PI / 20.0, 3.0),
-                getVectorForAngles(Math.PI * 1.5, 0.0, 3.0),
-                getVectorForAngles(Math.PI * 1.625, 0.0, 3.0),
-                getVectorForAngles(Math.PI * 1.75, 0.0, 3.0)
+                new ThreeDoubleVector(0.0, 0.0, 3.0),
+                new ThreeDoubleVector(0.0, 3.0, 0.0),
+                new ThreeDoubleVector(3.0, 0.0, 0.0),
+                new ThreeDoubleVector(0.0, 0.0, -3.0),
+                new ThreeDoubleVector(0.0, -3.0, 0.0),
+                new ThreeDoubleVector(-3.0, 0.0, 0.0)
         );
+//        return Arrays.asList(
+//                getVectorForAngles(0.0, 0.0, 3.0),
+//                getVectorForAngles(Math.PI * 0.125, 0.0, 3.0),
+//                getVectorForAngles(Math.PI * 0.25, 0.0, 3.0),
+//                getVectorForAngles(Math.PI * 0.5, Math.PI / 20.0, 3.0),
+//                getVectorForAngles(Math.PI * 0.75, Math.PI / 20.0, 3.0),
+//                getVectorForAngles(Math.PI * 1.0, Math.PI / 20.0, 3.0),
+//                getVectorForAngles(Math.PI * 1.25, Math.PI / 20.0, 3.0),
+//                getVectorForAngles(Math.PI * 1.5, 0.0, 3.0),
+//                getVectorForAngles(Math.PI * 1.625, 0.0, 3.0),
+//                getVectorForAngles(Math.PI * 1.75, 0.0, 3.0)
+//        );
     }
     
     private ThreeDoubleVector getVectorForAngles(double angleXOY, double angleZ, double radius) {
@@ -87,23 +87,23 @@ public class DefaultWorldFactory implements WorldFactory {
     }
     
     private List<Quaternion> makeQuaternionsForInterpolationList() {
-//        List<Orientation> orientations = Arrays.asList(
-//                Orientation.INITIAL_ORIENTATION,
-//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
-//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
-//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI),
-//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
-//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0)
-//        );
         List<Orientation> orientations = Arrays.asList(
                 Orientation.INITIAL_ORIENTATION,
                 Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
-                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI),
                 Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
-                Orientation.INITIAL_ORIENTATION,
-                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0)//,
-//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0)
+                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI),
+                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
+                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0)
         );
+//        List<Orientation> orientations = Arrays.asList(
+//                Orientation.INITIAL_ORIENTATION,
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI),
+//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
+//                Orientation.INITIAL_ORIENTATION,
+//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0)//,
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0)
+//        );
         return orientations.stream().map(
                 orientation -> orientation.getRotation()
         ).collect(Collectors.toList());

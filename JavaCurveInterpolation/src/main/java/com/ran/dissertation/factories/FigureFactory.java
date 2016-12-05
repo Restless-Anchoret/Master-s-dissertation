@@ -27,6 +27,12 @@ public class FigureFactory {
     
     public Figure makeGrid(int xCellsQuantity, int yCellsQuantity, int zCellsQuantity,
             double xCellWidth, double yCellWidth, double zCellWidth) {
+        return makeGrid(xCellsQuantity, yCellsQuantity, zCellsQuantity, xCellWidth, yCellWidth, zCellWidth,
+                ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR);
+    }
+    
+    public Figure makeGrid(int xCellsQuantity, int yCellsQuantity, int zCellsQuantity,
+            double xCellWidth, double yCellWidth, double zCellWidth, ThreeDoubleVector center) {
         List<ThreeDoubleVector> vertices = new ArrayList<>();
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>();
         
@@ -39,9 +45,9 @@ public class FigureFactory {
         for (int i = 0; i <= xCellsQuantity; i++) {
             for (int j = 0; j <= yCellsQuantity; j++) {
                 for (int k = 0; k <= zCellsQuantity; k++) {
-                    double x = i * xCellWidth - xHalfSize;
-                    double y = j * yCellWidth - yHalfSize;
-                    double z = k * zCellWidth - zHalfSize;
+                    double x = i * xCellWidth - xHalfSize + center.getX();
+                    double y = j * yCellWidth - yHalfSize + center.getY();
+                    double z = k * zCellWidth - zHalfSize + center.getZ();
                     vertices.add(new ThreeDoubleVector(x, y, z));
                     indexes[i][j][k] = currentIndex;
                     if (i > 0) {
