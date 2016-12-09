@@ -1,6 +1,7 @@
 package com.ran.dissertation.ui;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JPanel;
 
 public class AnimationControlPanel extends JPanel {
@@ -82,6 +83,12 @@ public class AnimationControlPanel extends JPanel {
     public void setAnimations(List<SelectItem<AnimationStrategy>> animationStrategiesSelectItems) {
         animationsComboBox.setSelectItems(animationStrategiesSelectItems);
         chosenAnimationStrategy = animationsComboBox.getSelectedValue();
+    }
+    
+    public List<AnimationStrategy> getAnimationStrategies() {
+        return animationsComboBox.getSelectItems().stream()
+                .map(selectItem -> selectItem.getValue())
+                .collect(Collectors.toList());
     }
     
 }

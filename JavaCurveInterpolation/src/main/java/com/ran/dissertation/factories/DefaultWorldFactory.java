@@ -28,32 +28,32 @@ public class DefaultWorldFactory implements WorldFactory {
         FigureFactory figureFactory = FigureFactory.getInstance();
         AnimationFactory animationFactory = AnimationFactory.getInstance();
         List<DisplayableObject> displayableObjects = Arrays.asList(
-                new DisplayableObject(figureFactory.makePlainGrid(8, 8, 1.0, 1.0),
+                new DisplayableObject(figureFactory.makePlainGrid(20, 8, 1.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
                         Color.LIGHT_GRAY),
-                new DisplayableObject(figureFactory.makeGrid(6, 6, 6, 2.0, 2.0, 2.0),
-                        Orientation.createForOffset(12.0, 0.0, 1.0)),
+//                new DisplayableObject(figureFactory.makeGrid(6, 6, 6, 2.0, 2.0, 2.0),
+//                        Orientation.createForOffset(12.0, 0.0, 1.0)),
                 new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        Orientation.createForOffset(0.0, 0.0, 4.0),
+                        Orientation.createForOffset(-6.0, 0.0, 4.0),
                         Color.LIGHT_GRAY, 1, 0),
                 new DisplayableObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
-                        Orientation.createForOffset(0.0, 0.0, 4.0)),
+                        Orientation.createForOffset(-6.0, 0.0, 4.0)),
                 new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        Orientation.createForOffset(0.0, 0.0, 14.0),
-                        Color.LIGHT_GRAY, 1, 0),
-                new DisplayableObject(figureFactory.makeSpline(makePointsWithValuesForInterpolationList(), 1, 100,
-                        CoordinatesConverter.CONVERTER_TO_XZ))
+                        Orientation.createForOffset(6.0, 0.0, 4.0),
+                        Color.LIGHT_GRAY, 1, 0)//,
+//                new DisplayableObject(figureFactory.makeSpline(makePointsWithValuesForInterpolationList(), 1, 100,
+//                        CoordinatesConverter.CONVERTER_TO_XZ))
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
-                new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720), true),
-                new AnimatedObject(figureFactory.makeCube(2.0),
-                        animationFactory.makeRotationAnimation(new ThreeDoubleVector(-6.0, 3.0, 2.0),
-                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120), true),
+//                new AnimatedObject(figureFactory.makeCube(2.0),
+//                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720), true),
+//                new AnimatedObject(figureFactory.makeCube(2.0),
+//                        animationFactory.makeRotationAnimation(new ThreeDoubleVector(-6.0, 3.0, 2.0),
+//                                new ThreeDoubleVector(1.0, 1.0, 1.0), 120), true),
                 new AnimatedObject(figureFactory.makeCube(2.0 * Math.sqrt(3.0)),
                         animationFactory.makeInterpolatedOrientationCurveAnimation(
                                 makeQuaternionsForInterpolationList(), 1, 1000,
-                                new ThreeDoubleVector(0.0, 0.0, 14.0)), false)
+                                new ThreeDoubleVector(6.0, 0.0, 4.0)), false)
         );
         Camera camera = new Camera();
         return new World(displayableObjects, animatedObjects, camera);

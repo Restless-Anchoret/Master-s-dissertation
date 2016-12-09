@@ -7,6 +7,8 @@ import com.ran.dissertation.ui.MainFrame;
 import com.ran.dissertation.ui.SelectItem;
 import com.ran.dissertation.world.AnimatedObject;
 import com.ran.dissertation.world.World;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.UIManager;
@@ -26,11 +28,23 @@ public class MainController {
         world = worldFactory.createWorld();
         tryToSetBetterLaf();
         mainFrame = new MainFrame();
+        setWindowClosingListener(mainFrame);
         mainFrame.getImagePanel().setImagePanelPaintStrategy(new DefaultPaintStrategy(world));
         mainFrame.getImagePanel().addImagePanelListener(new DefaultCameraController(world.getCamera()));
         mainFrame.getAnimationControlPanel().setAnimations(prepareAnimationSelectItemsForWorld(world, mainFrame.getImagePanel()));
         mainFrame.getAnimationControlPanel().addAnimationControlPanelListener(new DefaultAnimationController());
         mainFrame.setVisible(true);
+    }
+    
+    private void setWindowClosingListener(MainFrame mainFrame) {
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                for (AnimationStrategy animationStrategy: mainFrame.getAnimationControlPanel().getAnimationStrategies()) {
+                    animationStrategy.stopAnimation();
+                }
+            }
+        });
     }
 
     private void tryToSetBetterLaf() {

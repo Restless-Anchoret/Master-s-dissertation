@@ -7,6 +7,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     @SuppressWarnings("unchecked")
