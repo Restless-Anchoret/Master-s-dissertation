@@ -59,7 +59,7 @@ public class DefaultWorldFactory implements WorldFactory {
                                 makeQuaternionsForInterpolationList(), 1, 1000,
                                 new ThreeDoubleVector(6.0, 0.0, 4.0)), true)
         );
-        Camera camera = new Camera();
+        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 10.0, 4.0), 0.0, 0.0);
         return new World(displayableObjects, animatedObjects, camera);
     }
     

@@ -19,7 +19,7 @@ public class LabFirstMainController {
         DefaultPaintStrategy paintStrategy = new DefaultPaintStrategy(world);
         mainFrame.getImagePanel().setImagePanelPaintStrategy(paintStrategy);
         mainFrame.getImagePanel().addImagePanelListener(new LabFirstCameraController(camera));
-        mainFrame.getAnimationControlPanel().setVisible(false);
+        mainFrame.getDialogPanel().setVisible(false);
         mainFrame.setVisible(true);
     }
     

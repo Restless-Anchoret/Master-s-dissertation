@@ -23,40 +23,39 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Component id="animationControlPanel" pref="813" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="imagePanel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="dialogPanel" min="-2" pref="205" max="-2" attributes="0"/>
           </Group>
-          <Component id="imagePanel" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="animationControlPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="imagePanel" max="32767" attributes="0"/>
-          </Group>
+          <Component id="imagePanel" max="32767" attributes="0"/>
+          <Component id="dialogPanel" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.ran.dissertation.ui.AnimationControlPanel" name="animationControlPanel">
-    </Component>
     <Container class="com.ran.dissertation.ui.ImagePanel" name="imagePanel">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="608" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="602" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="652" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
+    </Container>
+    <Container class="com.ran.dissertation.ui.DialogPanel" name="dialogPanel">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
     </Container>
   </SubComponents>
 </Form>

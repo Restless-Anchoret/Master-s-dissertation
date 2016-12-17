@@ -2,6 +2,7 @@ package com.ran.dissertation.controller;
 
 import com.ran.dissertation.factories.WorldFactory;
 import com.ran.dissertation.ui.AnimationStrategy;
+import com.ran.dissertation.ui.DialogPanelContent;
 import com.ran.dissertation.ui.ImagePanel;
 import com.ran.dissertation.ui.MainFrame;
 import com.ran.dissertation.ui.SelectItem;
@@ -19,6 +20,7 @@ public class MainController {
     private final WorldFactory worldFactory;
     private World world;
     private MainFrame mainFrame;
+    private DialogPanelContent dialogPanelContent;
 
     public MainController(WorldFactory worldFactory) {
         this.worldFactory = worldFactory;
@@ -31,8 +33,12 @@ public class MainController {
         setWindowClosingListener(mainFrame);
         mainFrame.getImagePanel().setImagePanelPaintStrategy(new DefaultPaintStrategy(world));
         mainFrame.getImagePanel().addImagePanelListener(new DefaultCameraController(world.getCamera()));
-        mainFrame.getAnimationControlPanel().setAnimations(prepareAnimationSelectItemsForWorld(world, mainFrame.getImagePanel()));
-        mainFrame.getAnimationControlPanel().addAnimationControlPanelListener(new DefaultAnimationController());
+        dialogPanelContent = new DialogPanelContent();
+        dialogPanelContent.getAnimationControlPanel()
+                .setAnimations(prepareAnimationSelectItemsForWorld(world, mainFrame.getImagePanel()));
+        dialogPanelContent.getAnimationControlPanel()
+                .addAnimationControlPanelListener(new DefaultAnimationController());
+        mainFrame.getDialogPanel().setComponent(dialogPanelContent);
         mainFrame.setVisible(true);
     }
     
@@ -40,7 +46,8 @@ public class MainController {
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                for (AnimationStrategy animationStrategy: mainFrame.getAnimationControlPanel().getAnimationStrategies()) {
+                for (AnimationStrategy animationStrategy: dialogPanelContent
+                        .getAnimationControlPanel().getAnimationStrategies()) {
                     animationStrategy.stopAnimation();
                 }
             }
