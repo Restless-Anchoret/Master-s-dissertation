@@ -23,9 +23,9 @@ public class DefaultAnimationController implements AnimationControlPanelListener
 
     @Override
     public void chosenAnimationChanged(AnimationStrategy chosenAnimation, AnimationStrategy previousAnimation) {
-        if (previousAnimation != null) {
-            previousAnimation.stopAnimation();
-        }
+//        if (previousAnimation != null) {
+//            previousAnimation.stopAnimation();
+//        }
     }
 
 }

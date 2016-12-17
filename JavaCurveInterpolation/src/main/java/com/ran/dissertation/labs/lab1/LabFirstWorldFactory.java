@@ -45,7 +45,7 @@ public class LabFirstWorldFactory {
     
     private Function<Double, SingleDouble> getFunction() {
         return x -> new SingleDouble(Math.cos(Math.cos(Math.cos(Math.cos(
-                x * x * x * x * x * x * x * x * x * x * x * x * x)))) * 3.0 / x * x * x);
+                x * x * x * x)))) * 3.0 / x * x * x);
     }
     
 }

@@ -1,5 +1,6 @@
 package com.ran.dissertation.world;
 
+import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 
 public class Camera {
@@ -13,6 +14,12 @@ public class Camera {
     private static final double DEFAULT_REVERSED_DISTANCE_BEHIND = 0.25;
     private static final double DEFAULT_LENS_WIDTH = 8.0;
     
+    public static Camera createForPositionAndAngles(ThreeDoubleVector position,
+            double angleXOY, double angleZ) {
+        return new Camera(angleXOY, angleZ, position, DEFAULT_VERTICAL_VECTOR,
+                DEFAULT_REVERSED_DISTANCE_BEHIND, DEFAULT_LENS_WIDTH);
+    }
+    
     private double angleXOY;
     private double angleZ;
     private ThreeDoubleVector position;
@@ -20,12 +27,8 @@ public class Camera {
     private ThreeDoubleVector verticalVector;
     private double reversedDistanceBehind;
     private double lensWidth;
-    
-    public static Camera createForPositionAndAngles(ThreeDoubleVector position,
-            double angleXOY, double angleZ) {
-        return new Camera(angleXOY, angleZ, position, DEFAULT_VERTICAL_VECTOR,
-                DEFAULT_REVERSED_DISTANCE_BEHIND, DEFAULT_LENS_WIDTH);
-    }
+    private DoubleMatrix worldToViewCoordinatesConvertMatrix = null;
+    private DoubleMatrix viewToProjectionCoordinatesConvertMatrix = null;
     
     public Camera(double angleXOY, double angleZ, ThreeDoubleVector position,
             ThreeDoubleVector verticalVector, double reversedDistanceBehind, double lensWidth) {
@@ -80,6 +83,22 @@ public class Camera {
         this.lensWidth = lensWidth;
     }
 
+    public DoubleMatrix getWorldToViewCoordinatesConvertMatrix() {
+        return worldToViewCoordinatesConvertMatrix;
+    }
+
+    public void setWorldToViewCoordinatesConvertMatrix(DoubleMatrix worldToViewCoordinatesConvertMatrix) {
+        this.worldToViewCoordinatesConvertMatrix = worldToViewCoordinatesConvertMatrix;
+    }
+
+    public DoubleMatrix getViewToProjectionCoordinatesConvertMatrix() {
+        return viewToProjectionCoordinatesConvertMatrix;
+    }
+
+    public void setViewToProjectionCoordinatesConvertMatrix(DoubleMatrix viewToProjectionCoordinatesConvertMatrix) {
+        this.viewToProjectionCoordinatesConvertMatrix = viewToProjectionCoordinatesConvertMatrix;
+    }
+
     public void changeAngleXOY(double angle) {
         angleXOY += angle;
         updateNormVector();
@@ -94,34 +113,41 @@ public class Camera {
 
     public void moveX(double step) {
         position = new ThreeDoubleVector(position.getX() + step, position.getY(), position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
 
     public void moveY(double step) {
         position = new ThreeDoubleVector(position.getX(), position.getY() + step, position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
 
     public void moveZ(double step) {
         position = new ThreeDoubleVector(position.getX(), position.getY(), position.getZ() + step);
+        worldToViewCoordinatesConvertMatrix = null;
     }
     
     public void moveRight(double step) {
         position = new ThreeDoubleVector(position.getX() + step * Math.cos(-angleXOY),
                 position.getY() + step * Math.sin(-angleXOY), position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
     
     public void moveLeft(double step) {
         position = new ThreeDoubleVector(position.getX() - step * Math.cos(-angleXOY),
                 position.getY() - step * Math.sin(-angleXOY), position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
     
     public void moveForward(double step) {
         position = new ThreeDoubleVector(position.getX() + step * Math.sin(angleXOY),
                 position.getY() + step * Math.cos(angleXOY), position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
     
     public void moveBack(double step) {
         position = new ThreeDoubleVector(position.getX() - step * Math.sin(angleXOY),
                 position.getY() - step * Math.cos(angleXOY), position.getZ());
+        worldToViewCoordinatesConvertMatrix = null;
     }
 
     public void zoom(double step) {
@@ -130,10 +156,12 @@ public class Camera {
                 position.getY() - normVector.getY() * step,
                 position.getZ() - normVector.getZ() * step
         );
+        worldToViewCoordinatesConvertMatrix = null;
     }
 
     private void updateNormVector() {
         normVector = new ThreeDoubleVector(Math.sin(angleXOY), Math.cos(angleXOY), Math.tan(angleZ)).normalized();
+        worldToViewCoordinatesConvertMatrix = null;
     }
     
 }

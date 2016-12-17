@@ -74,33 +74,12 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
     }
     
     private DoubleMatrix convertWorldCoordinatesToViewCoorninates(DoubleMatrix worldCoorninatesMatrix, Camera camera) {
-        ThreeDoubleVector normVector = camera.getNormVector();
-        ThreeDoubleVector verticalVector = camera.getVerticalVector();
-
-        ThreeDoubleVector baseK = normVector;
-        ThreeDoubleVector baseI = verticalVector.multiply(normVector).normalized();
-        ThreeDoubleVector baseJ = normVector.multiply(baseI).normalized();
-        List<ThreeDoubleVector> basis = Arrays.asList(baseI, baseJ, baseK);
-
-        double[][] coordinatesChangingAffineMatrix = new double[4][4];
-        for (int i = 0; i < 3; i++) {
-            coordinatesChangingAffineMatrix[i][0] = basis.get(i).getX();
-            coordinatesChangingAffineMatrix[i][1] = basis.get(i).getY();
-            coordinatesChangingAffineMatrix[i][2] = basis.get(i).getZ();
-            coordinatesChangingAffineMatrix[i][3] = -basis.get(i).scalarMultiply(camera.getPosition());
-        }
-        coordinatesChangingAffineMatrix[3][3] = 1.0;
-        DoubleMatrix coordinatesChangingAffineDoubleMatrix = new DoubleMatrix(coordinatesChangingAffineMatrix);
-        return coordinatesChangingAffineDoubleMatrix.multiply(worldCoorninatesMatrix);
+        DoubleMatrix convertMatrix = getCameraWorldToViewCoordinatesConvertMatrix(camera);
+        return convertMatrix.multiply(worldCoorninatesMatrix);
     }
     
     private List<TwoDoubleVector> convertViewCoordinatesToProjectionCoordinates(DoubleMatrix viewCoordinatesMatrix, Camera camera) {
-        double d = camera.getReversedDistanceBehind();
-        DoubleMatrix convertMatrix = new DoubleMatrix(new double[][] {
-            {1.0, 0.0, 0.0, 0.0},
-            {0.0, 1.0, 0.0, 0.0},
-            {0.0, 0.0, -d, 1.0}
-        });
+        DoubleMatrix convertMatrix = getCameraViewToProjectionCoordinatesConvertMatrix(camera);
         DoubleMatrix projectionCoordinatesMatrix = convertMatrix.multiply(viewCoordinatesMatrix);
         List<TwoDoubleVector> projectionCoordinates = new ArrayList<>(projectionCoordinatesMatrix.getColumns());
         for (int i = 0; i < projectionCoordinatesMatrix.getColumns(); i++) {
@@ -131,6 +110,45 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
                     int y = (int) Math.round((lensTop - point.getY()) / lensHeight * displayHeight);
                     return new TwoIntVector(x, y);
                 }).collect(Collectors.toList());
+    }
+    
+    private DoubleMatrix getCameraWorldToViewCoordinatesConvertMatrix(Camera camera) {
+        DoubleMatrix convertMatrix = camera.getWorldToViewCoordinatesConvertMatrix();
+        if (convertMatrix == null) {
+            ThreeDoubleVector normVector = camera.getNormVector();
+            ThreeDoubleVector verticalVector = camera.getVerticalVector();
+
+            ThreeDoubleVector baseK = normVector;
+            ThreeDoubleVector baseI = verticalVector.multiply(normVector).normalized();
+            ThreeDoubleVector baseJ = normVector.multiply(baseI).normalized();
+            List<ThreeDoubleVector> basis = Arrays.asList(baseI, baseJ, baseK);
+
+            double[][] coordinatesChangingAffineMatrix = new double[4][4];
+            for (int i = 0; i < 3; i++) {
+                coordinatesChangingAffineMatrix[i][0] = basis.get(i).getX();
+                coordinatesChangingAffineMatrix[i][1] = basis.get(i).getY();
+                coordinatesChangingAffineMatrix[i][2] = basis.get(i).getZ();
+                coordinatesChangingAffineMatrix[i][3] = -basis.get(i).scalarMultiply(camera.getPosition());
+            }
+            coordinatesChangingAffineMatrix[3][3] = 1.0;
+            convertMatrix = new DoubleMatrix(coordinatesChangingAffineMatrix);
+            camera.setWorldToViewCoordinatesConvertMatrix(convertMatrix);
+        }
+        return convertMatrix;
+    }
+    
+    private DoubleMatrix getCameraViewToProjectionCoordinatesConvertMatrix(Camera camera) {
+        DoubleMatrix convertMatrix = camera.getViewToProjectionCoordinatesConvertMatrix();
+        if (convertMatrix == null) {
+            double d = camera.getReversedDistanceBehind();
+            convertMatrix = new DoubleMatrix(new double[][] {
+                {1.0, 0.0, 0.0, 0.0},
+                {0.0, 1.0, 0.0, 0.0},
+                {0.0, 0.0, -d, 1.0}
+            });
+            camera.setViewToProjectionCoordinatesConvertMatrix(convertMatrix);
+        }
+        return convertMatrix;
     }
 
 }

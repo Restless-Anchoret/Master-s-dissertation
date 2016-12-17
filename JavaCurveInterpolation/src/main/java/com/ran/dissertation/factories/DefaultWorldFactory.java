@@ -36,8 +36,8 @@ public class DefaultWorldFactory implements WorldFactory {
                 new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(-6.0, 0.0, 4.0),
                         Color.LIGHT_GRAY, 1, 0),
-                new DisplayableObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
-                        Orientation.createForOffset(-6.0, 0.0, 4.0)),
+//                new DisplayableObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
+//                        Orientation.createForOffset(-6.0, 0.0, 4.0)),
                 new DisplayableObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(6.0, 0.0, 4.0),
                         Color.LIGHT_GRAY, 1, 0)//,
@@ -45,6 +45,10 @@ public class DefaultWorldFactory implements WorldFactory {
 //                        CoordinatesConverter.CONVERTER_TO_XZ))
         );
         List<AnimatedObject> animatedObjects = Arrays.asList(
+                new AnimatedObject(figureFactory.makeInterpolatedCurve(makeVerticesForInterpolationList(), 1, 100),
+                        animationFactory.makeInterpolatedOrientationCurveAnimation(
+                                makeQuaternionsForInterpolationList(), 1, 1000,
+                                new ThreeDoubleVector(-6.0, 0.0, 4.0)), true),
 //                new AnimatedObject(figureFactory.makeCube(2.0),
 //                        animationFactory.makeZRotationAnimation(new ThreeDoubleVector(-6.0, -3.0, 2.0), 720), true),
 //                new AnimatedObject(figureFactory.makeCube(2.0),
@@ -53,7 +57,7 @@ public class DefaultWorldFactory implements WorldFactory {
                 new AnimatedObject(figureFactory.makeCube(2.0 * Math.sqrt(3.0)),
                         animationFactory.makeInterpolatedOrientationCurveAnimation(
                                 makeQuaternionsForInterpolationList(), 1, 1000,
-                                new ThreeDoubleVector(6.0, 0.0, 4.0)), false)
+                                new ThreeDoubleVector(6.0, 0.0, 4.0)), true)
         );
         Camera camera = new Camera();
         return new World(displayableObjects, animatedObjects, camera);
