@@ -11,6 +11,10 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
     public static final Quaternion ZERO_QUATERNION = new Quaternion(0.0, ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR);
     public static final Quaternion IDENTITY_QUANTERNION = new Quaternion(1.0, ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR);
     
+    public static Quaternion createForRotation(ThreeDoubleVector axis, double angle) {
+        return new Quaternion(Math.cos(angle / 2.0), axis.normalized().multiply(Math.sin(angle / 2.0)));
+    }
+    
     public static Quaternion createFromVector(ThreeDoubleVector vector) {
         return new Quaternion(0.0, vector);
     }
@@ -102,6 +106,12 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
                 this.getVector().multiply(other.getScalar())
                     .add(other.getVector().multiply(this.getScalar()))
                     .add(this.getVector().multiply(other.getVector())));
+    }
+
+    @Override
+    public Quaternion elementWiseMultiply(Quaternion other) {
+        return new Quaternion(this.getScalar() * other.getScalar(),
+                this.getVector().elementWiseMultiply(other.getVector()));
     }
 
     @Override

@@ -86,6 +86,11 @@ public class TwoIntVector implements Comparable<TwoIntVector>, AlgebraicObject<T
     }
 
     @Override
+    public TwoIntVector elementWiseMultiply(TwoIntVector other) {
+        return new TwoIntVector(this.intVector.elementWiseMultiply(other.getIntVector()));
+    }
+
+    @Override
     public double scalarMultiply(TwoIntVector other) {
         return this.intVector.scalarMultiply(other.getIntVector());
     }

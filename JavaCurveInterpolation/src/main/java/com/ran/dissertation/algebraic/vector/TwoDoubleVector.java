@@ -86,6 +86,11 @@ public class TwoDoubleVector implements Comparable<TwoDoubleVector>, AlgebraicOb
     }
 
     @Override
+    public TwoDoubleVector elementWiseMultiply(TwoDoubleVector other) {
+        return new TwoDoubleVector(this.doubleVector.elementWiseMultiply(other.getDoubleVector()));
+    }
+
+    @Override
     public double scalarMultiply(TwoDoubleVector other) {
         return this.doubleVector.scalarMultiply(other.getDoubleVector());
     }

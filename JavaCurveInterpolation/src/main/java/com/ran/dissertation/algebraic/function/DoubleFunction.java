@@ -144,6 +144,13 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
     }
 
     @Override
+    public DoubleFunction<T> elementWiseMultiply(DoubleFunction<T> other) {
+        return joinFunctions(this, other,
+                point -> this.getFunction().apply(point).elementWiseMultiply(other.getFunction().apply(point))
+        );
+    }
+
+    @Override
     public double scalarMultiply(DoubleFunction<T> other) {
         throw new UnsupportedOperationException();
     }

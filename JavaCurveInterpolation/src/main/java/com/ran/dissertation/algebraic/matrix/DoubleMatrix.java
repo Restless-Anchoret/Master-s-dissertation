@@ -161,6 +161,18 @@ public class DoubleMatrix implements AlgebraicObject<DoubleMatrix> {
     }
 
     @Override
+    public DoubleMatrix elementWiseMultiply(DoubleMatrix other) {
+        checkDimensionsEquality(this, other);
+        double[][] resultMatrix = new double[this.lines][this.columns];
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < columns; j++) {
+                resultMatrix[i][j] = this.get(i, j) * other.get(i, j);
+            }
+        }
+        return new DoubleMatrix(resultMatrix);
+    }
+
+    @Override
     public double scalarMultiply(DoubleMatrix other) {
         throw new UnsupportedOperationException();
     }

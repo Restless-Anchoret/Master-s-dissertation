@@ -9,6 +9,7 @@ public interface AlgebraicObject<T> {
     T multiply(int number);
     T multiply(double number);
     T multiply(T other);
+    T elementWiseMultiply(T other);
     double scalarMultiply(T other);
     
     default double getNorm() {

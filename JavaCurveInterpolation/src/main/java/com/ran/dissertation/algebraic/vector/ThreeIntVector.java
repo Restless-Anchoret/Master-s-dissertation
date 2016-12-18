@@ -93,6 +93,11 @@ public class ThreeIntVector implements Comparable<ThreeIntVector>, AlgebraicObje
     }
 
     @Override
+    public ThreeIntVector elementWiseMultiply(ThreeIntVector other) {
+        return new ThreeIntVector(this.intVector.elementWiseMultiply(other.getIntVector()));
+    }
+
+    @Override
     public double scalarMultiply(ThreeIntVector other) {
         return this.intVector.scalarMultiply(other.getIntVector());
     }

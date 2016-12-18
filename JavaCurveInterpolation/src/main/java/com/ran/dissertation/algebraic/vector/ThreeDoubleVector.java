@@ -93,6 +93,11 @@ public class ThreeDoubleVector implements Comparable<ThreeDoubleVector>, Algebra
     }
 
     @Override
+    public ThreeDoubleVector elementWiseMultiply(ThreeDoubleVector other) {
+        return new ThreeDoubleVector(this.doubleVector.elementWiseMultiply(other.getDoubleVector()));
+    }
+
+    @Override
     public double scalarMultiply(ThreeDoubleVector other) {
         return this.doubleVector.scalarMultiply(other.getDoubleVector());
     }

@@ -91,6 +91,16 @@ public class IntVector implements Comparable<IntVector>, AlgebraicObject<IntVect
     public IntVector multiply(double number) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public IntVector elementWiseMultiply(IntVector other) {
+        checkDimensions(this, other);
+        int[] resultCoordinates = new int[this.getDimension()];
+        for (int i = 0; i < this.getDimension(); i++) {
+            resultCoordinates[i] = this.getCoordinate(i) * other.getCoordinate(i);
+        }
+        return new IntVector(resultCoordinates);
+    }
     
     @Override
     public double scalarMultiply(IntVector other) {

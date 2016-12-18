@@ -71,6 +71,11 @@ public class SingleDouble implements Comparable<SingleDouble>, AlgebraicObject<S
     }
 
     @Override
+    public SingleDouble elementWiseMultiply(SingleDouble other) {
+        return multiply(other);
+    }
+
+    @Override
     public double scalarMultiply(SingleDouble other) {
         return this.value * other.getValue();
     }

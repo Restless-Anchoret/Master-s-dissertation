@@ -100,6 +100,16 @@ public class DoubleVector implements Comparable<DoubleVector>, AlgebraicObject<D
     public DoubleVector multiply(int number) {
         return multiply((double)number);
     }
+
+    @Override
+    public DoubleVector elementWiseMultiply(DoubleVector other) {
+        checkDimensions(this, other);
+        double[] resultCoordinates = new double[this.getDimension()];
+        for (int i = 0; i < this.getDimension(); i++) {
+            resultCoordinates[i] = this.getCoordinate(i) * other.getCoordinate(i);
+        }
+        return new DoubleVector(resultCoordinates);
+    }
     
     @Override
     public double scalarMultiply(DoubleVector other) {
