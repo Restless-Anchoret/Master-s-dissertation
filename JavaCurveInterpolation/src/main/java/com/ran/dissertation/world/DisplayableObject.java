@@ -58,13 +58,11 @@ public class DisplayableObject {
         return orientation;
     }
 
-    // todo: maybe this method should be synchronized
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
         this.currentFigureVertices = null;
     }
 
-    // todo: maybe this method should be synchronized
     public List<ThreeDoubleVector> getCurrentFigureVertices() {
         updateCurrentFigureVertices();
         return currentFigureVertices;

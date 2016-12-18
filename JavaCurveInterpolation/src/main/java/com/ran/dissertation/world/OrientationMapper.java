@@ -17,7 +17,8 @@ public class OrientationMapper {
     
     public ThreeDoubleVector orientVertice(ThreeDoubleVector initialVertice, Orientation orientation) {
         return orientation.getRotation()
-                .multiply(Quaternion.createFromVector(initialVertice))
+                .multiply(Quaternion.createFromVector(initialVertice
+                        .elementWiseMultiply(orientation.getScaleReflectionVector())))
                 .multiply(orientation.getConjugateRotation())
                 .getVector().add(orientation.getOffset());
     }
