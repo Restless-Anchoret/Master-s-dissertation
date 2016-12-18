@@ -78,6 +78,18 @@ public class AffineTransformationFactory {
                 rotation.multiply(orientation.getRotation())));
     }
     
+    public AffineTransformation createXAxisRotationOverPointAffineTransformation(ThreeDoubleVector point, double angle) {
+        return createRotationOverPointAffineTransformation(point, new ThreeDoubleVector(1.0, 0.0, 0.0), angle);
+    }
+    
+    public AffineTransformation createYAxisRotationOverPointAffineTransformation(ThreeDoubleVector point, double angle) {
+        return createRotationOverPointAffineTransformation(point, new ThreeDoubleVector(0.0, 1.0, 0.0), angle);
+    }
+    
+    public AffineTransformation createZAxisRotationOverPointAffineTransformation(ThreeDoubleVector point, double angle) {
+        return createRotationOverPointAffineTransformation(point, new ThreeDoubleVector(0.0, 0.0, 1.0), angle);
+    }
+    
     public AffineTransformation createRotationOverPointAffineTransformation(
             ThreeDoubleVector point, ThreeDoubleVector axis, double angle) {
         Quaternion rotation = Quaternion.createForRotation(axis, angle);

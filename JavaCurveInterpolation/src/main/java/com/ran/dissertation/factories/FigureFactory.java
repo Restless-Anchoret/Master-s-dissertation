@@ -25,6 +25,10 @@ public class FigureFactory {
     
     private FigureFactory() { }
     
+    public Figure makeFigureWithOneVertice(ThreeDoubleVector vertice) {
+        return new Figure(Arrays.asList(vertice), Collections.EMPTY_LIST);
+    }
+    
     public Figure makeGrid(int xCellsQuantity, int yCellsQuantity, int zCellsQuantity,
             double xCellWidth, double yCellWidth, double zCellWidth) {
         return makeGrid(xCellsQuantity, yCellsQuantity, zCellsQuantity, xCellWidth, yCellWidth, zCellWidth,

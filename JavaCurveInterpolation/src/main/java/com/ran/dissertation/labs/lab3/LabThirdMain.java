@@ -1,12 +1,12 @@
-package com.ran.dissertation.labs.lab1;
+package com.ran.dissertation.labs.lab3;
 
 import java.awt.EventQueue;
 
-public class LabFirstMain {
+public class LabThirdMain {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            LabFirstMainController mainController = new LabFirstMainController();
+            LabThirdMainController mainController = new LabThirdMainController();
             mainController.startApplication();
         });
     }
