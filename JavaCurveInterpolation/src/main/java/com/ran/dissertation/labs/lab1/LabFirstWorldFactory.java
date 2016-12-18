@@ -31,7 +31,7 @@ public class LabFirstWorldFactory {
         double right= camera.getPosition().getX() + halfWidth;
         DoubleFunction<SingleDouble> function = new DoubleFunction<>(getFunction());
         List<DisplayableObject> displayableObjects = Arrays.asList(
-                new DisplayableObject(figureFactory.makeGrid(10, 0, 10, 1.0, 0.0, 1.0),
+                new DisplayableObject(figureFactory.makeGrid(40, 0, 40, 1.0, 0.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
                         Color.LIGHT_GRAY),
                 new DisplayableObject(figureFactory.makeGrid(1, 0, 0, 1000.0, 0.0, 0.0)),

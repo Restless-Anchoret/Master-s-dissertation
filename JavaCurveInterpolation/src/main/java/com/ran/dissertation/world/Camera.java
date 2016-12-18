@@ -20,6 +20,12 @@ public class Camera {
                 DEFAULT_REVERSED_DISTANCE_BEHIND, DEFAULT_LENS_WIDTH);
     }
     
+    public static Camera createForPositionReversedDistanceAndLensWidth(
+            ThreeDoubleVector position, double reversedDistanceBehind, double lensWidth) {
+        return new Camera(DEFAULT_ANGLE_XOY, DEFAULT_ANGLE_Z, position, DEFAULT_VERTICAL_VECTOR,
+                reversedDistanceBehind, lensWidth);
+    }
+    
     private double angleXOY;
     private double angleZ;
     private ThreeDoubleVector position;
@@ -39,11 +45,6 @@ public class Camera {
         this.reversedDistanceBehind = reversedDistanceBehind;
         this.lensWidth = lensWidth;
         updateNormVector();
-    }
-    
-    public Camera(ThreeDoubleVector position, double reversedDistanceBehind, double lensWidth) {
-        this(DEFAULT_ANGLE_XOY, DEFAULT_ANGLE_Z, position, DEFAULT_VERTICAL_VECTOR,
-                reversedDistanceBehind, lensWidth);
     }
 
     public Camera() {

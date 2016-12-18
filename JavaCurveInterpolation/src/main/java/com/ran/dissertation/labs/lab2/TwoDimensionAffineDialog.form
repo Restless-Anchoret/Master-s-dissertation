@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+        <TitledBorder title="Affine transformations"/>
+      </Border>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="secondSeparator" max="32767" attributes="0"/>
+                  <Component id="reflectXButton" max="32767" attributes="0"/>
+                  <Component id="firstSeparator" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="chosenVerticeLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="chosenVerticeComboBox" min="-2" pref="90" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="reflectYButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="reflectPivotButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="thirdSeparator" alignment="0" max="32767" attributes="0"/>
+                  <Component id="increaseButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="decreaseButton" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="moveOverXLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="moveXPlusButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="moveOverYLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="23" max="32767" attributes="0"/>
+                              <Component id="moveYPlusButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="moveYMinusButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="moveXMinusButton" alignment="1" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="rotateLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                      <Component id="rotatePlusButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="rotateMinusButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="moveXPlusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="moveOverXLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="moveXMinusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="moveYMinusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="moveYPlusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="moveOverYLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="firstSeparator" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="chosenVerticeLabel" min="-2" pref="26" max="-2" attributes="0"/>
+                  <Component id="chosenVerticeComboBox" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="rotatePlusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rotateMinusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rotateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="secondSeparator" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="reflectXButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="reflectYButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="reflectPivotButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="thirdSeparator" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="increaseButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="decreaseButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="moveOverXLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Move over X axis:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="moveOverYLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Move over Y axis:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="moveXPlusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="+"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="moveXMinusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="moveYPlusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="+"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="moveYMinusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="firstSeparator">
+    </Component>
+    <Component class="javax.swing.JLabel" name="chosenVerticeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Chosen vertice:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="rotateLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Rotate:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="rotatePlusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="+"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="rotateMinusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="secondSeparator">
+    </Component>
+    <Component class="javax.swing.JButton" name="reflectXButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reflect over X axis"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="reflectYButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reflect over Y axis"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="reflectPivotButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reflect over pivot"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="thirdSeparator">
+    </Component>
+    <Component class="javax.swing.JButton" name="increaseButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Increase"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="decreaseButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Decrease"/>
+      </Properties>
+    </Component>
+    <Component class="com.ran.dissertation.ui.PresentationComboBox" name="chosenVerticeComboBox">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Integer&gt;"/>
+      </AuxValues>
+    </Component>
+  </SubComponents>
+</Form>

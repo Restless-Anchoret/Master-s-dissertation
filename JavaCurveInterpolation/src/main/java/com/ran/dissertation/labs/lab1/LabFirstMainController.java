@@ -17,7 +17,7 @@ public class LabFirstMainController {
         tryToSetBetterLaf();
         mainFrame = new MainFrame();
         int imagePanelWidth = mainFrame.getImagePanel().getWidth();
-        camera = new Camera(new ThreeDoubleVector(0.0, 1.0, 1.0), 0.0, 12.0);
+        camera = Camera.createForPositionReversedDistanceAndLensWidth(new ThreeDoubleVector(0.0, 1.0, 1.0), 0.0, 25.0);
         World world = LabFirstWorldFactory.getInstance().createWorldForCamera(camera, imagePanelWidth);
         DefaultPaintStrategy paintStrategy = new DefaultPaintStrategy(world);
         mainFrame.getImagePanel().setImagePanelPaintStrategy(paintStrategy);
