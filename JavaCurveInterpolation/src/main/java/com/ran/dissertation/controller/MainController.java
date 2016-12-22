@@ -37,8 +37,10 @@ public class MainController {
                 new DefaultWorldSwitchingListener(mainFrame, dialogPanelContent);
         dialogPanelContent.getWorldSwitchingPanel().addWorldSwitchingListener(worldSwitchingPanelListener);
         dialogPanelContent.getWorldSwitchingPanel().setWorlds(prepareWorldSelectItems(worlds));
-        mainFrame.getDialogPanel().setComponent(dialogPanelContent);
         worldSwitchingPanelListener.chosenWorldChanged(worlds.get(0), null);
+        dialogPanelContent.getOperationsPanel().getSaveScreenshotButton()
+                .addActionListener(new ScreenshotSaverListener(mainFrame));
+        mainFrame.getDialogPanel().setComponent(dialogPanelContent);
         mainFrame.setVisible(true);
     }
     

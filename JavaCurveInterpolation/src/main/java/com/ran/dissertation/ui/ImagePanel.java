@@ -78,6 +78,7 @@ public class ImagePanel extends JPanel {
     private ImagePanelListenerSupport imagePanelListenerSupport = new ImagePanelListenerSupport();
     private ImagePanelPaintStrategy imagePanelPaintStrategy = (paintDelegate, width, height) -> { };
     private PaintDelegate paintDelegate = new PaintDelegate();
+    private BufferedImage lastFrameImage = null;
     
     public void addImagePanelListener(ImagePanelListener listener) {
         imagePanelListenerSupport.addImagePanelListener(listener);
@@ -93,6 +94,10 @@ public class ImagePanel extends JPanel {
 
     public void setImagePanelPaintStrategy(ImagePanelPaintStrategy imagePanelPaintStrategy) {
         this.imagePanelPaintStrategy = imagePanelPaintStrategy;
+    }
+
+    public BufferedImage getLastFrameImage() {
+        return lastFrameImage;
     }
 
     @Override
@@ -111,6 +116,8 @@ public class ImagePanel extends JPanel {
         graphics2D.setColor(FRAME_COLOR);
         graphics2D.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
         graphics.drawImage(image, 0, 0, this);
+        graphics2D.dispose();
+        lastFrameImage = image;
     }
     
 }
