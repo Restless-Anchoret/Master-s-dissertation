@@ -1,44 +1,44 @@
 package com.ran.dissertation.controller;
 
 import com.ran.dissertation.factories.WorldFactory;
-import com.ran.dissertation.ui.AnimationStrategy;
 import com.ran.dissertation.ui.DialogPanelContent;
-import com.ran.dissertation.ui.ImagePanel;
 import com.ran.dissertation.ui.MainFrame;
 import com.ran.dissertation.ui.SelectItem;
-import com.ran.dissertation.world.AnimatedObject;
+import com.ran.dissertation.ui.WorldSwitchingPanelListener;
 import com.ran.dissertation.world.World;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainController {
 
-    private final WorldFactory worldFactory;
-    private World world;
+    private final List<WorldFactory> worldFactories;
+    private List<World> worlds;
     private MainFrame mainFrame;
     private DialogPanelContent dialogPanelContent;
 
-    public MainController(WorldFactory worldFactory) {
-        this.worldFactory = worldFactory;
+    public MainController(List<WorldFactory> worldFactories) {
+        this.worldFactories = worldFactories;
     }
 
     public void startApplication() {
-        world = worldFactory.createWorld();
+        worlds = worldFactories.stream()
+                .map(worldFactory -> worldFactory.createWorld())
+                .collect(Collectors.toList());
         tryToSetBetterLaf();
         mainFrame = new MainFrame();
         setWindowClosingListener(mainFrame);
-        mainFrame.getImagePanel().setImagePanelPaintStrategy(new DefaultPaintStrategy(world));
-        mainFrame.getImagePanel().addImagePanelListener(new DefaultCameraController(world.getCamera()));
         dialogPanelContent = new DialogPanelContent();
-        dialogPanelContent.getAnimationControlPanel()
-                .setAnimations(prepareAnimationSelectItemsForWorld(world, mainFrame.getImagePanel()));
-        dialogPanelContent.getAnimationControlPanel()
-                .addAnimationControlPanelListener(new DefaultAnimationController());
+        WorldSwitchingPanelListener worldSwitchingPanelListener =
+                new DefaultWorldSwitchingListener(mainFrame, dialogPanelContent);
+        dialogPanelContent.getWorldSwitchingPanel().addWorldSwitchingListener(worldSwitchingPanelListener);
+        dialogPanelContent.getWorldSwitchingPanel().setWorlds(prepareWorldSelectItems(worlds));
         mainFrame.getDialogPanel().setComponent(dialogPanelContent);
+        worldSwitchingPanelListener.chosenWorldChanged(worlds.get(0), null);
         mainFrame.setVisible(true);
     }
     
@@ -46,10 +46,7 @@ public class MainController {
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                for (AnimationStrategy animationStrategy: dialogPanelContent
-                        .getAnimationControlPanel().getAnimationStrategies()) {
-                    animationStrategy.stopAnimation();
-                }
+                dialogPanelContent.getAnimationControlPanel().stopAllAnimations();
             }
         });
     }
@@ -68,13 +65,11 @@ public class MainController {
         }
     }
 
-    private List<SelectItem<AnimationStrategy>> prepareAnimationSelectItemsForWorld(World world, ImagePanel imagePanel) {
-        List<AnimatedObject> animatedObjects = world.getAnimatedObjects();
-        List<SelectItem<AnimationStrategy>> selectItems = new ArrayList<>(animatedObjects.size());
-        for (int i = 0; i < animatedObjects.size(); i++) {
-            String animationName = "Animation #" + (i + 1);
-            AnimationStrategy animationStrategy = new DefaultAnimationStrategy(animatedObjects.get(i), imagePanel);
-            selectItems.add(new SelectItem<>(animationStrategy, animationName));
+    private List<SelectItem<World>> prepareWorldSelectItems(List<World> worlds) {
+        List<SelectItem<World>> selectItems = new ArrayList<>(worlds.size());
+        for (int i = 0; i < worlds.size(); i++) {
+            String worldName = "World #" + (i + 1);
+            selectItems.add(new SelectItem<>(worlds.get(i), worldName));
         }
         return selectItems;
     }
