@@ -6,8 +6,8 @@ import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
 import com.ran.dissertation.interpolation.ArcsBuilder;
-import com.ran.dissertation.interpolation.InterpolatedCurveCreator;
-import com.ran.dissertation.interpolation.InterpolatedPlainCurveCreator;
+import com.ran.dissertation.interpolation.curvecreators.InterpolatedSphereCurveCreator;
+import com.ran.dissertation.interpolation.curvecreators.InterpolatedPlainCurveCreator;
 import com.ran.dissertation.interpolation.ParabolaBuilder;
 import com.ran.dissertation.world.Figure;
 import java.util.ArrayList;
@@ -141,7 +141,7 @@ public class FigureFactory {
     
     public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
         DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                InterpolatedCurveCreator.getInstance().interpolateCurve(verticesForInterpolation, degree, 0.0, 1.0);
+                new InterpolatedSphereCurveCreator().interpolateCurve(verticesForInterpolation, new Pair<>(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
@@ -154,8 +154,8 @@ public class FigureFactory {
     
     public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
             CoordinatesConverter coordinatesConverter) {
-        DoubleFunction<SingleDouble> splineFunction = InterpolatedPlainCurveCreator.getInstance()
-                .interpolatePlainCurve(pointsWithValues, degree);
+        DoubleFunction<SingleDouble> splineFunction = new InterpolatedPlainCurveCreator()
+                .interpolateCurve(pointsWithValues, null, degree);
         return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
     }
     
@@ -188,18 +188,16 @@ public class FigureFactory {
     }
     
     public Figure makeFigureByFunction(DoubleFunction<SingleDouble> function,
-            int segments,
-            CoordinatesConverter coordinatesConverter) {
+            int segments, CoordinatesConverter coordinatesConverter) {
         List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
         double parameterStart = function.getMinParameterValue();
         double parameterEnd = function.getMaxParameterValue();
-        List<ThreeDoubleVector> splinePointsWithValues = new ArrayList<>(segments + 1);
         for (int i = 0; i <= segments; i++) {
             double point = parameterStart + (parameterEnd - parameterStart) * i / segments;
             double value = function.apply(point).getValue();
-            splinePointsWithValues.add(coordinatesConverter.convert(point, value));
+            vertices.add(coordinatesConverter.convert(point, value));
         }
-        return new Figure(splinePointsWithValues, makeEdgesSimpleList(segments));
+        return new Figure(vertices, makeEdgesSimpleList(segments));
     }
     
     public Figure makeArcOnSphereByPoints(ThreeDoubleVector firstPoint,

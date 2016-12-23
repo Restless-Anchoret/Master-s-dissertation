@@ -1,4 +1,4 @@
-package com.ran.dissertation.interpolation;
+package com.ran.dissertation.interpolation.curvecreators;
 
 import com.ran.dissertation.algebraic.common.ArithmeticOperations;
 import com.ran.dissertation.algebraic.common.Pair;
@@ -8,21 +8,20 @@ import com.ran.dissertation.algebraic.function.DoubleMultifunction;
 import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.vector.DoubleVector;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
+import com.ran.dissertation.interpolation.ArcsBuilder;
+import com.ran.dissertation.interpolation.CurvesDeformationCreator;
+import com.ran.dissertation.interpolation.TimeMomentsUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedCurveCreator {
+public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCreator<
+        ThreeDoubleVector, ThreeDoubleVector, Pair<Double, Double>> {
 
-    private static final InterpolatedCurveCreator INSTANCE = new InterpolatedCurveCreator();
-    
-    public static InterpolatedCurveCreator getInstance() {
-        return INSTANCE;
-    }
-    
-    private InterpolatedCurveCreator() { }
-    
+    @Override
     public DoubleFunction<ThreeDoubleVector> interpolateCurve(List<ThreeDoubleVector> vertices,
-            int degree, double t0, double t1) {
+            Pair<Double, Double> parameters, int degree) {
+        double t0 = parameters.getLeft();
+        double t1 = parameters.getRight();
         validateVertices(vertices);
         int k = vertices.size();
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();

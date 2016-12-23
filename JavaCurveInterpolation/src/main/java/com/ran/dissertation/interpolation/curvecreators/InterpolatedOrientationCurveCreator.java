@@ -1,25 +1,24 @@
-package com.ran.dissertation.interpolation;
+package com.ran.dissertation.interpolation.curvecreators;
 
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.exception.AlgebraicException;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.function.DoubleMultifunction;
 import com.ran.dissertation.algebraic.quaternion.Quaternion;
+import com.ran.dissertation.interpolation.CurvesDeformationCreator;
+import com.ran.dissertation.interpolation.OrientationArcsBuilder;
+import com.ran.dissertation.interpolation.TimeMomentsUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedOrientationCurveCreator {
-
-    private static final InterpolatedOrientationCurveCreator INSTANCE = new InterpolatedOrientationCurveCreator();
+public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCurveCreator<
+        Quaternion, Quaternion, Pair<Double, Double>> {
     
-    public static InterpolatedOrientationCurveCreator getInstance() {
-        return INSTANCE;
-    }
-    
-    private InterpolatedOrientationCurveCreator() { }
-    
-    public DoubleFunction<Quaternion> interpolateOrientationCurve(List<Quaternion> quaternions,
-            int degree, double t0, double t1) {
+    @Override
+    public DoubleFunction<Quaternion> interpolateCurve(List<Quaternion> quaternions,
+            Pair<Double, Double> parameters, int degree) {
+        double t0 = parameters.getLeft();
+        double t1 = parameters.getRight();
         validateQuaternions(quaternions);
         int k = quaternions.size();
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();

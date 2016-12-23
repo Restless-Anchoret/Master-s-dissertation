@@ -1,9 +1,10 @@
 package com.ran.dissertation.factories;
 
+import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.quaternion.Quaternion;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
-import com.ran.dissertation.interpolation.InterpolatedOrientationCurveCreator;
+import com.ran.dissertation.interpolation.curvecreators.InterpolatedOrientationCurveCreator;
 import com.ran.dissertation.world.Orientation;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class AnimationFactory {
     public List<Orientation> makeInterpolatedOrientationCurveAnimation(List<Quaternion> quaternions,
             int degree, int frames, ThreeDoubleVector offset) {
         DoubleFunction<Quaternion> interpolatedCurve =
-                InterpolatedOrientationCurveCreator.getInstance().interpolateOrientationCurve(quaternions, degree, 0.0, 1.0);
+                new InterpolatedOrientationCurveCreator().interpolateCurve(quaternions, new Pair<>(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<Quaternion> orientationQuaternions = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, frames - 1);

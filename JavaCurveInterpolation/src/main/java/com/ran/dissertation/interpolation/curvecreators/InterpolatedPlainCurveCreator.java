@@ -1,24 +1,22 @@
-package com.ran.dissertation.interpolation;
+package com.ran.dissertation.interpolation.curvecreators;
 
 import com.ran.dissertation.algebraic.common.Pair;
 import com.ran.dissertation.algebraic.exception.AlgebraicException;
 import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.function.DoubleMultifunction;
 import com.ran.dissertation.algebraic.vector.SingleDouble;
+import com.ran.dissertation.interpolation.CurvesDeformationCreator;
+import com.ran.dissertation.interpolation.GroupMultiplicationOperationFactory;
+import com.ran.dissertation.interpolation.ParabolaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedPlainCurveCreator {
-
-    private static final InterpolatedPlainCurveCreator INSTANCE = new InterpolatedPlainCurveCreator();
+public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCreator<
+        Pair<Double, Double>, SingleDouble, Object> {
     
-    public static InterpolatedPlainCurveCreator getInstance() {
-        return INSTANCE;
-    }
-    
-    private InterpolatedPlainCurveCreator() { }
-    
-    public DoubleFunction<SingleDouble> interpolatePlainCurve(List<Pair<Double, Double>> pointsWithValues, int degree) {
+    @Override
+    public DoubleFunction<SingleDouble> interpolateCurve(List<Pair<Double, Double>> pointsWithValues,
+            Object parameters, int degree) {
         validateVertices(pointsWithValues);
         int k = pointsWithValues.size();
         ParabolaBuilder parabolaBuilder = ParabolaBuilder.getInstance();
