@@ -33,6 +33,9 @@ public class DefaultPaintStrategy implements ImagePanelPaintStrategy {
     
     private void paintDisplayableObject(DisplayableObject displayableObject, Camera camera,
             PaintDelegate paintDelegate, int width, int height) {
+        if (!displayableObject.isVisible()) {
+            return;
+        }
         List<TwoIntVector> displayCoordinates = convertWorldCoordinatesToDiplayCoordinates(
                 displayableObject.getCurrentFigureVertices(), camera, width, height);
         for (Pair<Integer, Integer> figureEdge: displayableObject.getFigure().getFigureEdges()) {

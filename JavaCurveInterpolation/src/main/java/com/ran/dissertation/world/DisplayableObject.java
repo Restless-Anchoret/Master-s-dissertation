@@ -16,6 +16,7 @@ public class DisplayableObject {
     private final Color color;
     private final float edgePaintWidth;
     private int verticePaintRadius;
+    private boolean visible;
 
     public DisplayableObject(Figure figure) {
         this(figure, Orientation.INITIAL_ORIENTATION, DEFAULT_FIGURE_COLOR,
@@ -29,13 +30,20 @@ public class DisplayableObject {
     public DisplayableObject(Figure figure, Orientation orientation, Color color) {
         this(figure, orientation, color, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
     }
+    
+    public DisplayableObject(Figure figure, Orientation orientation, Color color,
+            float edgePaintWidth, int verticePaintRadius) {
+        this(figure, orientation, color, edgePaintWidth, verticePaintRadius, true);
+    }
 
-    public DisplayableObject(Figure figure, Orientation orientation, Color color, float edgePaintWidth, int verticePaintRadius) {
+    public DisplayableObject(Figure figure, Orientation orientation, Color color,
+            float edgePaintWidth, int verticePaintRadius, boolean visible) {
         this.figure = figure;
         this.orientation = orientation;
         this.color = color;
         this.edgePaintWidth = edgePaintWidth;
         this.verticePaintRadius = verticePaintRadius;
+        this.visible = visible;
     }
 
     public Color getColor() {
@@ -56,6 +64,14 @@ public class DisplayableObject {
 
     public Orientation getOrientation() {
         return orientation;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public void setOrientation(Orientation orientation) {
