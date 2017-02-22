@@ -6,7 +6,6 @@ import com.ran.dissertation.algebraic.function.DoubleFunction;
 import com.ran.dissertation.algebraic.matrix.DoubleMatrix;
 import com.ran.dissertation.algebraic.quaternion.Quaternion;
 import com.ran.dissertation.algebraic.vector.ThreeDoubleVector;
-import com.ran.dissertation.world.Orientation;
 
 public class OrientationArcsBuilder {
 
@@ -66,11 +65,10 @@ public class OrientationArcsBuilder {
     private Pair<Double, DoubleFunction<Quaternion>> buildArcOnBigCircle(Quaternion p1, Quaternion p2) {
         Quaternion r = p2.multiply(p1.getConjugate());
         ThreeDoubleVector axis = r.getVector().normalized();
-        double sin = r.getVector().getNorm();
         double cos = r.getScalar();
-        double angle = (sin >= 0.0 ? Math.acos(cos) : 2.0 * Math.PI - Math.acos(cos));
+        double angle = (Math.acos(cos) * 2.0 + Math.PI) % (2.0 * Math.PI) - Math.PI;
         DoubleFunction<Quaternion> rotation = new DoubleFunction<>(
-                point -> Orientation.createForRotation(axis, angle * point).getRotation(),
+                point -> Quaternion.createForRotation(axis, angle * point),
                 0.0, 1.0
         );
         return new Pair<>(angle, rotation);

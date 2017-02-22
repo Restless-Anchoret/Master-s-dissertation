@@ -148,7 +148,10 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
 
     @Override
     public String toString() {
-        return "Quaternion{" + "scalar=" + scalar + ", vector=" + vector + '}';
+        return "Quaternion{" + scalar + " + " +
+                vector.getX() + "*i + " +
+                vector.getY() + "*j + " +
+                vector.getZ() + "*k}";
     }
 
 }

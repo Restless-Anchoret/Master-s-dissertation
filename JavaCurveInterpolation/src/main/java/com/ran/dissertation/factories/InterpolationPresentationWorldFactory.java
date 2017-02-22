@@ -61,8 +61,7 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                         sphereOrientation, Color.RED, 0, 4),
                 
                 // Orientation curve interpolation
-                new DisplayableObject(//figureFactory.makeGrid(2, 2, 2, 5.0, 5.0, 5.0),
-                        figureFactory.makeCube(10.0),
+                new DisplayableObject(figureFactory.makeCube(10.0),
                         cubeOrientation, Color.LIGHT_GRAY)
         ));
         
@@ -112,7 +111,6 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                 Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0),
                 Orientation.INITIAL_ORIENTATION
         );
-        // todo: some bug with these orientations - need to check
 //        List<Orientation> orientations = Arrays.asList(
 //                Orientation.INITIAL_ORIENTATION,
 //                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
@@ -120,7 +118,15 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
 //                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
 //                Orientation.INITIAL_ORIENTATION,
 //                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0),
-//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0)
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
+//                Orientation.INITIAL_ORIENTATION
+//        );
+//        List<Orientation> orientations = Arrays.asList(
+//                Orientation.INITIAL_ORIENTATION,
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI),
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
+//                Orientation.INITIAL_ORIENTATION
 //        );
         return orientations;
     }

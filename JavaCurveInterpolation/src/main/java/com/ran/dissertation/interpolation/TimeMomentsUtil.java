@@ -23,8 +23,8 @@ public class TimeMomentsUtil {
         double timeBeforePrevious = t0;
         double timePrevous = t1;
         for (Pair<Double, Double> angles: rotationAngles) {
-            double phi = angles.getLeft();
-            double psi = angles.getRight();
+            double phi = Math.abs(angles.getLeft());
+            double psi = Math.abs(angles.getRight());
             double timeNext = timePrevous + (timePrevous - timeBeforePrevious) * (psi / phi);
             timeMoments.add(timeNext);
             timeBeforePrevious = timePrevous;
