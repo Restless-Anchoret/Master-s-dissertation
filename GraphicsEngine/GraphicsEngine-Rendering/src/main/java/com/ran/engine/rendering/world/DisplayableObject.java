@@ -1,7 +1,10 @@
 package com.ran.engine.rendering.world;
 
+import com.ran.engine.rendering.algebraic.function.DoubleFunction;
+import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import java.awt.Color;
+
+import java.awt.*;
 import java.util.List;
 
 public class DisplayableObject {
@@ -11,59 +14,60 @@ public class DisplayableObject {
     public static final int DEFAULT_VERTICE_PAINT_RADIUS = 2;
     
     private final Figure figure;
-    private Orientation orientation;
     private List<ThreeDoubleVector> currentFigureVertices = null;
-    private final Color color;
-    private final float edgePaintWidth;
+    private Color color;
+    private float edgePaintWidth;
     private int verticePaintRadius;
     private boolean visible;
 
-    public DisplayableObject(Figure figure) {
-        this(figure, Orientation.INITIAL_ORIENTATION, DEFAULT_FIGURE_COLOR,
-                DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
-    }
-    
-    public DisplayableObject(Figure figure, Orientation orientation) {
-        this(figure, orientation, DEFAULT_FIGURE_COLOR, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
-    }
-    
-    public DisplayableObject(Figure figure, Orientation orientation, Color color) {
-        this(figure, orientation, color, DEFAULT_EDGE_PAINT_WIDTH, DEFAULT_VERTICE_PAINT_RADIUS);
-    }
-    
-    public DisplayableObject(Figure figure, Orientation orientation, Color color,
-            float edgePaintWidth, int verticePaintRadius) {
-        this(figure, orientation, color, edgePaintWidth, verticePaintRadius, true);
-    }
+    private final DoubleFunction<Quaternion> animationFunction;
+    private double currentAnimationTime = 0;
+    private ThreeDoubleVector offset;
+    private Orientation currentOrientation;
+    private boolean animationTurnedOn = false;
+    private final boolean animationCyclic;
 
-    public DisplayableObject(Figure figure, Orientation orientation, Color color,
-            float edgePaintWidth, int verticePaintRadius, boolean visible) {
+    public DisplayableObject(Figure figure, Color color, float edgePaintWidth,
+                             int verticePaintRadius, boolean visible,
+                             DoubleFunction<Quaternion> animationFunction,
+                             ThreeDoubleVector offset, boolean animationCyclic) {
         this.figure = figure;
-        this.orientation = orientation;
         this.color = color;
         this.edgePaintWidth = edgePaintWidth;
         this.verticePaintRadius = verticePaintRadius;
         this.visible = visible;
+        this.animationFunction = animationFunction;
+        this.offset = offset;
+        this.animationCyclic = animationCyclic;
+        this.currentOrientation = new Orientation(offset, animationFunction.apply(currentAnimationTime));
     }
 
     public Color getColor() {
         return color;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public float getEdgePaintWidth() {
         return edgePaintWidth;
+    }
+
+    public void setEdgePaintWidth(float edgePaintWidth) {
+        this.edgePaintWidth = edgePaintWidth;
     }
 
     public int getVerticePaintRadius() {
         return verticePaintRadius;
     }
 
-    public Figure getFigure() {
-        return figure;
+    public void setVerticePaintRadius(int verticePaintRadius) {
+        this.verticePaintRadius = verticePaintRadius;
     }
 
-    public Orientation getOrientation() {
-        return orientation;
+    public Figure getFigure() {
+        return figure;
     }
 
     public boolean isVisible() {
@@ -74,8 +78,41 @@ public class DisplayableObject {
         this.visible = visible;
     }
 
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
+    public DoubleFunction<Quaternion> getAnimationFunction() {
+        return animationFunction;
+    }
+
+    public double getCurrentAnimationTime() {
+        return currentAnimationTime;
+    }
+
+    public ThreeDoubleVector getOffset() {
+        return offset;
+    }
+
+    public void setOffset(ThreeDoubleVector offset) {
+        this.offset = offset;
+    }
+
+    public boolean isAnimationTurnedOn() {
+        return animationTurnedOn;
+    }
+
+    public void setAnimationTurnedOn(boolean animationTurnedOn) {
+        this.animationTurnedOn = animationTurnedOn;
+        currentAnimationTime %= animationFunction.getMaxParameterValue();
+    }
+
+    public boolean isAnimationCyclic() {
+        return animationCyclic;
+    }
+
+    public Orientation getCurrentOrientation() {
+        return currentOrientation;
+    }
+
+    public void setCurrentOrientation(Orientation currentOrientation) {
+        this.currentOrientation = currentOrientation;
         this.currentFigureVertices = null;
     }
 
@@ -88,7 +125,23 @@ public class DisplayableObject {
         if (currentFigureVertices != null) {
             return;
         }
-        currentFigureVertices = OrientationMapper.getInstance().orientVertices(figure.getVertices(), orientation);
+        currentFigureVertices = OrientationMapper.getInstance().orientVertices(figure.getVertices(), currentOrientation);
+    }
+
+    public void updateAnimationForDeltaTime(double deltaTime) {
+        if (!animationTurnedOn) {
+            return;
+        }
+        currentAnimationTime += deltaTime;
+        if (currentAnimationTime > animationFunction.getMaxParameterValue()) {
+            if (animationCyclic) {
+                currentAnimationTime %= animationFunction.getMaxParameterValue();
+            } else {
+                currentAnimationTime = animationFunction.getMaxParameterValue();
+                animationTurnedOn = false;
+            }
+        }
+        setCurrentOrientation(new Orientation(offset, animationFunction.apply(currentAnimationTime)));
     }
     
 }

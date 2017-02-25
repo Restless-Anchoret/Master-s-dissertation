@@ -6,26 +6,34 @@ import java.util.List;
 public class World {
 
     private final List<DisplayableObject> displayableObjects;
-    private final List<AnimatedObject> animatedObjects;
+    private List<StaticObject> staticObjects;
     private final Camera camera;
 
-    public World(List<DisplayableObject> displayableObjects, List<AnimatedObject> animatedObjects, Camera camera) {
-        this.displayableObjects = new ArrayList<>(displayableObjects);
-        this.displayableObjects.addAll(animatedObjects);
-        this.animatedObjects = animatedObjects;
+    public World(List<DisplayableObject> displayableObjects, Camera camera) {
+        this.displayableObjects = displayableObjects;
         this.camera = camera;
+        initializeStaticObjects();
     }
 
     public List<DisplayableObject> getDisplayableObjects() {
         return displayableObjects;
     }
 
-    public List<AnimatedObject> getAnimatedObjects() {
-        return animatedObjects;
+    public List<StaticObject> getStaticObjects() {
+        return staticObjects;
     }
 
     public Camera getCamera() {
         return camera;
+    }
+
+    private void initializeStaticObjects() {
+        staticObjects = new ArrayList<>();
+        for (DisplayableObject displayableObject: displayableObjects) {
+            if (displayableObject instanceof StaticObject) {
+                staticObjects.add((StaticObject)displayableObject);
+            }
+        }
     }
     
 }

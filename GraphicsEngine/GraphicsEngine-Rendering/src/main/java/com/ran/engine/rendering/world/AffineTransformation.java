@@ -11,8 +11,8 @@ public class AffineTransformation {
     }
     
     public void performTransformation(DisplayableObject displayableObject) {
-        displayableObject.setOrientation(
-                orientationMaker.apply(displayableObject.getOrientation()));
+        displayableObject.setCurrentOrientation(
+                orientationMaker.apply(displayableObject.getCurrentOrientation()));
     }
     
 }
