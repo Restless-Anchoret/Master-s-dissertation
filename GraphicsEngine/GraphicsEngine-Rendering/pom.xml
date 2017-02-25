@@ -10,9 +10,9 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>GraphicsEngine-DrawingMechanism</artifactId>
+    <artifactId>GraphicsEngine-Rendering</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>GraphicsEngine-DrawingMechanism</name>
+    <name>GraphicsEngine-Rendering</name>
 </project>
