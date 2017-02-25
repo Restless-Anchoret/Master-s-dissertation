@@ -12,15 +12,15 @@ public class RenderingEngine {
     private RenderingDelegate renderingDelegate;
     private final List<RenderingAction> renderingActions;
 
-    public RenderingEngine(World world, RenderingDelegate renderingDelegate, RenderingMode renderingMode) {
-        this.renderingInfo = new RenderingInfo(world, renderingMode);
+    public RenderingEngine(List<World> worlds, RenderingDelegate renderingDelegate, RenderingMode renderingMode) {
+        this.renderingInfo = new RenderingInfo(worlds, renderingMode);
         this.renderingDelegate = renderingDelegate;
         this.renderingActions = new ArrayList<>();
         this.renderingActions.add(WorldRenderingAction.getInstance());
     }
 
-    public RenderingEngine(World world, RenderingDelegate renderingDelegate) {
-        this(world, renderingDelegate, RenderingMode.DEFAULT_MODE);
+    public RenderingEngine(List<World> worlds, RenderingDelegate renderingDelegate) {
+        this(worlds, renderingDelegate, RenderingMode.DEFAULT_MODE);
     }
 
     public RenderingInfo getRenderingInfo() {
@@ -40,7 +40,7 @@ public class RenderingEngine {
     }
 
     public void updateAnimationForDeltaTime(double deltaTime) {
-        for (DisplayableObject displayableObject: renderingInfo.getWorld().getDisplayableObjects()) {
+        for (DisplayableObject displayableObject: renderingInfo.getCurrentWorld().getDisplayableObjects()) {
             displayableObject.updateAnimationForDeltaTime(deltaTime);
         }
     }

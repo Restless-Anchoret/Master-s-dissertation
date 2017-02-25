@@ -25,8 +25,8 @@ public class WorldRenderingAction implements RenderingAction {
     @Override
     public void performRendering(RenderingDelegate delegate, RenderingInfo info) {
         delegate.clear(info.getBackgroundColor());
-        for (DisplayableObject displayableObject: info.getWorld().getDisplayableObjects()) {
-            paintDisplayableObject(displayableObject, info.getWorld().getCamera(), delegate);
+        for (DisplayableObject displayableObject: info.getCurrentWorld().getDisplayableObjects()) {
+            paintDisplayableObject(displayableObject, info.getCurrentWorld().getCamera(), delegate);
         }
     }
 
