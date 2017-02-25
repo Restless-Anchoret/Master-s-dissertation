@@ -54,7 +54,7 @@ public class OpenGLRunner {
     private List<EventHandler> createKeyboardEventHandlers() {
         return Arrays.asList(
                 new AnimationControlHandler(),
-                new WorldSwitchHandler(),
+                new WorldSwitchHandler(renderingEngine),
                 new SmoothingSwitchHandler(),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),
@@ -66,6 +66,7 @@ public class OpenGLRunner {
         try {
             Display.setDisplayMode(Display.getDesktopDisplayMode());
             Display.setFullscreen(true);
+            Display.setVSyncEnabled(true);
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();

@@ -79,6 +79,7 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                 new DisplayableObjectBuilder(figureForRotation,
                         animationFactory.makeInterpolatedOrientationCurveAnimation(
                         quaternions, 2, 30))
+                        .setOffset(cubeOrientation.getOffset())
                         .setEdgePaintWidth(2.0f)
                         .setVerticePaintRadius(2)
                         .setAnimationCyclic(false).build()
