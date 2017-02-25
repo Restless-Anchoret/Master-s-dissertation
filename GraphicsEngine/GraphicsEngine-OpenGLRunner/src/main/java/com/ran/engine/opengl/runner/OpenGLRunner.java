@@ -11,7 +11,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
@@ -49,22 +48,24 @@ public class OpenGLRunner {
     }
 
     private List<EventHandler> createMouseEventHandlers() {
-        return Collections.singletonList(new CameraControlHandler());
+        return Collections.singletonList(new CameraControlHandler(renderingEngine));
     }
 
     private List<EventHandler> createKeyboardEventHandlers() {
         return Arrays.asList(
                 new AnimationControlHandler(),
                 new WorldSwitchHandler(),
+                new SmoothingSwitchHandler(),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),
-                new FullscreenSwitchHandler()
+                new DisplayModeSwitchHandler()
         );
     }
 
     private void initOpenGL() {
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            Display.setDisplayMode(Display.getDesktopDisplayMode());
+            Display.setFullscreen(true);
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
@@ -73,8 +74,9 @@ public class OpenGLRunner {
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, 800, 0, 600, 1, -1);
+        GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        SmoothingSwitchHandler.turnOnSmothing();
     }
 
     private void updateApplicationState() {
