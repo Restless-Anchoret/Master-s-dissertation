@@ -33,7 +33,7 @@ public interface RenderingDelegate {
     default void drawLine(TwoIntVector firstPoint, TwoIntVector secondPoint, Color color, float paintWidth) {
         setColor(color);
         setPaintWidth(paintWidth);
-        drawLine(firstPoint, secondPoint, color, paintWidth);
+        drawLine(firstPoint, secondPoint);
     }
 
     default void drawCircle(TwoIntVector center, Color color, int radius) {
