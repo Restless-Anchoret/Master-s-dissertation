@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ran</groupId>
-            <artifactId>GraphicsEngine-DrawingMechanism</artifactId>
+            <artifactId>GraphicsEngine-Rendering</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

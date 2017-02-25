@@ -10,18 +10,21 @@ public class DisplayableObjectBuilder {
 
     private final Figure figure;
     private final DoubleFunction<Quaternion> animationFunction;
-    private final ThreeDoubleVector offset;
+    private ThreeDoubleVector offset = ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR;
     private Color color = DisplayableObject.DEFAULT_FIGURE_COLOR;
     private float edgePaintWidth = DisplayableObject.DEFAULT_EDGE_PAINT_WIDTH;
     private int verticePaintRadius = DisplayableObject.DEFAULT_VERTICE_PAINT_RADIUS;
     private boolean visible = true;
     private boolean animationCyclic = true;
 
-    public DisplayableObjectBuilder(Figure figure, DoubleFunction<Quaternion> animationFunction,
-                                    ThreeDoubleVector offset) {
+    public DisplayableObjectBuilder(Figure figure, DoubleFunction<Quaternion> animationFunction) {
         this.figure = figure;
         this.animationFunction = animationFunction;
+    }
+
+    public DisplayableObjectBuilder setOffset(ThreeDoubleVector offset) {
         this.offset = offset;
+        return this;
     }
 
     public DisplayableObjectBuilder setColor(Color color) {
