@@ -39,7 +39,7 @@ public class OpenGLRunner {
         mouseEventHandlers = createMouseEventHandlers();
         keyboardEventHandlers = createKeyboardEventHandlers();
         initOpenGL();
-        getDelta();
+        initApplicationState();
         runMainCycle();
         finalizeOpenGL();
     }
@@ -68,7 +68,6 @@ public class OpenGLRunner {
             Display.setDisplayMode(displayModeForSetting);
             Display.setFullscreen(true);
             Display.setVSyncEnabled(true);
-            applicationState.setVerticalSyncTurnedOn(true);
             Display.create();
 
             DisplayMode[] displayModes = Display.getAvailableDisplayModes();
@@ -78,20 +77,28 @@ public class OpenGLRunner {
                     break;
                 }
             }
+
+            DisplaySettingsSwitchHandler.updateOrtho();
+            DisplaySettingsSwitchHandler.turnOnSmothing();
         } catch (LWJGLException e) {
             // todo: replace by logging
             e.printStackTrace();
             System.exit(0);
         }
+    }
 
-        DisplaySettingsSwitchHandler.updateOrtho();
-        DisplaySettingsSwitchHandler.turnOnSmothing();
+    private void initApplicationState() {
+        applicationState.setVerticalSyncTurnedOn(true);
         applicationState.setSmoothingTurnedOn(true);
+        long time = getTime();
+        applicationState.setLastFrameTime(time);
+        applicationState.setLastFpsMeasurementTime(time);
     }
 
     private void runMainCycle() {
         while (!Display.isCloseRequested()) {
             handleEvents();
+            updateApplicationState();
             renderingEngine.updateAnimationForDeltaTime(getDelta());
             renderingEngine.performRendering();
             Display.update();
@@ -110,6 +117,15 @@ public class OpenGLRunner {
                 eventHandler.handleEvent();
             }
         }
+    }
+
+    private void updateApplicationState() {
+        if (getTime() - applicationState.getLastFpsMeasurementTime() > 1000) {
+            applicationState.setLastFpsMeasurementResult(applicationState.getFpsCounter());
+            applicationState.setFpsCounter(0);
+            applicationState.setLastFpsMeasurementTime(applicationState.getLastFpsMeasurementTime() + 1000);
+        }
+        applicationState.setFpsCounter(applicationState.getFpsCounter() + 1);
     }
 
     private long getTime() {
