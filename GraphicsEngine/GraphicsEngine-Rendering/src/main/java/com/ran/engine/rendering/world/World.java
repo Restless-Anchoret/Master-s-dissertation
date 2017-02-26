@@ -6,6 +6,7 @@ import java.util.List;
 public class World {
 
     private final List<DisplayableObject> displayableObjects;
+    private int chosenObjectIndex = -1;
     private List<StaticObject> staticObjects;
     private final Camera camera;
 
@@ -17,6 +18,14 @@ public class World {
 
     public List<DisplayableObject> getDisplayableObjects() {
         return displayableObjects;
+    }
+
+    public int getChosenObjectIndex() {
+        return chosenObjectIndex;
+    }
+
+    public void setChosenObjectIndex(int chosenObjectIndex) {
+        this.chosenObjectIndex = chosenObjectIndex;
     }
 
     public List<StaticObject> getStaticObjects() {

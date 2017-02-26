@@ -8,6 +8,7 @@ import com.ran.engine.opengl.handlers.mouse.CameraControlHandler;
 import com.ran.engine.rendering.core.RenderingEngine;
 import com.ran.engine.rendering.world.World;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -38,7 +39,7 @@ public class OpenGLRunner {
         mouseEventHandlers = createMouseEventHandlers();
         keyboardEventHandlers = createKeyboardEventHandlers();
         initOpenGL();
-        updateApplicationState();
+        getDelta();
         runMainCycle();
         finalizeOpenGL();
     }
@@ -53,7 +54,7 @@ public class OpenGLRunner {
 
     private List<EventHandler> createKeyboardEventHandlers() {
         return Arrays.asList(
-                new AnimationControlHandler(),
+                new AnimationControlHandler(renderingEngine),
                 new WorldSwitchHandler(renderingEngine),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),
@@ -88,15 +89,10 @@ public class OpenGLRunner {
         applicationState.setSmoothingTurnedOn(true);
     }
 
-    private void updateApplicationState() {
-
-    }
-
     private void runMainCycle() {
         while (!Display.isCloseRequested()) {
             handleEvents();
-            updateApplicationState();
-            renderingEngine.updateAnimationForDeltaTime(0.0);
+            renderingEngine.updateAnimationForDeltaTime(getDelta());
             renderingEngine.performRendering();
             Display.update();
             Display.sync(FPS_GARDIAN);
@@ -114,6 +110,17 @@ public class OpenGLRunner {
                 eventHandler.handleEvent();
             }
         }
+    }
+
+    private long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+
+    private double getDelta() {
+        long time = getTime();
+        double delta = (time - applicationState.getLastFrameTime()) / 1000.0;
+        applicationState.setLastFrameTime(time);
+        return delta;
     }
 
     private void finalizeOpenGL() {

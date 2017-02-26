@@ -2,6 +2,7 @@ package com.ran.engine.opengl.runner;
 
 public class ApplicationState {
 
+    private long lastFrameTime;
     private int currentDisplayModeIndex;
     private boolean smoothingTurnedOn;
     private boolean verticalSyncTurnedOn;
@@ -28,6 +29,14 @@ public class ApplicationState {
 
     public void setVerticalSyncTurnedOn(boolean verticalSyncTurnedOn) {
         this.verticalSyncTurnedOn = verticalSyncTurnedOn;
+    }
+
+    public long getLastFrameTime() {
+        return lastFrameTime;
+    }
+
+    public void setLastFrameTime(long lastFrameTime) {
+        this.lastFrameTime = lastFrameTime;
     }
 
 }

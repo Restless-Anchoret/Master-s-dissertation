@@ -14,21 +14,23 @@ public class WorldSwitchHandler implements EventHandler {
 
     @Override
     public void handleEvent() {
-        if (Keyboard.getEventKeyState()) {
-            int currentWorldIndex = renderingEngine.getRenderingInfo().getCurrentWorldIndex();
-            if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
-                currentWorldIndex++;
-                if (currentWorldIndex == renderingEngine.getRenderingInfo().getWorlds().size()) {
-                    currentWorldIndex = 0;
-                }
-            } else if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
-                currentWorldIndex--;
-                if (currentWorldIndex < 0) {
-                    currentWorldIndex = renderingEngine.getRenderingInfo().getWorlds().size() - 1;
-                }
-            }
-            renderingEngine.getRenderingInfo().setCurrentWorldIndex(currentWorldIndex);
+        if (!Keyboard.getEventKeyState()) {
+            return;
         }
+        int currentWorldIndex = renderingEngine.getRenderingInfo().getCurrentWorldIndex();
+        int worldsQuantity = renderingEngine.getRenderingInfo().getWorlds().size();
+        switch (Keyboard.getEventKey()) {
+            case Keyboard.KEY_UP:
+                currentWorldIndex++;
+                break;
+            case Keyboard.KEY_DOWN:
+                currentWorldIndex--;
+                break;
+            default:
+                return;
+        }
+        currentWorldIndex = (currentWorldIndex + worldsQuantity) % worldsQuantity;
+        renderingEngine.getRenderingInfo().setCurrentWorldIndex(currentWorldIndex);
     }
 
 }

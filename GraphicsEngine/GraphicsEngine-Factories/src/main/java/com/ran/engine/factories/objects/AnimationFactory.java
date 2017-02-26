@@ -33,7 +33,10 @@ public class AnimationFactory {
                 new InterpolatedOrientationCurveCreator().interpolateCurve(quaternions, new Pair<>(0.0, 1.0), degree);
         double t0 = interpolatedCurve.getMinParameterValue();
         double t1 = interpolatedCurve.getMaxParameterValue();
-        return new DoubleFunction<>(time -> interpolatedCurve.apply(t0 + (time / timePeriod) * (t1 - t0)));
+        return new DoubleFunction<>(
+                time -> interpolatedCurve.apply(t0 + (time / timePeriod) * (t1 - t0)),
+                0.0, timePeriod
+        );
     }
     
 }
