@@ -11,7 +11,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.DisplayMode;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,29 +55,37 @@ public class OpenGLRunner {
         return Arrays.asList(
                 new AnimationControlHandler(),
                 new WorldSwitchHandler(renderingEngine),
-                new SmoothingSwitchHandler(),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),
-                new DisplayModeSwitchHandler()
+                new DisplaySettingsSwitchHandler(applicationState)
         );
     }
 
     private void initOpenGL() {
         try {
-            Display.setDisplayMode(Display.getDesktopDisplayMode());
+            DisplayMode displayModeForSetting = Display.getDesktopDisplayMode();
+            Display.setDisplayMode(displayModeForSetting);
             Display.setFullscreen(true);
             Display.setVSyncEnabled(true);
+            applicationState.setVerticalSyncTurnedOn(true);
             Display.create();
+
+            DisplayMode[] displayModes = Display.getAvailableDisplayModes();
+            for (int i = 0; i < displayModes.length; i++) {
+                if (displayModeForSetting.equals(displayModes[i])) {
+                    applicationState.setCurrentDisplayModeIndex(i);
+                    break;
+                }
+            }
         } catch (LWJGLException e) {
+            // todo: replace by logging
             e.printStackTrace();
             System.exit(0);
         }
 
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        SmoothingSwitchHandler.turnOnSmothing();
+        DisplaySettingsSwitchHandler.updateOrtho();
+        DisplaySettingsSwitchHandler.turnOnSmothing();
+        applicationState.setSmoothingTurnedOn(true);
     }
 
     private void updateApplicationState() {
