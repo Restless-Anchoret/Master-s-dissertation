@@ -44,8 +44,8 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         return null;
     }
 
-    public Figure makeInterpolatedCurveByDerivativeValues(List<ThreeDoubleVector> verticesForInterpolation,
-                                                          List<Double> tangentAngles, int degree, int segments) {
+    public Figure makeInterpolatedCurveByTangentAngles(List<Pair<ThreeDoubleVector, Double>> verticesWithTangentAngles,
+                                                          int degree, int segments) {
         return null;
     }
 
