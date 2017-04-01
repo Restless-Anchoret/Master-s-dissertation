@@ -1,4 +1,4 @@
-package com.ran.engine.factories.interpolation;
+package com.ran.engine.factories.interpolation.tools;
 
 import com.ran.engine.rendering.algebraic.exception.CreationException;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;

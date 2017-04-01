@@ -1,7 +1,7 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
-import com.ran.engine.factories.interpolation.CurvesDeformationCreator;
-import com.ran.engine.factories.interpolation.ParabolaBuilder;
+import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
+import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
 import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.exception.AlgebraicException;

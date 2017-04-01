@@ -1,8 +1,8 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
-import com.ran.engine.factories.interpolation.ArcsBuilder;
-import com.ran.engine.factories.interpolation.CurvesDeformationCreator;
-import com.ran.engine.factories.interpolation.TimeMomentsUtil;
+import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
+import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
+import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
 import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.exception.AlgebraicException;

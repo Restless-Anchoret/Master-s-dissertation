@@ -1,7 +1,7 @@
 package com.ran.engine.factories.objects;
 
-import com.ran.engine.factories.interpolation.ArcsBuilder;
-import com.ran.engine.factories.interpolation.ParabolaBuilder;
+import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
+import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;

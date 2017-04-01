@@ -1,4 +1,4 @@
-package com.ran.engine.factories.interpolation;
+package com.ran.engine.factories.interpolation.tools;
 
 import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
