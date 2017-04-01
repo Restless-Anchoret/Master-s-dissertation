@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCreator<
-        ThreeDoubleVector, ThreeDoubleVector, Pair<Double, Double>> {
+        ThreeDoubleVector, ThreeDoubleVector, SimpleInputParameters> {
 
     private static final InterpolatedSphereCurveCreator INSTANCE = new InterpolatedSphereCurveCreator();
 
@@ -26,9 +26,9 @@ public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCre
 
     @Override
     public DoubleFunction<ThreeDoubleVector> interpolateCurve(List<ThreeDoubleVector> vertices,
-            Pair<Double, Double> parameters, int degree) {
-        double t0 = parameters.getLeft();
-        double t1 = parameters.getRight();
+                                                              SimpleInputParameters parameters, int degree) {
+        double t0 = parameters.getT0();
+        double t1 = parameters.getT1();
         validateVertices(vertices);
         int k = vertices.size();
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();
@@ -79,6 +79,10 @@ public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCre
         if (vertices.stream().anyMatch(vertice -> ArithmeticOperations.doubleNotEquals(vertice.getNorm(), radius))) {
             throw new AlgebraicException("All vertices must belong to the same sphere");
         }
+    }
+
+    public static class InputParameters {
+
     }
     
 }

@@ -1,7 +1,9 @@
 package com.ran.engine.factories.objects;
 
+import com.ran.engine.factories.interpolation.curvecreators.EmptyInputParameters;
 import com.ran.engine.factories.interpolation.curvecreators.InterpolatedPlainCurveCreator;
 import com.ran.engine.factories.interpolation.curvecreators.InterpolatedSphereCurveCreator;
+import com.ran.engine.factories.interpolation.curvecreators.SimpleInputParameters;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
@@ -22,7 +24,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
         DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                new InterpolatedSphereCurveCreator().interpolateCurve(verticesForInterpolation, new Pair<>(0.0, 1.0), degree);
+                new InterpolatedSphereCurveCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
@@ -33,13 +35,25 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         return new Figure(vertices, figureEdges);
     }
 
+    public Figure makeBezierCurveByMiddlePoints(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
+        return null;
+    }
+
+    public Figure makeBezierCurveRoundingCorners(List<ThreeDoubleVector> verticesForInterpolation,
+                                                 int degree, int segments, double maximumRoundingAngle) {
+        return null;
+    }
+
+    public Figure makeInterpolatedCurveByDerivativeValues(List<ThreeDoubleVector> verticesForInterpolation,
+                                                          List<Double> tangentAngles, int degree, int segments) {
+        return null;
+    }
+
     public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
                              CoordinatesConverter coordinatesConverter) {
         DoubleFunction<SingleDouble> splineFunction = new InterpolatedPlainCurveCreator()
-                .interpolateCurve(pointsWithValues, null, degree);
+                .interpolateCurve(pointsWithValues, EmptyInputParameters.getInstance(), degree);
         return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
     }
-
-
 
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCreator<
-        Pair<Double, Double>, SingleDouble, Object> {
+        Pair<Double, Double>, SingleDouble, EmptyInputParameters> {
 
     private static final InterpolatedPlainCurveCreator INSTANCE = new InterpolatedPlainCurveCreator();
 
@@ -23,7 +23,7 @@ public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCrea
 
     @Override
     public DoubleFunction<SingleDouble> interpolateCurve(List<Pair<Double, Double>> pointsWithValues,
-            Object parameters, int degree) {
+                                                         EmptyInputParameters parameters, int degree) {
         validateVertices(pointsWithValues);
         int k = pointsWithValues.size();
         ParabolaBuilder parabolaBuilder = ParabolaBuilder.getInstance();

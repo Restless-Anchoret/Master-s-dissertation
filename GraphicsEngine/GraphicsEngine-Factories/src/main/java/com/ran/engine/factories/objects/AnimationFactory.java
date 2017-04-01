@@ -1,7 +1,7 @@
 package com.ran.engine.factories.objects;
 
 import com.ran.engine.factories.interpolation.curvecreators.InterpolatedOrientationCurveCreator;
-import com.ran.engine.rendering.algebraic.common.Pair;
+import com.ran.engine.factories.interpolation.curvecreators.SimpleInputParameters;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
@@ -30,7 +30,7 @@ public class AnimationFactory {
     public DoubleFunction<Quaternion> makeInterpolatedOrientationCurveAnimation(List<Quaternion> quaternions,
             int degree, double timePeriod) {
         DoubleFunction<Quaternion> interpolatedCurve =
-                new InterpolatedOrientationCurveCreator().interpolateCurve(quaternions, new Pair<>(0.0, 1.0), degree);
+                new InterpolatedOrientationCurveCreator().interpolateCurve(quaternions, new SimpleInputParameters(0.0, 1.0), degree);
         double t0 = interpolatedCurve.getMinParameterValue();
         double t1 = interpolatedCurve.getMaxParameterValue();
         return new DoubleFunction<>(

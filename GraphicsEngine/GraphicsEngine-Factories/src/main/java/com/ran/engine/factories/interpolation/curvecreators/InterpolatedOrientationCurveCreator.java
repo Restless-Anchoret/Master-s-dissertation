@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCurveCreator<
-        Quaternion, Quaternion, Pair<Double, Double>> {
+        Quaternion, Quaternion, SimpleInputParameters> {
 
     private static final InterpolatedOrientationCurveCreator INSTANCE = new InterpolatedOrientationCurveCreator();
 
@@ -23,9 +23,9 @@ public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCur
 
     @Override
     public DoubleFunction<Quaternion> interpolateCurve(List<Quaternion> quaternions,
-            Pair<Double, Double> parameters, int degree) {
-        double t0 = parameters.getLeft();
-        double t1 = parameters.getRight();
+                                                       SimpleInputParameters parameters, int degree) {
+        double t0 = parameters.getT0();
+        double t1 = parameters.getT1();
         validateQuaternions(quaternions);
         int k = quaternions.size();
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();
