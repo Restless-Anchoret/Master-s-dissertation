@@ -2,6 +2,7 @@ package com.ran.engine.factories.world;
 
 import com.ran.engine.factories.objects.AnimationFactory;
 import com.ran.engine.factories.objects.FigureFactory;
+import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
@@ -23,7 +24,9 @@ public class DefaultWorldFactory implements WorldFactory {
     @Override
     public World createWorld() {
         FigureFactory figureFactory = FigureFactory.getInstance();
+        InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
         AnimationFactory animationFactory = AnimationFactory.getInstance();
+
         DoubleFunction<Quaternion> animation = animationFactory.makeInterpolatedOrientationCurveAnimation(
                 makeQuaternionsForInterpolationList(), 2, 30);
         List<DisplayableObject> displayableObjects = Arrays.asList(
@@ -36,7 +39,7 @@ public class DefaultWorldFactory implements WorldFactory {
                 new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(6.0, 0.0, 4.0),
                         Color.LIGHT_GRAY, 1, 0),
-                new DisplayableObjectBuilder(figureFactory.makeInterpolatedCurve(
+                new DisplayableObjectBuilder(interpolatedFiguresFactory.makeInterpolatedCurve(
                         makeVerticesForInterpolationList(), 1, 100), animation)
                         .setOffset(new ThreeDoubleVector(-6.0, 0.0, 4.0)).build(),
                 new DisplayableObjectBuilder(figureFactory.makeCube(2.0 * Math.sqrt(3.0)), animation)

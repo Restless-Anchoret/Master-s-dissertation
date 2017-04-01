@@ -1,7 +1,9 @@
 package com.ran.engine.factories.world;
 
 import com.ran.engine.factories.objects.AnimationFactory;
+import com.ran.engine.factories.objects.DemonstrationFiguresFactory;
 import com.ran.engine.factories.objects.FigureFactory;
+import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
@@ -26,6 +28,8 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
     @Override
     public World createWorld() {
         FigureFactory figureFactory = FigureFactory.getInstance();
+        InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
+        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
         AnimationFactory animationFactory = AnimationFactory.getInstance();
         
         List<Pair<Double, Double>> pointsWithValues = makePointsWithValuesForInterpolationList();
@@ -45,10 +49,10 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                         Color.LIGHT_GRAY),
                 new StaticObject(figureFactory.makeGrid(20, 0, 0, 1.0, 0.0, 0.0)),
                 new StaticObject(figureFactory.makeGrid(0, 0, 16, 0.0, 0.0, 1.0)),
-                new StaticObject(figureFactory.makeFigureByParabolas(pointsWithValues, 20,
+                new StaticObject(demonstrationFiguresFactory.makeFigureByParabolas(pointsWithValues, 20,
                         CoordinatesConverter.CONVERTER_TO_XZ),
                         Orientation.INITIAL_ORIENTATION, Color.BLUE, 1.5f, 2),
-                new StaticObject(figureFactory.makeSpline(pointsWithValues, 1, 140,
+                new StaticObject(interpolatedFiguresFactory.makeSpline(pointsWithValues, 1, 140,
                         CoordinatesConverter.CONVERTER_TO_XZ),
                         Orientation.INITIAL_ORIENTATION, Color.BLACK, 1.5f, 2),
                 new StaticObject(figureFactory.makeFigureByPoints(pointsWithValues,
@@ -58,9 +62,9 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                 // Sphere curve interpolation
                 new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 5.0, 12),
                         sphereOrientation, Color.LIGHT_GRAY, 1, 0),
-                new StaticObject(figureFactory.makeFigureByArcs(sphereCurveVertices, 20),
+                new StaticObject(demonstrationFiguresFactory.makeFigureByArcs(sphereCurveVertices, 20),
                         sphereOrientation, Color.BLUE, 1.5f, 2),
-                new StaticObject(figureFactory.makeInterpolatedCurve(sphereCurveVertices, 1, 100),
+                new StaticObject(interpolatedFiguresFactory.makeInterpolatedCurve(sphereCurveVertices, 1, 100),
                         sphereOrientation, Color.BLACK, 1.5f, 2),
                 new StaticObject(new Figure(sphereCurveVertices, Collections.EMPTY_LIST),
                         sphereOrientation, Color.RED, 0, 4),

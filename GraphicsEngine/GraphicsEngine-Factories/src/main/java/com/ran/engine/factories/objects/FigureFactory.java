@@ -1,16 +1,11 @@
 package com.ran.engine.factories.objects;
 
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
-import com.ran.engine.rendering.algebraic.vector.SingleDouble;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import com.ran.engine.factories.interpolation.ArcsBuilder;
-import com.ran.engine.factories.interpolation.ParabolaBuilder;
-import com.ran.engine.factories.interpolation.curvecreators.InterpolatedPlainCurveCreator;
-import com.ran.engine.factories.interpolation.curvecreators.InterpolatedSphereCurveCreator;
-import com.ran.engine.rendering.world.Figure;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
+import com.ran.engine.rendering.algebraic.function.DoubleFunction;
+import com.ran.engine.rendering.algebraic.vector.SingleDouble;
+import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.rendering.world.Figure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,26 +134,6 @@ public class FigureFactory {
         return makeMultiFigure(circles);
     }
     
-    public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
-        DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                new InterpolatedSphereCurveCreator().interpolateCurve(verticesForInterpolation, new Pair<>(0.0, 1.0), degree);
-        double parameterStart = interpolatedCurve.getMinParameterValue();
-        double parameterEnd = interpolatedCurve.getMaxParameterValue();
-        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
-        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
-        for (int i = 0; i < segments; i++) {
-            figureEdges.add(new Pair(i, i + 1));
-        }
-        return new Figure(vertices, figureEdges);
-    }
-    
-    public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
-            CoordinatesConverter coordinatesConverter) {
-        DoubleFunction<SingleDouble> splineFunction = new InterpolatedPlainCurveCreator()
-                .interpolateCurve(pointsWithValues, null, degree);
-        return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
-    }
-    
     public Figure makeFigureByPoints(List<Pair<Double, Double>> pointsWithValues,
             CoordinatesConverter coordinatesConverter) {
         List<ThreeDoubleVector> vertices = new ArrayList<>(pointsWithValues.size());
@@ -167,24 +142,6 @@ public class FigureFactory {
         }
         List<Pair<Integer, Integer>> figureEdges = Collections.EMPTY_LIST;
         return new Figure(vertices, figureEdges);
-    }
-    
-    public Figure makeParabolaByPoints(Pair<Double, Double> firstPoint,
-            Pair<Double, Double> secondPoint, Pair<Double, Double> thirdPoint,
-            int segments, CoordinatesConverter converter) {
-        DoubleFunction<SingleDouble> parabolaFunction = ParabolaBuilder.getInstance()
-                .buildParabolaByThreePoints(firstPoint, secondPoint, thirdPoint);
-        return makeFigureByFunction(parabolaFunction, segments, converter);
-    }
-    
-    public Figure makeFigureByParabolas(List<Pair<Double, Double>> pointsWithValues,
-            int segmentsPerParabola, CoordinatesConverter converter) {
-        List<Figure> figures = new ArrayList<>(pointsWithValues.size() - 2);
-        for (int i = 0; i < pointsWithValues.size() - 2; i++) {
-            figures.add(makeParabolaByPoints(pointsWithValues.get(i), pointsWithValues.get(i + 1),
-                    pointsWithValues.get(i + 2), segmentsPerParabola, converter));
-        }
-        return makeMultiFigure(figures);
     }
     
     public Figure makeFigureByFunction(DoubleFunction<SingleDouble> function,
@@ -200,36 +157,7 @@ public class FigureFactory {
         return new Figure(vertices, makeEdgesSimpleList(segments));
     }
     
-    public Figure makeArcOnSphereByPoints(ThreeDoubleVector firstPoint,
-            ThreeDoubleVector secondPoint, ThreeDoubleVector thirdPoint, int halfSegments) {
-        ArcsBuilder.Result arcBuilderResult = ArcsBuilder.getInstance()
-                .buildArcsBetweenVerticesOnSphere(firstPoint, secondPoint, thirdPoint);
-        List<ThreeDoubleVector> vertices = new ArrayList<>(halfSegments * 2 + 1);
-        vertices.add(firstPoint);
-        for (DoubleFunction<DoubleMatrix> rotation:
-                Arrays.asList(arcBuilderResult.getFirstRotation(), arcBuilderResult.getSecondRotation())) {
-            ThreeDoubleVector rotationStart = (rotation == arcBuilderResult.getFirstRotation() ? firstPoint : secondPoint);
-            for (int i = 1; i <= halfSegments; i++) {
-                double parameter = (double)i / (double)halfSegments;
-                DoubleMatrix currentRotation = rotation.apply(parameter);
-                ThreeDoubleVector currentVertice = new ThreeDoubleVector(
-                        currentRotation.multiply(rotationStart.getDoubleVector()));
-                vertices.add(currentVertice);
-            }
-        }
-        return new Figure(vertices, makeEdgesSimpleList(halfSegments * 2));
-    }
-    
-    public Figure makeFigureByArcs(List<ThreeDoubleVector> vertices, int halfSegmentsPerArc) {
-        List<Figure> figures = new ArrayList<>(vertices.size() - 2);
-        for (int i = 0; i < vertices.size() - 2; i++) {
-            figures.add(makeArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1),
-                    vertices.get(i + 2), halfSegmentsPerArc));
-        }
-        return makeMultiFigure(figures);
-    }
-    
-    private List<Pair<Integer, Integer>> makeEdgesSimpleList(int segments) {
+    protected List<Pair<Integer, Integer>> makeEdgesSimpleList(int segments) {
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
         for (int i = 0; i < segments; i++) {
             figureEdges.add(new Pair(i, i + 1));
