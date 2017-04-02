@@ -19,14 +19,14 @@ public class TimeMomentsUtil {
         timeMoments.add(t0);
         timeMoments.add(t1);
         double timeBeforePrevious = t0;
-        double timePrevous = t1;
+        double timePrevious = t1;
         for (Pair<Double, Double> angles: rotationAngles) {
             double phi = Math.abs(angles.getLeft());
             double psi = Math.abs(angles.getRight());
-            double timeNext = timePrevous + (timePrevous - timeBeforePrevious) * (psi / phi);
+            double timeNext = timePrevious + (timePrevious - timeBeforePrevious) * (psi / phi);
             timeMoments.add(timeNext);
-            timeBeforePrevious = timePrevous;
-            timePrevous = timeNext;
+            timeBeforePrevious = timePrevious;
+            timePrevious = timeNext;
         }
         return timeMoments;
     }

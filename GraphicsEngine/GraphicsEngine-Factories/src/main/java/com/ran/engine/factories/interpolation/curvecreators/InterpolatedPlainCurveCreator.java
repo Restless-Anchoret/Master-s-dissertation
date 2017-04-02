@@ -24,11 +24,13 @@ public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCrea
     @Override
     public DoubleFunction<SingleDouble> interpolateCurve(List<Pair<Double, Double>> pointsWithValues,
                                                          EmptyInputParameters parameters, int degree) {
-        validateVertices(pointsWithValues);
+        validateVerticesList(pointsWithValues);
+
         int k = pointsWithValues.size();
         ParabolaBuilder parabolaBuilder = ParabolaBuilder.getInstance();
         List<DoubleFunction<SingleDouble>> xFunctionsList = new ArrayList<>(k - 1);
         List<DoubleFunction<SingleDouble>> uFunctionsList = new ArrayList<>(k - 1);
+
         for (int i = 0; i < k - 1; i++) {
             double x0 = pointsWithValues.get(i).getLeft();
             double x1 = pointsWithValues.get(i + 1).getLeft();
@@ -74,13 +76,12 @@ public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCrea
             pointsWithValues.get(k - 1).getLeft()));
         return DoubleMultifunction.makeMultifunction(resultSegmentsList);
     }
-    
-    private void validateVertices(List<Pair<Double, Double>> vertices) {
-        if (vertices.size() < 3) {
-            throw new AlgebraicException("Interpolation requires at least 3 vertices");
-        }
-        for (int i = 0; i < vertices.size() - 1; i++) {
-            if (vertices.get(i).getLeft() >= vertices.get(i + 1).getLeft()) {
+
+    @Override
+    protected void validateVerticesList(List<Pair<Double, Double>> verticesList) {
+        super.validateVerticesList(verticesList);
+        for (int i = 0; i < verticesList.size() - 1; i++) {
+            if (verticesList.get(i).getLeft() >= verticesList.get(i + 1).getLeft()) {
                 throw new AlgebraicException("Grid of vertices is not valid");
             }
         }

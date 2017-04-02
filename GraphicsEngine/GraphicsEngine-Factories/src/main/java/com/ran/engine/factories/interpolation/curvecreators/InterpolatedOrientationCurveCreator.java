@@ -4,7 +4,6 @@ import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.OrientationArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
 import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.exception.AlgebraicException;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
 import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
@@ -12,8 +11,7 @@ import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCurveCreator<
-        Quaternion, Quaternion, SimpleInputParameters> {
+public class InterpolatedOrientationCurveCreator extends AbstractOrientationCurveCreator {
 
     private static final InterpolatedOrientationCurveCreator INSTANCE = new InterpolatedOrientationCurveCreator();
 
@@ -24,10 +22,12 @@ public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCur
     @Override
     public DoubleFunction<Quaternion> interpolateCurve(List<Quaternion> quaternions,
                                                        SimpleInputParameters parameters, int degree) {
+        validateVerticesList(quaternions);
+
         double t0 = parameters.getT0();
         double t1 = parameters.getT1();
-        validateQuaternions(quaternions);
         int k = quaternions.size();
+
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();
         OrientationArcsBuilder orientationArcsBuilder = OrientationArcsBuilder.getInstance();
         TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
@@ -68,15 +68,6 @@ public class InterpolatedOrientationCurveCreator extends AbstractInterpolatedCur
             orientationCurveSegments.add(alignedCurveSegment);
         }
         return DoubleMultifunction.makeMultifunction(orientationCurveSegments);
-    }
-    
-    private void validateQuaternions(List<Quaternion> quaternions) {
-        if (quaternions.size() < 3) {
-            throw new AlgebraicException("Interpolation requires at least 3 quaternions");
-        }
-        if (quaternions.stream().anyMatch(quaternion -> !quaternion.isIdentity())) {
-            throw new AlgebraicException("All quaternions must be identity");
-        }
     }
     
 }

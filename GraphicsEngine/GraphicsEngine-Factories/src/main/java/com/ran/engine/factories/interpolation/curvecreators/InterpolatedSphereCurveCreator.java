@@ -3,9 +3,7 @@ package com.ran.engine.factories.interpolation.curvecreators;
 import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
-import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
 import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.exception.AlgebraicException;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
 import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
@@ -27,10 +25,12 @@ public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCre
     @Override
     public DoubleFunction<ThreeDoubleVector> interpolateCurve(List<ThreeDoubleVector> vertices,
                                                               SimpleInputParameters parameters, int degree) {
+        validateVerticesList(vertices);
+
         double t0 = parameters.getT0();
         double t1 = parameters.getT1();
-        validateVertices(vertices);
         int k = vertices.size();
+
         CurvesDeformationCreator deformationCreator = CurvesDeformationCreator.getInstance();
         ArcsBuilder arcsBuilder = ArcsBuilder.getInstance();
         TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
@@ -69,20 +69,6 @@ public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCre
             curveSegments.add(alignedCurveSegment);
         }
         return DoubleMultifunction.makeMultifunction(curveSegments);
-    }
-    
-    private void validateVertices(List<ThreeDoubleVector> vertices) {
-        if (vertices.size() < 3) {
-            throw new AlgebraicException("Interpolation requires at least 3 vertices");
-        }
-        double radius = vertices.get(0).getNorm();
-        if (vertices.stream().anyMatch(vertice -> ArithmeticOperations.doubleNotEquals(vertice.getNorm(), radius))) {
-            throw new AlgebraicException("All vertices must belong to the same sphere");
-        }
-    }
-
-    public static class InputParameters {
-
     }
     
 }
