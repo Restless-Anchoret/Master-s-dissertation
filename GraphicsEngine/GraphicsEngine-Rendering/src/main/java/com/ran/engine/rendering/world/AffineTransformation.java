@@ -2,7 +2,7 @@ package com.ran.engine.rendering.world;
 
 import java.util.function.Function;
 
-public class AffineTransformation {
+public class AffineTransformation implements Function<Orientation, Orientation> {
 
     private Function<Orientation, Orientation> orientationMaker;
 
@@ -14,5 +14,10 @@ public class AffineTransformation {
         displayableObject.setCurrentOrientation(
                 orientationMaker.apply(displayableObject.getCurrentOrientation()));
     }
-    
+
+    @Override
+    public Orientation apply(Orientation orientation) {
+        return orientationMaker.apply(orientation);
+    }
+
 }

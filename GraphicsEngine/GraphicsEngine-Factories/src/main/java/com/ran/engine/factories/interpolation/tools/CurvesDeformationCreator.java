@@ -26,7 +26,10 @@ public class CurvesDeformationCreator {
             DoubleFunction<T> firstCurve, DoubleFunction<T> secondCurve, int degree,
             BiFunction<DoubleFunction<T>, DoubleFunction<T>, DoubleFunction<T>> groupMultiplicationOperation) {
         if (!firstCurve.apply(0.0).equals(secondCurve.apply(0.0))) {
-            throw new AlgebraicException("Start and end points of curves must coincide for curves deformation");
+//            System.out.println("Exception!");
+//            System.out.println(firstCurve.apply(0.0));
+//            System.out.println(secondCurve.apply(0.0));
+            throw new AlgebraicException("Start points of curves must coincide for curves deformation");
         }
         DoubleFunction<SingleDouble> smoothingPolynom = PolynomsCreator.getInstance().createSmoothingPolynom(degree);
         DoubleFunction<SingleDouble> tauMinus = new DoubleFunction<>(

@@ -52,9 +52,11 @@ public class DefaultWorldFactory implements WorldFactory {
     private List<ThreeDoubleVector> makeVerticesForInterpolationList() {
         return Arrays.asList(
                 new ThreeDoubleVector(0.0, 0.0, 3.0),
+                new ThreeDoubleVector(0.0, 3.0 / Math.sqrt(2.0), 3.0 / Math.sqrt(2.0)),
                 new ThreeDoubleVector(0.0, 3.0, 0.0),
                 new ThreeDoubleVector(3.0, 0.0, 0.0),
                 new ThreeDoubleVector(0.0, 0.0, -3.0),
+                new ThreeDoubleVector(0.0, -3.0 / Math.sqrt(2.0), -3.0 / Math.sqrt(2.0)),
                 new ThreeDoubleVector(0.0, -3.0, 0.0),
                 new ThreeDoubleVector(-3.0, 0.0, 0.0)
         );

@@ -138,7 +138,7 @@ public class Quaternion implements AlgebraicObject<Quaternion> {
     public Quaternion quaternionVectorMultiply(Quaternion middle, Quaternion right) {
         double resultScalar = this.getVector().mixedMultiply(middle.getVector(), right.getVector());
         ThreeDoubleVector resultVector = middle.getVector().multiply(right.getVector()).multiply(-this.getScalar())
-                .add(right.getVector().multiply(this.getVector()).multiply(middle.getScalar()))
+                .add(this.getVector().multiply(right.getVector()).multiply(middle.getScalar()))
                 .add(this.getVector().multiply(middle.getVector()).multiply(-right.getScalar()));
         return new Quaternion(resultScalar, resultVector);
     }

@@ -15,6 +15,9 @@ public class TimeMomentsUtil {
     }
     
     public List<Double> countTimeMoments(List<Pair<Double, Double>> rotationAngles, double t0, double t1, int k) {
+//        System.out.println("Start counting time moments");
+//        System.out.println("rotationAngles = " + rotationAngles);
+//        System.out.println("t0 = " + t0 + "; t1 = " + t1 + "; k = " + k);
         List<Double> timeMoments = new ArrayList<>(k);
         timeMoments.add(t0);
         timeMoments.add(t1);
@@ -28,6 +31,9 @@ public class TimeMomentsUtil {
             timeBeforePrevious = timePrevious;
             timePrevious = timeNext;
         }
+//        System.out.println("timeMoments = " + timeMoments);
+//        System.out.println("Finish counting time moments");
+//        System.out.println();
         return timeMoments;
     }
     

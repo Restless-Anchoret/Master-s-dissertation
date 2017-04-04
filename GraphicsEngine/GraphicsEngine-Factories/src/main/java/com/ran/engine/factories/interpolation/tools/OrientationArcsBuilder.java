@@ -17,22 +17,34 @@ public class OrientationArcsBuilder {
     
     public Result buildArcsBetweenQuaternionsOnThreeDimensionalSphere(
             Quaternion p1, Quaternion p2, Quaternion p3) {
+//        System.out.println("p1 = " + p1);
+//        System.out.println("p2 = " + p2);
+//        System.out.println("p3 = " + p3);
         Quaternion hNotNormalized = p1.quaternionVectorMultiply(p2, p3);
+//        System.out.println("hNotNormalized = " + hNotNormalized);
         if (ArithmeticOperations.doubleEquals(hNotNormalized.getNorm(), 0.0)) {
             Pair<Double, DoubleFunction<Quaternion>> firstArc = buildArcOnBigCircle(p1, p2);
             Pair<Double, DoubleFunction<Quaternion>> secondArc = buildArcOnBigCircle(p2, p3);
             return new Result(firstArc.getRight(), secondArc.getRight(), firstArc.getLeft(), secondArc.getLeft());
         } else {
-            Quaternion h = p1.quaternionVectorMultiply(p2, p3).normalized();
+            Quaternion h = hNotNormalized.normalized();
             Quaternion hConjugate = h.getConjugate();
+//            System.out.println("h = " + h);
+//            System.out.println("hConjugate = " + hConjugate);
             
             Quaternion r1 = p1.multiply(hConjugate);
             Quaternion r2 = p2.multiply(hConjugate);
             Quaternion r3 = p3.multiply(hConjugate);
+//            System.out.println("r1 = " + r1);
+//            System.out.println("r2 = " + r2);
+//            System.out.println("r3 = " + r3);
             
             ThreeDoubleVector m1 = r1.getVector();
             ThreeDoubleVector m2 = r2.getVector();
             ThreeDoubleVector m3 = r3.getVector();
+//            System.out.println("m1 = " + m1);
+//            System.out.println("m2 = " + m2);
+//            System.out.println("m3 = " + m3);
             
             ArcsBuilder.Result arcsBuilderResult = ArcsBuilder.getInstance()
                     .buildArcsBetweenVerticesOnSphere(m1, m2, m3);

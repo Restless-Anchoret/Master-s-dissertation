@@ -1,9 +1,6 @@
 package com.ran.engine.factories.world;
 
-import com.ran.engine.factories.objects.AnimationFactory;
-import com.ran.engine.factories.objects.DemonstrationFiguresFactory;
-import com.ran.engine.factories.objects.FigureFactory;
-import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
+import com.ran.engine.factories.objects.*;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
@@ -116,15 +113,15 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
 
     // todo: remove this method
     private List<Orientation> makeOrientationsForInterpolationList() {
-        List<Orientation> orientations = Arrays.asList(
-                Orientation.INITIAL_ORIENTATION,
-                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
-                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
-                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI),
-                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
-                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0),
-                Orientation.INITIAL_ORIENTATION
-        );
+//        List<Orientation> orientations = Arrays.asList(
+//                Orientation.INITIAL_ORIENTATION,
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
+//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI / 2.0),
+//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), Math.PI),
+//                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
+//                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0),
+//                Orientation.INITIAL_ORIENTATION
+//        );
 //        List<Orientation> orientations = Arrays.asList(
 //                Orientation.INITIAL_ORIENTATION,
 //                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), Math.PI / 2.0),
@@ -142,7 +139,30 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
 //                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0),
 //                Orientation.INITIAL_ORIENTATION
 //        );
+        List<Orientation> orientations = new ArrayList<>();
+        List<AffineTransformation> affineTransformations = makeAffineTransformationsList();
+        orientations.add(Orientation.INITIAL_ORIENTATION);
+        for (AffineTransformation affineTransformation: affineTransformations) {
+            Orientation lastOrientation = orientations.get(orientations.size() - 1);
+            orientations.add(affineTransformation.apply(lastOrientation));
+        }
         return orientations;
+    }
+
+    private List<AffineTransformation> makeAffineTransformationsList() {
+        AffineTransformationFactory affineTransformationFactory = AffineTransformationFactory.getInstance();
+        List<AffineTransformation> affineTransformations = Arrays.asList(
+                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 2.0),
+                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0),
+                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
+                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0)
+        );
+        return affineTransformations;
     }
     
     private List<Quaternion> makeQuaternionsForInterpolationList() {
