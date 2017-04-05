@@ -25,8 +25,8 @@ public class CurvesSmoothingCreator {
     public <T extends AlgebraicObject<T>> DoubleFunction<T> smoothCurves(
             DoubleFunction<T> firstCurve, DoubleFunction<T> secondCurve, int degree,
             BiFunction<DoubleFunction<T>, DoubleFunction<T>, DoubleFunction<T>> groupMultiplicationOperation) {
-        if (!firstCurve.apply(1.0).equals(secondCurve.apply(0.0))) {
-            throw new AlgebraicException("End point of first curve and start point of second curve must coincide for curves smoothing");
+        if (!firstCurve.apply(0.0).equals(secondCurve.apply(0.0))) {
+            throw new AlgebraicException("Start points of curves must coincide for curves deformation");
         }
         DoubleFunction<SingleDouble> smoothingPolynom = PolynomsCreator.getInstance().createSmoothingPolynom(degree);
         DoubleFunction<SingleDouble> sigmaMinus = new DoubleFunction<>(
