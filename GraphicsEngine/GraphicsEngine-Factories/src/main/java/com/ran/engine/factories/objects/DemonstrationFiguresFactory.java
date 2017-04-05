@@ -1,6 +1,7 @@
 package com.ran.engine.factories.objects;
 
 import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
+import com.ran.engine.factories.interpolation.tools.BigArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
@@ -46,11 +47,11 @@ public class DemonstrationFiguresFactory extends FigureFactory {
                 .buildArcsBetweenVerticesOnSphere(firstPoint, secondPoint, thirdPoint);
         List<ThreeDoubleVector> vertices = new ArrayList<>(halfSegments * 2 + 1);
         vertices.add(firstPoint);
-        for (DoubleFunction<DoubleMatrix> rotation:
+        for (DoubleFunction<DoubleMatrix> rotation :
                 Arrays.asList(arcBuilderResult.getFirstRotation(), arcBuilderResult.getSecondRotation())) {
             ThreeDoubleVector rotationStart = (rotation == arcBuilderResult.getFirstRotation() ? firstPoint : secondPoint);
             for (int i = 1; i <= halfSegments; i++) {
-                double parameter = (double)i / (double)halfSegments;
+                double parameter = (double) i / (double) halfSegments;
                 DoubleMatrix currentRotation = rotation.apply(parameter);
                 ThreeDoubleVector currentVertice = new ThreeDoubleVector(
                         currentRotation.multiply(rotationStart.getDoubleVector()));
@@ -65,6 +66,30 @@ public class DemonstrationFiguresFactory extends FigureFactory {
         for (int i = 0; i < vertices.size() - 2; i++) {
             figures.add(makeArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1),
                     vertices.get(i + 2), halfSegmentsPerArc));
+        }
+        return makeMultiFigure(figures);
+    }
+
+    public Figure makeBigArcOnSphereByPoints(ThreeDoubleVector firstPoint,
+                                             ThreeDoubleVector secondPoint, int segments) {
+        BigArcsBuilder.Result bigArcBuilderResult = BigArcsBuilder.getInstance()
+                .buildBigArcBetweenVerticesOnSphere(firstPoint, secondPoint);
+        List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
+        DoubleFunction<DoubleMatrix> rotation = bigArcBuilderResult.getRotation();
+        for (int i = 0; i <= segments; i++) {
+            double parameter = (double) i / (double) segments;
+            DoubleMatrix currentRotation = rotation.apply(parameter);
+            ThreeDoubleVector currentVertice = new ThreeDoubleVector(
+                    currentRotation.multiply(firstPoint.getDoubleVector()));
+            vertices.add(currentVertice);
+        }
+        return new Figure(vertices, makeEdgesSimpleList(segments));
+    }
+
+    public Figure makeFigureByBigArcs(List<ThreeDoubleVector> vertices, int segmentsPerArc) {
+        List<Figure> figures = new ArrayList<>(vertices.size() - 1);
+        for (int i = 0; i < vertices.size() - 1; i++) {
+            figures.add(makeBigArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1), segmentsPerArc));
         }
         return makeMultiFigure(figures);
     }

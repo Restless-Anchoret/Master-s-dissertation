@@ -23,7 +23,7 @@ public class BigArcsBuilder {
         }
 
         ThreeDoubleVector n = a.multiply(1.0 / aNorm);
-        double phi = Math.atan(aNorm / p1.scalarMultiply(p2));
+        double phi = -Math.atan(aNorm / p1.scalarMultiply(p2));
 
         return new BigArcsBuilder.Result(
                 new DoubleFunction<>(point -> RotationCreator.getInstance().createRotation(n, point * phi), 0.0, 1.0),

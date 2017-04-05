@@ -1,9 +1,6 @@
 package com.ran.engine.factories.objects;
 
-import com.ran.engine.factories.interpolation.curvecreators.EmptyInputParameters;
-import com.ran.engine.factories.interpolation.curvecreators.InterpolatedPlainCurveCreator;
-import com.ran.engine.factories.interpolation.curvecreators.InterpolatedSphereCurveCreator;
-import com.ran.engine.factories.interpolation.curvecreators.SimpleInputParameters;
+import com.ran.engine.factories.interpolation.curvecreators.*;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
@@ -11,7 +8,6 @@ import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.Figure;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InterpolatedFiguresFactory extends FigureFactory {
@@ -28,15 +24,18 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
-        List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
-        for (int i = 0; i < segments; i++) {
-            figureEdges.add(new Pair<>(i, i + 1));
-        }
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
         return new Figure(vertices, figureEdges);
     }
 
     public Figure makeBezierCurveByMiddlePoints(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
-        return null;
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve =
+                new BezierSphereCurveByMiddlePointsCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
+        return new Figure(vertices, figureEdges);
     }
 
     public Figure makeBezierCurveRoundingCorners(List<ThreeDoubleVector> verticesForInterpolation,
