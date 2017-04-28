@@ -130,10 +130,24 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
     }
 
     private DoubleFunction<DoubleMatrix> deformReversedCurves(CurvesDeformationCreator deformationCreator,
-                                                              DoubleFunction<DoubleMatrix> firstRotation,
+                                                              DoubleFunction<DoubleMatrix> firstRotationNotReversed,
                                                               DoubleFunction<DoubleMatrix> secondRotation,
                                                               int degree) {
-        return null;
+        DoubleMatrix firstRotationFixMatrix = RotationCreator.getInstance()
+                .createReversedRotationByRotation(firstRotationNotReversed.apply(1.0));
+        DoubleFunction<DoubleMatrix> firstRotation = new DoubleFunction<>(
+                u -> firstRotationFixMatrix.multiply(firstRotationNotReversed.apply(1.0 - u)),
+                0.0, 1.0
+        );
+        DoubleFunction<DoubleMatrix> resultRotationNotReversed = deformationCreator
+                .deformCurves(secondRotation, firstRotation, degree);
+        DoubleMatrix resultRotationFixMatrix = RotationCreator.getInstance()
+                .createReversedRotationByRotation(resultRotationNotReversed.apply(1.0));
+        DoubleFunction<DoubleMatrix> resultRotation = new DoubleFunction<>(
+                u -> resultRotationFixMatrix.multiply(resultRotationNotReversed.apply(1.0 - u)),
+                0.0, 1.0
+        );
+        return resultRotation;
     }
 
     @Override
