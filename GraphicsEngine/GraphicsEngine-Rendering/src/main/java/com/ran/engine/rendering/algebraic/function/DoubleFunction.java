@@ -171,5 +171,20 @@ public class DoubleFunction<T extends AlgebraicObject<T>> implements AlgebraicOb
                 singleDoubleFunction.getMaxParameterValue()
         );
     }
+
+    public DoubleFunction<T> reversed() {
+        if (minParameterValue == -Double.MAX_VALUE && maxParameterValue == Double.MAX_VALUE) {
+            return new DoubleFunction<T>(point -> apply(-point));
+        } else if (minParameterValue == -Double.MAX_VALUE) {
+            return new DoubleFunction<T>(point -> apply(maxParameterValue - (point - maxParameterValue)),
+                    maxParameterValue, Double.MAX_VALUE);
+        } else if (maxParameterValue == Double.MAX_VALUE) {
+            return new DoubleFunction<T>(point -> apply(minParameterValue + (minParameterValue - point)),
+                    -Double.MAX_VALUE, minParameterValue);
+        } else {
+            return new DoubleFunction<T>(point -> apply(minParameterValue + (maxParameterValue - point)),
+                    minParameterValue, maxParameterValue);
+        }
+    }
     
 }
