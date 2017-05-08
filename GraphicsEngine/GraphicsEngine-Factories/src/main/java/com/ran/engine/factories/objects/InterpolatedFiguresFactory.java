@@ -29,8 +29,8 @@ public class InterpolatedFiguresFactory extends FigureFactory {
     }
 
     public Figure makeBezierCurveByMiddlePoints(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
-        DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                new BezierSphereCurveByMiddlePointsCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve = BezierSphereCurveByMiddlePointsCreator.getInstance()
+                .interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
@@ -45,7 +45,13 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     public Figure makeInterpolatedCurveByTangentAngles(List<Pair<ThreeDoubleVector, Double>> verticesWithTangentAngles,
                                                           int degree, int segments) {
-        return null;
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve = InterpolatedByTangentAnglesSphereCurveCreator.getInstance()
+                .interpolateCurve(verticesWithTangentAngles, new SimpleInputParameters(0.0, 1.0), degree);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
+        return new Figure(vertices, figureEdges);
     }
 
     public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
