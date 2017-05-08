@@ -8,7 +8,10 @@ import java.util.Objects;
 public class ThreeDoubleVector implements Comparable<ThreeDoubleVector>, AlgebraicObject<ThreeDoubleVector> {
 
     public static final ThreeDoubleVector ZERO_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 0.0, 0.0);
-    
+    public static final ThreeDoubleVector X_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(1.0, 0.0, 0.0);
+    public static final ThreeDoubleVector Y_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 1.0, 0.0);
+    public static final ThreeDoubleVector Z_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 0.0, 1.0);
+
     private final DoubleVector doubleVector;
     
     public ThreeDoubleVector(double x, double y, double z) {

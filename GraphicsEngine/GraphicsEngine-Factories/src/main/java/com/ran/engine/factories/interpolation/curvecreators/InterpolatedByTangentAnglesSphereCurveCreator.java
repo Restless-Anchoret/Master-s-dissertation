@@ -5,7 +5,9 @@ import com.ran.engine.factories.interpolation.tools.*;
 import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
+import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
 import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
+import com.ran.engine.rendering.algebraic.vector.DoubleVector;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 
 import java.util.ArrayList;
@@ -81,6 +83,15 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
             }
         }
 
+        List<Pair<Double, Double>> rotationAngles = new ArrayList<>(k - 2);
+        for (int i = 0; i < k - 2; i++) {
+            if (verticesWithTangentAnglesList.get(i + 1).getRight() == null) {
+                rotationAngles.add(smallArcsResults.get(i).getAngles());
+            } else {
+                rotationAngles.add(tangentBuilderResults.get(i + 1).getAngles());
+            }
+        }
+
         List<DoubleFunction<DoubleMatrix>> rotationsOnSegments = new ArrayList<>(k - 1);
         for (int i = 0; i < k - 1; i++) {
             if (verticesWithTangentAnglesList.get(i).getRight() != null &&
@@ -117,16 +128,31 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
                 if (i == 0) {
                     rotationsOnSegments.add(smallArcsResults.get(i).getFirstRotation());
                 } else if (i == k - 2) {
+                    rotationsOnSegments.add(smallArcsResults.get(i - 1).getSecondRotation());
+                } else {
                     rotationsOnSegments.add(deformationCreator.deformCurves(
                             smallArcsResults.get(i - 1).getSecondRotation(),
                             smallArcsResults.get(i).getFirstRotation(), degree));
-                } else {
-                    rotationsOnSegments.add(smallArcsResults.get(i - 1).getSecondRotation());
                 }
             }
         }
 
-        return null;
+        List<Double> timeMoments = timeMomentsUtil.countTimeMoments(rotationAngles, t0, t1, k);
+
+        List<DoubleFunction<ThreeDoubleVector>> curveSegments = new ArrayList<>(k - 1);
+        for (int i = 0; i < k - 1; i++) {
+            double startTime = timeMoments.get(i);
+            double endTime = timeMoments.get(i + 1);
+            DoubleFunction<DoubleMatrix> currentRotation = rotationsOnSegments.get(i);
+            DoubleVector currentVertice = verticesWithTangentAnglesList.get(i).getLeft().getDoubleVector();
+            DoubleFunction<ThreeDoubleVector> curveSegmentWithoutAligning = new DoubleFunction<>(
+                    point -> new ThreeDoubleVector(currentRotation.apply(point).multiply(currentVertice)), 0.0, 1.0
+            );
+            DoubleFunction<ThreeDoubleVector> alignedCurveSegment =
+                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
+            curveSegments.add(alignedCurveSegment);
+        }
+        return DoubleMultifunction.makeMultifunction(curveSegments);
     }
 
     private DoubleFunction<DoubleMatrix> deformReversedCurves(CurvesDeformationCreator deformationCreator,
