@@ -43,4 +43,28 @@ public class TangentAnglesConstants {
         );
     }
 
+    public static List<Pair<ThreeDoubleVector, Double>> getCloseListWithoutTangentAngles() {
+        return Arrays.asList(
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0 / Math.sqrt(2.0), 3.0 / Math.sqrt(2.0)), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0, 0.0), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0 / Math.sqrt(2.0), 3.0 / Math.sqrt(2.0), 0.0), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0, 0.0, 0.0), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0 / Math.sqrt(2.0), 0.0, 3.0 / Math.sqrt(2.0)), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), null)
+        );
+    }
+
+    public static List<Pair<ThreeDoubleVector, Double>> getCloseListWithSomeTangentAngles() {
+        return Arrays.asList(
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), -2.0 * Math.PI / 3.0),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0 / Math.sqrt(2.0), 3.0 / Math.sqrt(2.0)), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0, 0.0), 0.0),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0 / Math.sqrt(2.0), 3.0 / Math.sqrt(2.0), 0.0), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0, 0.0, 0.0), Math.PI / 8.0),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0 / Math.sqrt(2.0), 0.0, 3.0 / Math.sqrt(2.0)), null),
+                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), -2.0 * Math.PI / 3.0)
+        );
+    }
+
 }

@@ -33,19 +33,30 @@ public class TangentAnglesWorldFactory implements WorldFactory {
         List<Pair<ThreeDoubleVector, Double>> sphereCurveVerticesWithoutAngles = TangentAnglesConstants.getListWithoutTangentAngles();
         List<Pair<ThreeDoubleVector, Double>> sphereCurveVerticesWithSomeAngles = TangentAnglesConstants.getListWithSomeTangentAngles();
         List<Pair<ThreeDoubleVector, Double>> sphereCurveVerticesWithAllAngles = TangentAnglesConstants.getListWithAllTangentAngles();
+        List<Pair<ThreeDoubleVector, Double>> sphereCurveCloseVerticesWithoutAngles = TangentAnglesConstants.getCloseListWithoutTangentAngles();
+        List<Pair<ThreeDoubleVector, Double>> sphereCurveCloseVerticesWithSomeAngles = TangentAnglesConstants.getCloseListWithSomeTangentAngles();
+
         Orientation firstSphereOrientation = Orientation.createForOffset(-12.0, 0.0, 4.0);
         Orientation secondSphereOrientation = Orientation.createForOffset(0.0, 0.0, 4.0);
         Orientation thirdSphereOrientation = Orientation.createForOffset(12.0, 0.0, 4.0);
+        Orientation firstCloseSphereOrientation = Orientation.createForOffset(-12.0, 0.0, -8.0);
+        Orientation secondCloseSphereOrientation = Orientation.createForOffset(0.0, 0.0, -8.0);
 
         List<DisplayableObject> displayableObjects = new ArrayList<>();
 //        displayableObjects.add(new StaticObject(figureFactory.makePlainGrid(32, 8, 1.0, 1.0),
 //                Orientation.INITIAL_ORIENTATION, Color.LIGHT_GRAY));
+
         displayableObjects.addAll(createDisplayableObjectsGroup(
                 sphereCurveVerticesWithoutAngles, firstSphereOrientation));
         displayableObjects.addAll(createDisplayableObjectsGroup(
                 sphereCurveVerticesWithSomeAngles, secondSphereOrientation));
         displayableObjects.addAll(createDisplayableObjectsGroup(
                 sphereCurveVerticesWithAllAngles, thirdSphereOrientation));
+
+        displayableObjects.addAll(createDisplayableObjectsGroup(
+                sphereCurveCloseVerticesWithoutAngles, firstCloseSphereOrientation));
+        displayableObjects.addAll(createDisplayableObjectsGroup(
+                sphereCurveCloseVerticesWithSomeAngles, secondCloseSphereOrientation));
 
         Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 10.0, 4.0), 0.0, 0.0);
         LOG.trace("TangentAnglesWorldFactory finished creating");
