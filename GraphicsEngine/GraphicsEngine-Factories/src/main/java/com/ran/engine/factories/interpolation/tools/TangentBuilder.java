@@ -30,7 +30,11 @@ public class TangentBuilder {
         if (ArithmeticOperations.doubleEquals(point.getX(), 0.0) &&
                 ArithmeticOperations.doubleEquals(point.getY(), 0.0)) {
             a = ThreeDoubleVector.X_ONE_THREE_DOUBLE_VECTOR;
-            b = ThreeDoubleVector.Y_ONE_THREE_DOUBLE_VECTOR;
+            if (point.getZ() > 0.0) {
+                b = ThreeDoubleVector.MINUS_Y_ONE_THREE_DOUBLE_VECTOR;
+            } else {
+                b = ThreeDoubleVector.Y_ONE_THREE_DOUBLE_VECTOR;
+            }
         } else {
             a = new ThreeDoubleVector(Z_HALF_PI_ROTATION.multiply(
                     new ThreeDoubleVector(point.getX(), point.getY(), 0.0).getDoubleVector())).normalized();

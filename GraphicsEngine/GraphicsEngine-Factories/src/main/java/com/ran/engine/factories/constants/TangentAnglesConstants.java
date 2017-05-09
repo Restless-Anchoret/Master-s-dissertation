@@ -23,23 +23,23 @@ public class TangentAnglesConstants {
 
     public static List<Pair<ThreeDoubleVector, Double>> getListWithSomeTangentAngles() {
         return Arrays.asList(
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), null),
+                new Pair<>(new ThreeDoubleVector(0.0, 0.0, 3.0), -4.0 * Math.PI / 10.0),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0, 0.0), null),
                 new Pair<>(new ThreeDoubleVector(3.0, 0.0, 0.0), -Math.PI / 2.0),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, -3.0), null),
+                new Pair<>(new ThreeDoubleVector(0.0, 0.0, -3.0), -7.0 * Math.PI / 12.0),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, -3.0, 0.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(-3.0, 0.0, 0.0), null)
+                new Pair<>(new ThreeDoubleVector(-3.0, 0.0, 0.0), -Math.PI / 2.0)
         );
     }
 
     public static List<Pair<ThreeDoubleVector, Double>> getListWithAllTangentAngles() {
         return Arrays.asList(
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0, 0.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0, 0.0, 0.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, -3.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, -3.0, 0.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(-3.0, 0.0, 0.0), null)
+                new Pair<>(new ThreeDoubleVector(0.0, 0.0, 3.0), -Math.PI / 2.0),
+                new Pair<>(new ThreeDoubleVector(0.0, 3.0, 0.0), 0.0),
+                new Pair<>(new ThreeDoubleVector(3.0, 0.0, 0.0), -Math.PI / 2.0),
+                new Pair<>(new ThreeDoubleVector(0.0, 0.0, -3.0), -Math.PI / 2.0),
+                new Pair<>(new ThreeDoubleVector(0.0, -3.0, 0.0), 0.0),
+                new Pair<>(new ThreeDoubleVector(-3.0, 0.0, 0.0), 0.0)
         );
     }
 

@@ -120,8 +120,8 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
                 DoubleFunction<DoubleMatrix> firstDeformedCurve = deformationCreator.deformCurves(
                         tangentBuilderResults.get(i).getForwardRotation(),
                         bigArcsResults.get(i).getRotation(), degree);
-                DoubleFunction<DoubleMatrix> secondDeformedCurve = deformReversedCurves(
-                        deformationCreator, bigArcsResults.get(i).getRotation(),
+                DoubleFunction<DoubleMatrix> secondDeformedCurve = deformationCreator.deformCurvesWithCommonEnd(
+                        bigArcsResults.get(i).getRotation(),
                         tangentBuilderResults.get(i + 1).getBackRotation(), degree);
                 rotationsOnSegments.add(deformationCreator.deformCurves(
                         firstDeformedCurve, secondDeformedCurve, degree));
@@ -139,12 +139,12 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
             } else if (verticesWithTangentAnglesList.get(i + 1).getRight() != null) {
                 LOG.trace("Angle is set only on the second point");
                 if (i == 0) {
-                    rotationsOnSegments.add(deformReversedCurves(
-                            deformationCreator, bigArcsResults.get(i).getRotation(),
+                    rotationsOnSegments.add(deformationCreator.deformCurvesWithCommonEnd(
+                            bigArcsResults.get(i).getRotation(),
                             tangentBuilderResults.get(i + 1).getBackRotation(), degree));
                 } else {
-                    rotationsOnSegments.add(deformReversedCurves(
-                            deformationCreator, smallArcsResults.get(i - 1).getSecondRotation(),
+                    rotationsOnSegments.add(deformationCreator.deformCurvesWithCommonEnd(
+                            smallArcsResults.get(i - 1).getSecondRotation(),
                             tangentBuilderResults.get(i + 1).getBackRotation(), degree));
                 }
             } else {
@@ -181,30 +181,6 @@ public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInter
             curveSegments.add(alignedCurveSegment);
         }
         return DoubleMultifunction.makeMultifunction(curveSegments);
-    }
-
-    private DoubleFunction<DoubleMatrix> deformReversedCurves(CurvesDeformationCreator deformationCreator,
-                                                              DoubleFunction<DoubleMatrix> firstRotationNotReversed,
-                                                              DoubleFunction<DoubleMatrix> secondRotation,
-                                                              int degree) {
-        LOG.trace("Before deforming of reversed curves");
-        DoubleMatrix firstRotationFixMatrix = RotationCreator.getInstance()
-                .createReversedRotationByRotation(firstRotationNotReversed.apply(1.0));
-        LOG.trace("firstRotationFixMatrix = {}", firstRotationFixMatrix);
-        DoubleFunction<DoubleMatrix> firstRotation = new DoubleFunction<>(
-                u -> firstRotationFixMatrix.multiply(firstRotationNotReversed.apply(1.0 - u)),
-                0.0, 1.0
-        );
-        DoubleFunction<DoubleMatrix> resultRotationNotReversed = deformationCreator
-                .deformCurves(secondRotation, firstRotation, degree);
-        DoubleMatrix resultRotationFixMatrix = RotationCreator.getInstance()
-                .createReversedRotationByRotation(resultRotationNotReversed.apply(1.0));
-        LOG.trace("resultRotationFixMatrix = {}", resultRotationFixMatrix);
-        DoubleFunction<DoubleMatrix> resultRotation = new DoubleFunction<>(
-                u -> resultRotationFixMatrix.multiply(resultRotationNotReversed.apply(1.0 - u)),
-                0.0, 1.0
-        );
-        return resultRotation;
     }
 
     @Override

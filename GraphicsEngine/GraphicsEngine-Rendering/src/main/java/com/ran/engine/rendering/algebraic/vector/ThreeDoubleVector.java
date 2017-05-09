@@ -11,6 +11,9 @@ public class ThreeDoubleVector implements Comparable<ThreeDoubleVector>, Algebra
     public static final ThreeDoubleVector X_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(1.0, 0.0, 0.0);
     public static final ThreeDoubleVector Y_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 1.0, 0.0);
     public static final ThreeDoubleVector Z_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 0.0, 1.0);
+    public static final ThreeDoubleVector MINUS_X_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(-1.0, 0.0, 0.0);
+    public static final ThreeDoubleVector MINUS_Y_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, -1.0, 0.0);
+    public static final ThreeDoubleVector MINUS_Z_ONE_THREE_DOUBLE_VECTOR = new ThreeDoubleVector(0.0, 0.0, -1.0);
 
     private final DoubleVector doubleVector;
     
