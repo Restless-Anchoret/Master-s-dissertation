@@ -3,6 +3,7 @@ package com.ran.engine.factories.objects;
 import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.BigArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
+import com.ran.engine.factories.interpolation.tools.TangentBuilder;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
@@ -92,6 +93,27 @@ public class DemonstrationFiguresFactory extends FigureFactory {
             figures.add(makeBigArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1), segmentsPerArc));
         }
         return makeMultiFigure(figures);
+    }
+
+    public Figure makeTangentOnSphereByPoint(ThreeDoubleVector point, double tangentAngle, int halfSegments) {
+        TangentBuilder.Result tangentBuilderResult = TangentBuilder.getInstance()
+                .buildTangent(point, tangentAngle, Math.PI / 6.0, Math.PI / 6.0);
+        List<ThreeDoubleVector> vertices = new ArrayList<>(2 * halfSegments + 1);
+        for (int i = halfSegments; i > 0; i--) {
+            double parameter = (double) i / (double) halfSegments;
+            DoubleMatrix currentRotation = tangentBuilderResult.getBackRotation().apply(parameter);
+            ThreeDoubleVector currentVertice = new ThreeDoubleVector(
+                    currentRotation.multiply(point.getDoubleVector()));
+            vertices.add(currentVertice);
+        }
+        for (int i = 0; i <= halfSegments; i++) {
+            double parameter = (double) i / (double) halfSegments;
+            DoubleMatrix currentRotation = tangentBuilderResult.getForwardRotation().apply(parameter);
+            ThreeDoubleVector currentVertice = new ThreeDoubleVector(
+                    currentRotation.multiply(point.getDoubleVector()));
+            vertices.add(currentVertice);
+        }
+        return new Figure(vertices, makeEdgesSimpleList(2 * halfSegments));
     }
 
 }
