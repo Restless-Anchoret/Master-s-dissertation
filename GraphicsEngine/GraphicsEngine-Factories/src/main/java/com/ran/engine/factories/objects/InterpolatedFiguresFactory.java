@@ -7,10 +7,14 @@ import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.Figure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class InterpolatedFiguresFactory extends FigureFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InterpolatedFiguresFactory.class);
 
     private static final InterpolatedFiguresFactory INSTANCE = new InterpolatedFiguresFactory();
 
@@ -45,13 +49,17 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     public Figure makeInterpolatedCurveByTangentAngles(List<Pair<ThreeDoubleVector, Double>> verticesWithTangentAngles,
                                                           int degree, int segments) {
+        LOG.trace("verticesWithTangentAngles = {}, degree = {}, segments = {}",
+                verticesWithTangentAngles, degree, segments);
         DoubleFunction<ThreeDoubleVector> interpolatedCurve = InterpolatedByTangentAnglesSphereCurveCreator.getInstance()
                 .interpolateCurve(verticesWithTangentAngles, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
         List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
-        return new Figure(vertices, figureEdges);
+        Figure figure = new Figure(vertices, figureEdges);
+        LOG.trace("figure = {}", figure);
+        return figure;
     }
 
     public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,

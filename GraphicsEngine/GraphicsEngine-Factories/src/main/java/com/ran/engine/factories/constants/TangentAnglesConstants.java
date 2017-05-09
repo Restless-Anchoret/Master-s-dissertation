@@ -25,7 +25,7 @@ public class TangentAnglesConstants {
         return Arrays.asList(
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, 3.0), null),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 3.0, 0.0), null),
-                new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(3.0, 0.0, 0.0), Math.PI / 2.0),
+                new Pair<>(new ThreeDoubleVector(3.0, 0.0, 0.0), -Math.PI / 2.0),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, 0.0, -3.0), null),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(0.0, -3.0, 0.0), null),
                 new Pair<ThreeDoubleVector, Double>(new ThreeDoubleVector(-3.0, 0.0, 0.0), null)

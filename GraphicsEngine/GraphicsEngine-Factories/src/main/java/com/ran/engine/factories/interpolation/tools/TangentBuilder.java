@@ -5,12 +5,16 @@ import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TangentBuilder {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TangentBuilder.class);
+
     private static final TangentBuilder INSTANCE = new TangentBuilder();
     private static final DoubleMatrix Z_HALF_PI_ROTATION = RotationCreator.getInstance().createRotation(
-            new ThreeDoubleVector(0.0, 0.0, 1.0), Math.PI / 2.0);
+            ThreeDoubleVector.Z_ONE_THREE_DOUBLE_VECTOR, -Math.PI / 2.0);
 
     public static TangentBuilder getInstance() {
         return INSTANCE;
@@ -20,6 +24,8 @@ public class TangentBuilder {
                                double tangentAngle,
                                Double forwardRotationAngle,
                                Double backRotationAngle) {
+        LOG.trace("point = {}, tangentAngle = {}, forwardRotationAngle = {}, backRotationAngle = {}",
+                point, tangentAngle, forwardRotationAngle, backRotationAngle);
         ThreeDoubleVector a, b;
         if (ArithmeticOperations.doubleEquals(point.getX(), 0.0) &&
                 ArithmeticOperations.doubleEquals(point.getY(), 0.0)) {
@@ -30,7 +36,8 @@ public class TangentBuilder {
                     new ThreeDoubleVector(point.getX(), point.getY(), 0.0).getDoubleVector())).normalized();
             b = point.multiply(a).normalized();
         }
-        ThreeDoubleVector n = a.multiply(-Math.sin(tangentAngle)).add(b.multiply(Math.cos(tangentAngle)));
+        ThreeDoubleVector n = a.multiply(Math.sin(tangentAngle)).add(b.multiply(-Math.cos(tangentAngle)));
+        LOG.trace("a = {}, b = {}, n = {}", a, b, n);
 
         DoubleFunction<DoubleMatrix> forwardRotation = null;
         DoubleFunction<DoubleMatrix> backRotation = null;

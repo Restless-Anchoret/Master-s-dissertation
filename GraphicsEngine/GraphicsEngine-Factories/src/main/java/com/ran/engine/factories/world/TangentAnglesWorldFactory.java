@@ -6,12 +6,16 @@ import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
 public class TangentAnglesWorldFactory implements WorldFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TangentAnglesWorldFactory.class);
 
     private static final TangentAnglesWorldFactory INSTANCE = new TangentAnglesWorldFactory();
 
@@ -21,6 +25,7 @@ public class TangentAnglesWorldFactory implements WorldFactory {
 
     @Override
     public World createWorld() {
+        LOG.trace("TangentAnglesWorldFactory started creating");
         FigureFactory figureFactory = FigureFactory.getInstance();
         InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
 //        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
@@ -61,6 +66,7 @@ public class TangentAnglesWorldFactory implements WorldFactory {
 //                        firstSphereOrientation, Color.RED, 0, 4)
         );
         Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 10.0, 4.0), 0.0, 0.0);
+        LOG.trace("TangentAnglesWorldFactory finished creating");
         return new World(displayableObjects, camera);
     }
 
