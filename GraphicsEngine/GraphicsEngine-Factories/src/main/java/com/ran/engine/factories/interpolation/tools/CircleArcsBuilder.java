@@ -1,7 +1,10 @@
 package com.ran.engine.factories.interpolation.tools;
 
+import com.ran.engine.rendering.algebraic.common.LineEvaluator;
 import com.ran.engine.rendering.algebraic.common.Pair;
+import com.ran.engine.rendering.algebraic.common.VectorManipulator;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
+import com.ran.engine.rendering.algebraic.line.Line;
 import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 
 public class CircleArcsBuilder {
@@ -13,7 +16,56 @@ public class CircleArcsBuilder {
     }
 
     public Result buildCircle(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint, TwoDoubleVector thirdPoint) {
-        return null;
+        if (LineEvaluator.arePointsOnOneLine(firstPoint, secondPoint, thirdPoint)) {
+            SegmentsBuilder segmentsBuilder = SegmentsBuilder.getInstance();
+            SegmentsBuilder.Result firstSegmentsResult = segmentsBuilder.buildSegment(firstPoint, secondPoint);
+            SegmentsBuilder.Result secondSegmentsResult = segmentsBuilder.buildSegment(secondPoint, thirdPoint);
+            return new Result(
+                    firstSegmentsResult.getSegment(), secondSegmentsResult.getSegment(),
+                    0.0, 0.0,
+                    firstSegmentsResult.getLength(), secondSegmentsResult.getLength()
+            );
+        }
+
+        Line firstPerpendicular = LineEvaluator.evaluateMiddlePerpendicularLine(firstPoint, secondPoint);
+        Line secondPerpendicular = LineEvaluator.evaluateMiddlePerpendicularLine(secondPoint, thirdPoint);
+        TwoDoubleVector circleCenter = LineEvaluator.evaluateLinesIntersection(
+                firstPerpendicular, secondPerpendicular);
+
+        TwoDoubleVector firstVector = firstPoint.substract(circleCenter);
+        TwoDoubleVector secondVector = secondPoint.substract(circleCenter);
+        TwoDoubleVector thirdVector = thirdPoint.substract(circleCenter);
+
+        double firstAngle = VectorManipulator.countAngleBetweenVectors(firstVector, secondVector);
+        double secondAngle = VectorManipulator.countAngleBetweenVectors(secondVector, thirdVector);
+        if (firstAngle + secondAngle > Math.PI * 2.0) {
+            firstAngle -= Math.PI * 2.0;
+            secondAngle -= Math.PI * 2.0;
+        }
+
+        double radius = firstVector.getNorm();
+        double firstLength = Math.abs(firstAngle) * radius / 2.0;
+        double secondLength = Math.abs(secondAngle) * radius / 2.0;
+
+        DoubleFunction<TwoDoubleVector> firstArc = buildArc(circleCenter, firstVector, radius, firstAngle);
+        DoubleFunction<TwoDoubleVector> secondArc = buildArc(circleCenter, secondVector, radius, secondAngle);
+
+        return new Result(
+                firstArc, secondArc,
+                firstAngle, secondAngle,
+                firstLength, secondLength
+        );
+    }
+
+    private DoubleFunction<TwoDoubleVector> buildArc(TwoDoubleVector center, TwoDoubleVector startVector,
+                                                     double radius, double angle) {
+        double startAngle = VectorManipulator.countVectorAngle(startVector);
+        return new DoubleFunction<>(point -> {
+                double currentAngle = startAngle + angle * point;
+                double x = Math.cos(currentAngle) * radius;
+                double y = Math.sin(currentAngle) * radius;
+                return new TwoDoubleVector(center.getX() + x, center.getY() + y);
+            }, 0.0, 1.0);
     }
 
     public static class Result {
