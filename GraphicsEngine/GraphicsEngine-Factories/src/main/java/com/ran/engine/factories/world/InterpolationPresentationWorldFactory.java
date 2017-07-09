@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class InterpolationPresentationWorldFactory implements WorldFactory {
 
     private static final InterpolationPresentationWorldFactory INSTANCE = new InterpolationPresentationWorldFactory();
+    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static InterpolationPresentationWorldFactory getInstance() {
         return INSTANCE;
@@ -35,15 +36,14 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
         
         Orientation sphereOrientation = Orientation.createForOffset(30.0, 0.0, 0.0);
         Orientation cubeOrientation = Orientation.createForOffset(60.0, 0.0, 0.0);
-        Figure figureForRotation = figureFactory.makeGrid(1, 1, 1, 2.0, 2.0, 2.0,
-                new ThreeDoubleVector(0.0, 0.0, 4.0));
+        Figure figureForRotation = figureFactory.makeAeroplane(1.5);
         
         List<DisplayableObject> displayableObjects = new ArrayList<>();
         displayableObjects.addAll(Arrays.asList(
                 // Plain curve interpolation
                 new StaticObject(figureFactory.makeGrid(20, 0, 16, 1.0, 0.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
-                        Color.LIGHT_GRAY),
+                        DARK_GRAY_COLOR),
                 new StaticObject(figureFactory.makeGrid(20, 0, 0, 1.0, 0.0, 0.0)),
                 new StaticObject(figureFactory.makeGrid(0, 0, 16, 0.0, 0.0, 1.0)),
                 new StaticObject(demonstrationFiguresFactory.makeFigureByParabolas(pointsWithValues, 20,
@@ -54,32 +54,32 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                         Orientation.INITIAL_ORIENTATION, Color.BLACK, 1.5f, 2),
                 new StaticObject(figureFactory.makeFigureByPoints(pointsWithValues,
                         CoordinatesConverter.CONVERTER_TO_XZ),
-                        Orientation.INITIAL_ORIENTATION, Color.RED, 0, 4),
+                        Orientation.INITIAL_ORIENTATION, Color.RED, 0, 7),
                 
                 // Sphere curve interpolation
                 new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 5.0, 12),
-                        sphereOrientation, Color.LIGHT_GRAY, 1, 0),
+                        sphereOrientation, DARK_GRAY_COLOR, 1, 0),
                 new StaticObject(demonstrationFiguresFactory.makeFigureByArcs(sphereCurveVertices, 20),
                         sphereOrientation, Color.BLUE, 1.5f, 2),
                 new StaticObject(interpolatedFiguresFactory.makeInterpolatedCurve(sphereCurveVertices, 1, 100),
                         sphereOrientation, Color.BLACK, 1.5f, 2),
-                new StaticObject(new Figure(sphereCurveVertices, Collections.EMPTY_LIST),
-                        sphereOrientation, Color.RED, 0, 4),
+                new StaticObject(new Figure(sphereCurveVertices, Collections.emptyList()),
+                        sphereOrientation, Color.RED, 0, 7)
                 
                 // Orientation curve interpolation
-                new StaticObject(figureFactory.makeCube(10.0),
-                        cubeOrientation, Color.LIGHT_GRAY)
+//                new StaticObject(figureFactory.makeCube(10.0),
+//                        cubeOrientation, DARK_GRAY_COLOR)
         ));
         
         for (Quaternion quaternion: quaternions) {
             displayableObjects.add(new StaticObject(figureForRotation,
-                    new Orientation(cubeOrientation.getOffset(), quaternion), Color.GRAY));
+                    new Orientation(cubeOrientation.getOffset(), quaternion), Color.RED));
         }
 
         displayableObjects.add(
                 new DisplayableObjectBuilder(figureForRotation,
                         animationFactory.makeInterpolatedOrientationCurveAnimation(
-                        quaternions, 2, 30))
+                        quaternions, 2, 15))
                         .setOffset(cubeOrientation.getOffset())
                         .setEdgePaintWidth(2.0f)
                         .setVerticePaintRadius(2)
@@ -87,13 +87,13 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
         );
 
         // Camera for plain curve interpolation presentation
-//        Camera camera = new Camera(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.25, 8.0);
+//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.0, 0.0);
 
         // Camera for sphere curve interpolation presentation
-//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 7.0, 5.5), 0.0, 0.7);
+        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 7.0, 5.5), 0.0, 0.7);
         
         // Camera for orientation curve interpolation presentation
-        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(54.5, 10.0, 2.5), -0.5, 0.3);
+//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(54.5, 10.0, 2.5), -0.5, 0.3);
 
         return new World(displayableObjects, camera);
     }
@@ -151,24 +151,30 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
 
     private List<AffineTransformation> makeAffineTransformationsList() {
         AffineTransformationFactory affineTransformationFactory = AffineTransformationFactory.getInstance();
+//        List<AffineTransformation> affineTransformations = Arrays.asList(
+//                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 2.0),
+//                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0),
+//                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
+//                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0)
+//        );
         List<AffineTransformation> affineTransformations = Arrays.asList(
                 affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
                 affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
-                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 2.0),
-                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0),
-                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
-                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
-                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
-                affineTransformationFactory.createZAxisRotationAffineTransformation(Math.PI / 4.0),
-                affineTransformationFactory.createYAxisRotationAffineTransformation(-Math.PI / 2.0)
+                affineTransformationFactory.createZAxisRotationAffineTransformation(-Math.PI / 4.0),
+                affineTransformationFactory.createZAxisRotationAffineTransformation(-Math.PI / 4.0)
         );
         return affineTransformations;
     }
     
     private List<Quaternion> makeQuaternionsForInterpolationList() {
-        return makeOrientationsForInterpolationList().stream().map(
-                orientation -> orientation.getRotation()
-        ).collect(Collectors.toList());
+        return makeOrientationsForInterpolationList().stream()
+                .map(Orientation::getRotation)
+                .collect(Collectors.toList());
     }
     
     private List<Pair<Double, Double>> makePointsWithValuesForInterpolationList() {

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class DefaultWorldFactory implements WorldFactory {
 
     private static final DefaultWorldFactory INSTANCE = new DefaultWorldFactory();
+    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static DefaultWorldFactory getInstance() {
         return INSTANCE;
@@ -32,13 +33,13 @@ public class DefaultWorldFactory implements WorldFactory {
         List<DisplayableObject> displayableObjects = Arrays.asList(
                 new StaticObject(figureFactory.makePlainGrid(20, 8, 1.0, 1.0),
                         Orientation.INITIAL_ORIENTATION,
-                        Color.LIGHT_GRAY),
+                        DARK_GRAY_COLOR),
                 new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(-6.0, 0.0, 4.0),
-                        Color.LIGHT_GRAY, 1, 0),
+                        DARK_GRAY_COLOR, 1, 0),
                 new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
                         Orientation.createForOffset(6.0, 0.0, 4.0),
-                        Color.LIGHT_GRAY, 1, 0),
+                        DARK_GRAY_COLOR, 1, 0),
                 new DisplayableObjectBuilder(interpolatedFiguresFactory.makeInterpolatedCurve(
                         makeVerticesForInterpolationList(), 1, 100), animation)
                         .setOffset(new ThreeDoubleVector(-6.0, 0.0, 4.0)).build(),
@@ -97,9 +98,9 @@ public class DefaultWorldFactory implements WorldFactory {
 //                Orientation.createForRotation(new ThreeDoubleVector(0.0, 1.0, 0.0), -Math.PI / 2.0)//,
 //                Orientation.createForRotation(new ThreeDoubleVector(1.0, 0.0, 0.0), -Math.PI / 2.0)
 //        );
-        return orientations.stream().map(
-                orientation -> orientation.getRotation()
-        ).collect(Collectors.toList());
+        return orientations.stream()
+                .map(Orientation::getRotation)
+                .collect(Collectors.toList());
     }
     
 }

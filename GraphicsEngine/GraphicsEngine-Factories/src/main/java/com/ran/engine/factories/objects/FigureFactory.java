@@ -21,7 +21,7 @@ public class FigureFactory {
     }
     
     public Figure makeFigureWithOneVertice(ThreeDoubleVector vertice) {
-        return new Figure(Arrays.asList(vertice), Collections.EMPTY_LIST);
+        return new Figure(Collections.singletonList(vertice), Collections.emptyList());
     }
     
     public Figure makeGrid(int xCellsQuantity, int yCellsQuantity, int zCellsQuantity,
@@ -50,13 +50,13 @@ public class FigureFactory {
                     vertices.add(new ThreeDoubleVector(x, y, z));
                     indexes[i][j][k] = currentIndex;
                     if (i > 0) {
-                        figureEdges.add(new Pair(indexes[i - 1][j][k], currentIndex));
+                        figureEdges.add(new Pair<>(indexes[i - 1][j][k], currentIndex));
                     }
                     if (j > 0) {
-                        figureEdges.add(new Pair(indexes[i][j - 1][k], currentIndex));
+                        figureEdges.add(new Pair<>(indexes[i][j - 1][k], currentIndex));
                     }
                     if (k > 0) {
-                        figureEdges.add(new Pair(indexes[i][j][k - 1], currentIndex));
+                        figureEdges.add(new Pair<>(indexes[i][j][k - 1], currentIndex));
                     }
                     currentIndex++;
                 }
@@ -88,7 +88,7 @@ public class FigureFactory {
                     .add(secondAxis.multiply(Math.cos(angle)))
                     .add(center);
             vertices.add(vertice);
-            figureEdges.add(new Pair(i, (i + 1) % segments));
+            figureEdges.add(new Pair<>(i, (i + 1) % segments));
         }
         return new Figure(vertices, figureEdges);
     }
@@ -98,9 +98,7 @@ public class FigureFactory {
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>();
         int currentVerticesQuantity = 0;
         for (Figure figure: figures) {
-            for (ThreeDoubleVector vertice: figure.getVertices()) {
-                vertices.add(vertice);
-            }
+            vertices.addAll(figure.getVertices());
             for (Pair<Integer, Integer> figureEdge: figure.getFigureEdges()) {
                 figureEdges.add(new Pair<>(figureEdge.getLeft() + currentVerticesQuantity,
                         figureEdge.getRight() + currentVerticesQuantity));
@@ -140,7 +138,7 @@ public class FigureFactory {
         for (Pair<Double, Double> pointWithValue: pointsWithValues) {
             vertices.add(coordinatesConverter.convert(pointWithValue.getLeft(), pointWithValue.getRight()));
         }
-        List<Pair<Integer, Integer>> figureEdges = Collections.EMPTY_LIST;
+        List<Pair<Integer, Integer>> figureEdges = Collections.emptyList();
         return new Figure(vertices, figureEdges);
     }
     
@@ -156,13 +154,47 @@ public class FigureFactory {
         }
         return new Figure(vertices, makeEdgesSimpleList(segments));
     }
-    
-    protected List<Pair<Integer, Integer>> makeEdgesSimpleList(int segments) {
+
+    public List<Pair<Integer, Integer>> makeEdgesSimpleList(int segments) {
         List<Pair<Integer, Integer>> figureEdges = new ArrayList<>(segments);
         for (int i = 0; i < segments; i++) {
-            figureEdges.add(new Pair(i, i + 1));
+            figureEdges.add(new Pair<>(i, i + 1));
         }
         return figureEdges;
+    }
+
+    public Figure makeAeroplane(double scale) {
+        List<ThreeDoubleVector> vertices = Arrays.asList(
+                new ThreeDoubleVector(scale * -0.25, 0, scale * 0.5),
+                new ThreeDoubleVector(0, 0, 0),
+                new ThreeDoubleVector(scale * 0.25, 0, scale * 0.5),
+                new ThreeDoubleVector(scale * 0.25, 0, scale * 2.5),
+                new ThreeDoubleVector(0, 0, scale * 3),
+                new ThreeDoubleVector(scale * -0.25, 0, scale * 2.5),
+                new ThreeDoubleVector(scale * -0.25, 0, scale * 2.5),
+                new ThreeDoubleVector(scale * -0.75, 0, scale * 2.25),
+                new ThreeDoubleVector(scale * -0.75, 0, scale * 1.75),
+                new ThreeDoubleVector(scale * -0.25, 0, scale * 2),
+                new ThreeDoubleVector(scale * 0.25, 0, scale * 2.5),
+                new ThreeDoubleVector(scale * 0.75, 0, scale * 2.25),
+                new ThreeDoubleVector(scale * 0.75, 0, scale * 1.75),
+                new ThreeDoubleVector(scale * 0.25, 0, scale * 2)
+        );
+        List<Pair<Integer, Integer>> figureEdges = Arrays.asList(
+                new Pair<>(0, 1),
+                new Pair<>(1, 2),
+                new Pair<>(2, 3),
+                new Pair<>(3, 4),
+                new Pair<>(4, 5),
+                new Pair<>(5, 0),
+                new Pair<>(6, 7),
+                new Pair<>(7, 8),
+                new Pair<>(8, 9),
+                new Pair<>(10, 11),
+                new Pair<>(11, 12),
+                new Pair<>(12, 13)
+        );
+        return new Figure(vertices, figureEdges);
     }
 
 }
