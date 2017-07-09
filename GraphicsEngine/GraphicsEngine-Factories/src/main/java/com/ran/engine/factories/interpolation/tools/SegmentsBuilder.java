@@ -12,7 +12,22 @@ public class SegmentsBuilder {
     }
 
     public Result buildSegment(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint) {
-        return null;
+        DoubleFunction<TwoDoubleVector> segment = countSegment(firstPoint, secondPoint);
+        double length = countLength(firstPoint, secondPoint);
+        return new Result(segment, length);
+    }
+
+    private DoubleFunction<TwoDoubleVector> countSegment(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint) {
+        return new DoubleFunction<>(
+                point -> new TwoDoubleVector(firstPoint.getX() + (secondPoint.getX() - firstPoint.getX()) * point,
+                    firstPoint.getY() + (secondPoint.getY() - firstPoint.getY()) * point),
+                    0.0, 1.0);
+    }
+
+    private double countLength(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint) {
+        double xDiff = firstPoint.getX() - secondPoint.getX();
+        double yDiff = firstPoint.getY() - secondPoint.getY();
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
     public static class Result {
