@@ -11,10 +11,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+
 public class BezierWorldFactory implements WorldFactory {
 
     private static final BezierWorldFactory INSTANCE = new BezierWorldFactory();
-    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static BezierWorldFactory getInstance() {
         return INSTANCE;

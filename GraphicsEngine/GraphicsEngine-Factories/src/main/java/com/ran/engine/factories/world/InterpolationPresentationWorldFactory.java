@@ -14,10 +14,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+
 public class InterpolationPresentationWorldFactory implements WorldFactory {
 
     private static final InterpolationPresentationWorldFactory INSTANCE = new InterpolationPresentationWorldFactory();
-    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static InterpolationPresentationWorldFactory getInstance() {
         return INSTANCE;

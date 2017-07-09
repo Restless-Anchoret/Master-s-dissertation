@@ -1,5 +1,6 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.OrientationArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
@@ -11,11 +12,11 @@ import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedOrientationCurveCreator extends AbstractOrientationCurveCreator {
+public class OrientationByPointsCurveCreator extends AbstractOrientationCurveCreator {
 
-    private static final InterpolatedOrientationCurveCreator INSTANCE = new InterpolatedOrientationCurveCreator();
+    private static final OrientationByPointsCurveCreator INSTANCE = new OrientationByPointsCurveCreator();
 
-    public static InterpolatedOrientationCurveCreator getInstance() {
+    public static OrientationByPointsCurveCreator getInstance() {
         return INSTANCE;
     }
 

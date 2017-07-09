@@ -1,5 +1,6 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.BigArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesSmoothingCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
@@ -12,11 +13,11 @@ import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BezierSphereCurveByMiddlePointsCreator extends AbstractSphereCurveCreator {
+public class SphereBezierCurveCreator extends AbstractSphereCurveCreator {
 
-    private static final BezierSphereCurveByMiddlePointsCreator INSTANCE = new BezierSphereCurveByMiddlePointsCreator();
+    private static final SphereBezierCurveCreator INSTANCE = new SphereBezierCurveCreator();
 
-    public static BezierSphereCurveByMiddlePointsCreator getInstance() {
+    public static SphereBezierCurveCreator getInstance() {
         return INSTANCE;
     }
 

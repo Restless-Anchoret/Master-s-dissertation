@@ -1,5 +1,6 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
@@ -13,12 +14,12 @@ import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedSphereCurveCreator extends AbstractInterpolatedCurveCreator<
+public class SphereByPointsCurveCreator extends AbstractInterpolatedCurveCreator<
         ThreeDoubleVector, ThreeDoubleVector, SimpleInputParameters> {
 
-    private static final InterpolatedSphereCurveCreator INSTANCE = new InterpolatedSphereCurveCreator();
+    private static final SphereByPointsCurveCreator INSTANCE = new SphereByPointsCurveCreator();
 
-    public static InterpolatedSphereCurveCreator getInstance() {
+    public static SphereByPointsCurveCreator getInstance() {
         return INSTANCE;
     }
 

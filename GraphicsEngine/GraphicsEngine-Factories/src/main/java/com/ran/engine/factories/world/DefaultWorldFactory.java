@@ -8,15 +8,15 @@ import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.*;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+
 public class DefaultWorldFactory implements WorldFactory {
 
     private static final DefaultWorldFactory INSTANCE = new DefaultWorldFactory();
-    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static DefaultWorldFactory getInstance() {
         return INSTANCE;

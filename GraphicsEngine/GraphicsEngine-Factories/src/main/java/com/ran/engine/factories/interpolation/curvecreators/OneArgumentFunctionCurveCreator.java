@@ -1,5 +1,6 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.factories.interpolation.input.EmptyInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
 import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
@@ -12,12 +13,12 @@ import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedPlainCurveCreator extends AbstractInterpolatedCurveCreator<
+public class OneArgumentFunctionCurveCreator extends AbstractInterpolatedCurveCreator<
         Pair<Double, Double>, SingleDouble, EmptyInputParameters> {
 
-    private static final InterpolatedPlainCurveCreator INSTANCE = new InterpolatedPlainCurveCreator();
+    private static final OneArgumentFunctionCurveCreator INSTANCE = new OneArgumentFunctionCurveCreator();
 
-    public static InterpolatedPlainCurveCreator getInstance() {
+    public static OneArgumentFunctionCurveCreator getInstance() {
         return INSTANCE;
     }
 

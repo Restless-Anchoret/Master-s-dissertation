@@ -1,6 +1,7 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
 import com.ran.engine.factories.interpolation.exception.InterpolationException;
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.*;
 import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
 import com.ran.engine.rendering.algebraic.common.Pair;
@@ -15,14 +16,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterpolatedByTangentAnglesSphereCurveCreator extends AbstractInterpolatedCurveCreator<
+public class SphereByTangentAnglesCurveCreator extends AbstractInterpolatedCurveCreator<
         Pair<ThreeDoubleVector, Double>, ThreeDoubleVector, SimpleInputParameters> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InterpolatedByTangentAnglesSphereCurveCreator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SphereByTangentAnglesCurveCreator.class);
 
-    private static final InterpolatedByTangentAnglesSphereCurveCreator INSTANCE = new InterpolatedByTangentAnglesSphereCurveCreator();
+    private static final SphereByTangentAnglesCurveCreator INSTANCE = new SphereByTangentAnglesCurveCreator();
 
-    public static InterpolatedByTangentAnglesSphereCurveCreator getInstance() {
+    public static SphereByTangentAnglesCurveCreator getInstance() {
         return INSTANCE;
     }
 

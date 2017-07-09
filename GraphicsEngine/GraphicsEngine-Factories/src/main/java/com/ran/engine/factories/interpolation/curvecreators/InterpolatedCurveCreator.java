@@ -1,5 +1,6 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.factories.interpolation.input.InputParameters;
 import com.ran.engine.rendering.algebraic.common.AlgebraicObject;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import java.util.List;

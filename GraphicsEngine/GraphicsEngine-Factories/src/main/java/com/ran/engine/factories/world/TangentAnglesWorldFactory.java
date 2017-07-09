@@ -16,12 +16,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+
 public class TangentAnglesWorldFactory implements WorldFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(TangentAnglesWorldFactory.class);
 
     private static final TangentAnglesWorldFactory INSTANCE = new TangentAnglesWorldFactory();
-    private static final Color DARK_GRAY_COLOR = new Color(115, 115, 115);
 
     public static TangentAnglesWorldFactory getInstance() {
         return INSTANCE;

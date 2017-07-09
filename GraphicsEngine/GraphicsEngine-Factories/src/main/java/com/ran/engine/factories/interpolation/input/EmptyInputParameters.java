@@ -1,4 +1,4 @@
-package com.ran.engine.factories.interpolation.curvecreators;
+package com.ran.engine.factories.interpolation.input;
 
 public class EmptyInputParameters implements InputParameters {
 

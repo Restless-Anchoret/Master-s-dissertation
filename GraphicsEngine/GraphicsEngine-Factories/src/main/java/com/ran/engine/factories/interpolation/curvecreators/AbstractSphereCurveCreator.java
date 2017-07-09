@@ -1,6 +1,7 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
 import com.ran.engine.factories.interpolation.exception.InterpolationException;
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 

@@ -69,6 +69,11 @@ public class FigureFactory {
             double xCellWidth, double yCellWidth) {
         return makeGrid(xCellsQuantity, yCellsQuantity, 0, xCellWidth, yCellWidth, 0.0);
     }
+
+    public Figure makeVerticalPlainGrid(int xCellsQuantity, int zCellsQuantity,
+                                        double xCellWidth, double zCellWidth) {
+        return makeGrid(xCellsQuantity, 0, zCellsQuantity, xCellWidth, 0, zCellWidth);
+    }
     
     public Figure makeParallelepiped(double xWidth, double yWidth, double zWidth) {
         return makeGrid(1, 1, 1, xWidth, yWidth, zWidth);

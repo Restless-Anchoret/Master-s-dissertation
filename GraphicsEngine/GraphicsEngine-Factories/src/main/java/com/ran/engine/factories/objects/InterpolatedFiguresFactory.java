@@ -1,6 +1,8 @@
 package com.ran.engine.factories.objects;
 
 import com.ran.engine.factories.interpolation.curvecreators.*;
+import com.ran.engine.factories.interpolation.input.EmptyInputParameters;
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
@@ -24,7 +26,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
         DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                new InterpolatedSphereCurveCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+                new SphereByPointsCurveCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
@@ -33,7 +35,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
     }
 
     public Figure makeBezierCurveByMiddlePoints(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
-        DoubleFunction<ThreeDoubleVector> interpolatedCurve = BezierSphereCurveByMiddlePointsCreator.getInstance()
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve = SphereBezierCurveCreator.getInstance()
                 .interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
@@ -51,7 +53,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
                                                           int degree, int segments) {
         LOG.trace("verticesWithTangentAngles = {}, degree = {}, segments = {}",
                 verticesWithTangentAngles, degree, segments);
-        DoubleFunction<ThreeDoubleVector> interpolatedCurve = InterpolatedByTangentAnglesSphereCurveCreator.getInstance()
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve = SphereByTangentAnglesCurveCreator.getInstance()
                 .interpolateCurve(verticesWithTangentAngles, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
@@ -64,7 +66,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     public Figure makeSpline(List<Pair<Double, Double>> pointsWithValues, int degree, int segments,
                              CoordinatesConverter coordinatesConverter) {
-        DoubleFunction<SingleDouble> splineFunction = new InterpolatedPlainCurveCreator()
+        DoubleFunction<SingleDouble> splineFunction = new OneArgumentFunctionCurveCreator()
                 .interpolateCurve(pointsWithValues, EmptyInputParameters.getInstance(), degree);
         return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
     }

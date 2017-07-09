@@ -1,9 +1,6 @@
 package com.ran.engine.opengl.main;
 
-import com.ran.engine.factories.world.BezierWorldFactory;
-import com.ran.engine.factories.world.DefaultWorldFactory;
-import com.ran.engine.factories.world.InterpolationPresentationWorldFactory;
-import com.ran.engine.factories.world.TangentAnglesWorldFactory;
+import com.ran.engine.factories.world.*;
 import com.ran.engine.opengl.runner.OpenGLRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,7 @@ public class OpenGLMain {
     public static void main(String[] args) {
         LOG.trace("OpenGLRunner module main() started");
         OpenGLRunner runner = new OpenGLRunner(Arrays.asList(
+                PlainWorldFactory.getInstance(),
                 TangentAnglesWorldFactory.getInstance(),
                 BezierWorldFactory.getInstance(),
                 InterpolationPresentationWorldFactory.getInstance(),
