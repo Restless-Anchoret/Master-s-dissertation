@@ -7,7 +7,7 @@ public class SegmentsBuilder {
 
     private static SegmentsBuilder INSTANCE = new SegmentsBuilder();
 
-    private static SegmentsBuilder getInstance() {
+    public static SegmentsBuilder getInstance() {
         return INSTANCE;
     }
 

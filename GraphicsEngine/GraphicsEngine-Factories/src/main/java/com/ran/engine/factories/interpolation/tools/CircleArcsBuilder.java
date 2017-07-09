@@ -8,7 +8,7 @@ public class CircleArcsBuilder {
 
     private static CircleArcsBuilder INSTANCE = new CircleArcsBuilder();
 
-    private static CircleArcsBuilder getInstance() {
+    public static CircleArcsBuilder getInstance() {
         return INSTANCE;
     }
 
