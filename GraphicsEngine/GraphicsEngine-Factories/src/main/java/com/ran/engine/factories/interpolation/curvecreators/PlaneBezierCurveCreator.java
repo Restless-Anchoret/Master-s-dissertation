@@ -6,7 +6,13 @@ import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 
 import java.util.List;
 
-public class PlainBezierCurveCreator extends AbstractPlainCurveCreator {
+public class PlaneBezierCurveCreator extends AbstractPlainCurveCreator {
+
+    private static final PlaneBezierCurveCreator INSTANCE = new PlaneBezierCurveCreator();
+
+    public static PlaneBezierCurveCreator getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public DoubleFunction<TwoDoubleVector> interpolateCurve(

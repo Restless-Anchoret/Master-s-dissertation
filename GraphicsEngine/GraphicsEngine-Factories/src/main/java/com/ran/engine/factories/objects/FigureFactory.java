@@ -5,12 +5,14 @@ import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 import com.ran.engine.rendering.world.Figure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FigureFactory {
     
@@ -136,15 +138,22 @@ public class FigureFactory {
         }
         return makeMultiFigure(circles);
     }
-    
-    public Figure makeFigureByPoints(List<Pair<Double, Double>> pointsWithValues,
-            CoordinatesConverter coordinatesConverter) {
-        List<ThreeDoubleVector> vertices = new ArrayList<>(pointsWithValues.size());
-        for (Pair<Double, Double> pointWithValue: pointsWithValues) {
-            vertices.add(coordinatesConverter.convert(pointWithValue.getLeft(), pointWithValue.getRight()));
-        }
+
+    public Figure makeFigureByPoints(List<TwoDoubleVector> points,
+                                     CoordinatesConverter coordinatesConverter) {
+        List<ThreeDoubleVector> vertices = points.stream()
+                .map(point -> coordinatesConverter.convert(point.getX(), point.getY()))
+                .collect(Collectors.toList());
         List<Pair<Integer, Integer>> figureEdges = Collections.emptyList();
         return new Figure(vertices, figureEdges);
+    }
+    
+    public Figure makeFigureByPointsWithValues(List<Pair<Double, Double>> pointsWithValues,
+            CoordinatesConverter coordinatesConverter) {
+        List<TwoDoubleVector> points = pointsWithValues.stream()
+                .map(pointWithValue -> new TwoDoubleVector(pointWithValue.getLeft(), pointWithValue.getRight()))
+                .collect(Collectors.toList());
+        return makeFigureByPoints(points, coordinatesConverter);
     }
     
     public Figure makeFigureByFunction(DoubleFunction<SingleDouble> function,

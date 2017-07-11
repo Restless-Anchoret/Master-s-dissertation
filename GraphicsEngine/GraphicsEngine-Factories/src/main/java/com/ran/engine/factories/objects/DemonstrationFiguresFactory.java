@@ -1,15 +1,13 @@
 package com.ran.engine.factories.objects;
 
-import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
-import com.ran.engine.factories.interpolation.tools.BigArcsBuilder;
-import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
-import com.ran.engine.factories.interpolation.tools.TangentBuilder;
+import com.ran.engine.factories.interpolation.tools.*;
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
 import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 import com.ran.engine.rendering.world.Figure;
 
 import java.util.ArrayList;
@@ -114,6 +112,34 @@ public class DemonstrationFiguresFactory extends FigureFactory {
             vertices.add(currentVertice);
         }
         return new Figure(vertices, makeEdgesSimpleList(2 * halfSegments));
+    }
+
+    public Figure makeCircleArcByPoints(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint,
+                                        TwoDoubleVector thirdPoint, int halfSegments) {
+        CoordinatesConverter converter = CoordinatesConverter.CONVERTER_TO_XZ;
+        CircleArcsBuilder.Result arcBuilderResult = CircleArcsBuilder.getInstance()
+                .buildCircle(firstPoint, secondPoint, thirdPoint);
+        List<ThreeDoubleVector> vertices = new ArrayList<>(halfSegments * 2 + 1);
+        vertices.add(converter.convert(firstPoint));
+        for (DoubleFunction<TwoDoubleVector> arc :
+                Arrays.asList(arcBuilderResult.getFirstArc(), arcBuilderResult.getSecondArc())) {
+            for (int i = 1; i <= halfSegments; i++) {
+                double parameter = (double) i / (double) halfSegments;
+                TwoDoubleVector currentPoint = arc.apply(parameter);
+                ThreeDoubleVector currentVertice = converter.convert(currentPoint);
+                vertices.add(currentVertice);
+            }
+        }
+        return new Figure(vertices, makeEdgesSimpleList(halfSegments * 2));
+    }
+
+    public Figure makeFigureByCircleArcs(List<TwoDoubleVector> vertices, int halfSegmentsPerArc) {
+        List<Figure> figures = new ArrayList<>(vertices.size() - 2);
+        for (int i = 0; i < vertices.size() - 2; i++) {
+            figures.add(makeCircleArcByPoints(vertices.get(i), vertices.get(i + 1),
+                    vertices.get(i + 2), halfSegmentsPerArc));
+        }
+        return makeMultiFigure(figures);
     }
 
 }

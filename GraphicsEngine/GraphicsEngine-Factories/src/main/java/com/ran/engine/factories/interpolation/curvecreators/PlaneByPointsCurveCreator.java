@@ -4,6 +4,7 @@ import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CircleArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
+import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
 import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
@@ -12,7 +13,13 @@ import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlainByPointsCurveCreator extends AbstractPlainCurveCreator {
+public class PlaneByPointsCurveCreator extends AbstractPlainCurveCreator {
+
+    private static final PlaneByPointsCurveCreator INSTANCE = new PlaneByPointsCurveCreator();
+
+    public static PlaneByPointsCurveCreator getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public DoubleFunction<TwoDoubleVector> interpolateCurve(
@@ -44,7 +51,8 @@ public class PlainByPointsCurveCreator extends AbstractPlainCurveCreator {
                     circleArcsBuilder.buildCircle(vertices.get(i), vertices.get(i + 1), vertices.get(i + 2));
             DoubleFunction<TwoDoubleVector> deformedFunction = deformationCreator.deformCurves(
                     currentArcsBuildingResult.getSecondArc().substract(constantFunctions.get(i)),
-                    nextArcsBuildingResult.getFirstArc().substract(constantFunctions.get(i)), degree);
+                    nextArcsBuildingResult.getFirstArc().substract(constantFunctions.get(i)), degree,
+                    GroupMultiplicationOperationFactory.getSummationOperation());
             segments.add(deformedFunction.add(constantFunctions.get(i)));
             arcsLengths.add(nextArcsBuildingResult.getArcsLengths());
             currentArcsBuildingResult = nextArcsBuildingResult;

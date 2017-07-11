@@ -7,8 +7,14 @@ import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 
 import java.util.List;
 
-public class PlainByTangentAnglesCurveCreator extends AbstractInterpolatedCurveCreator<
+public class PlaneByTangentAnglesCurveCreator extends AbstractInterpolatedCurveCreator<
         Pair<TwoDoubleVector, Double>, TwoDoubleVector, SimpleInputParameters> {
+
+    private static final PlaneByTangentAnglesCurveCreator INSTANCE = new PlaneByTangentAnglesCurveCreator();
+
+    public static PlaneByTangentAnglesCurveCreator getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public DoubleFunction<TwoDoubleVector> interpolateCurve(

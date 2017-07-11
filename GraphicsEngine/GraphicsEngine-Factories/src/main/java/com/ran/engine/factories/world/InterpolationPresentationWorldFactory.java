@@ -53,7 +53,7 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
                 new StaticObject(interpolatedFiguresFactory.makeSpline(pointsWithValues, 1, 140,
                         CoordinatesConverter.CONVERTER_TO_XZ),
                         Orientation.INITIAL_ORIENTATION, Color.BLACK, 1.5f, 2),
-                new StaticObject(figureFactory.makeFigureByPoints(pointsWithValues,
+                new StaticObject(figureFactory.makeFigureByPointsWithValues(pointsWithValues,
                         CoordinatesConverter.CONVERTER_TO_XZ),
                         Orientation.INITIAL_ORIENTATION, Color.RED, 0, 7),
                 

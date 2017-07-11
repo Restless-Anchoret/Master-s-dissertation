@@ -14,7 +14,7 @@ public class OpenGLMain {
     public static void main(String[] args) {
         LOG.trace("OpenGLRunner module main() started");
         OpenGLRunner runner = new OpenGLRunner(Arrays.asList(
-                PlainWorldFactory.getInstance(),
+                PlaneWorldFactory.getInstance(),
                 TangentAnglesWorldFactory.getInstance(),
                 BezierWorldFactory.getInstance(),
                 InterpolationPresentationWorldFactory.getInstance(),

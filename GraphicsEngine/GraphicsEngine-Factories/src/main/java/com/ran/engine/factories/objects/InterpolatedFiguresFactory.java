@@ -8,11 +8,13 @@ import com.ran.engine.rendering.algebraic.common.Pair;
 import com.ran.engine.rendering.algebraic.function.DoubleFunction;
 import com.ran.engine.rendering.algebraic.vector.SingleDouble;
 import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
 import com.ran.engine.rendering.world.Figure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InterpolatedFiguresFactory extends FigureFactory {
 
@@ -25,8 +27,8 @@ public class InterpolatedFiguresFactory extends FigureFactory {
     }
 
     public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
-        DoubleFunction<ThreeDoubleVector> interpolatedCurve =
-                new SphereByPointsCurveCreator().interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+        DoubleFunction<ThreeDoubleVector> interpolatedCurve = SphereByPointsCurveCreator.getInstance()
+                .interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
         double parameterStart = interpolatedCurve.getMinParameterValue();
         double parameterEnd = interpolatedCurve.getMaxParameterValue();
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
@@ -42,11 +44,6 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments);
         List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
         return new Figure(vertices, figureEdges);
-    }
-
-    public Figure makeBezierCurveRoundingCorners(List<ThreeDoubleVector> verticesForInterpolation,
-                                                 int degree, int segments, double maximumRoundingAngle) {
-        return null;
     }
 
     public Figure makeInterpolatedCurveByTangentAngles(List<Pair<ThreeDoubleVector, Double>> verticesWithTangentAngles,
@@ -69,6 +66,18 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         DoubleFunction<SingleDouble> splineFunction = new OneArgumentFunctionCurveCreator()
                 .interpolateCurve(pointsWithValues, EmptyInputParameters.getInstance(), degree);
         return makeFigureByFunction(splineFunction, segments, coordinatesConverter);
+    }
+
+    public Figure makePlaneInterpolatedCurveByPoints(List<TwoDoubleVector> verticesForInterpolation, int degree, int segments) {
+        DoubleFunction<TwoDoubleVector> interpolatedCurve = PlaneByPointsCurveCreator.getInstance()
+                .interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments)
+                .stream().map(point -> new ThreeDoubleVector(point.getX(), 0.0, point.getY()))
+                .collect(Collectors.toList());
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
+        return new Figure(vertices, figureEdges);
     }
 
 }
