@@ -27,6 +27,11 @@ public class PlainByPointsCurveCreator extends AbstractPlainCurveCreator {
         CircleArcsBuilder circleArcsBuilder = CircleArcsBuilder.getInstance();
         TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
 
+        List<DoubleFunction<TwoDoubleVector>> constantFunctions = new ArrayList<>(k);
+        for (int i = 0; i < k; i++) {
+            constantFunctions.add(DoubleFunction.createConstantFunction(vertices.get(i)));
+        }
+
         List<DoubleFunction<TwoDoubleVector>> segments = new ArrayList<>(k - 1);
         List<Pair<Double, Double>> arcsLengths = new ArrayList<>(k - 2);
         CircleArcsBuilder.Result currentArcsBuildingResult =
@@ -38,9 +43,9 @@ public class PlainByPointsCurveCreator extends AbstractPlainCurveCreator {
             CircleArcsBuilder.Result nextArcsBuildingResult =
                     circleArcsBuilder.buildCircle(vertices.get(i), vertices.get(i + 1), vertices.get(i + 2));
             DoubleFunction<TwoDoubleVector> deformedFunction = deformationCreator.deformCurves(
-                    currentArcsBuildingResult.getSecondArc(),
-                    nextArcsBuildingResult.getFirstArc(), degree);
-            segments.add(deformedFunction);
+                    currentArcsBuildingResult.getSecondArc().substract(constantFunctions.get(i)),
+                    nextArcsBuildingResult.getFirstArc().substract(constantFunctions.get(i)), degree);
+            segments.add(deformedFunction.add(constantFunctions.get(i)));
             arcsLengths.add(nextArcsBuildingResult.getArcsLengths());
             currentArcsBuildingResult = nextArcsBuildingResult;
         }
