@@ -1,6 +1,6 @@
 package com.ran.engine.opengl.runner;
 
-import com.ran.engine.factories.world.WorldFactory;
+import com.ran.engine.rendering.world.WorldFactory;
 import com.ran.engine.opengl.delegate.OpenGLRenderingDelegate;
 import com.ran.engine.opengl.handlers.EventHandler;
 import com.ran.engine.opengl.handlers.keyboard.*;

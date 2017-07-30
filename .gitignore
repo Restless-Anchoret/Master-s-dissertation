@@ -14,9 +14,8 @@ hs_err_pid*
 /GraphicsEngine/GraphicsEngine-Rendering/target/
 /GraphicsEngine/GraphicsEngine-Factories/target/
 /GraphicsEngine/GraphicsEngine-OpenGLRunner/target/
-/GraphicsEngine/GraphicsEngine-SwingRunner/target/
-/GraphicsEngine/GraphicsEngine-OpenGLRunner/logs/
-/GraphicsEngine/GraphicsEngine-SwingRunner/logs/
+/GraphicsEngine/GraphicsEngine-Starter/target/
+/GraphicsEngine/GraphicsEngine-Starter/logs/
 
 # IDEA files
 *.idea/
