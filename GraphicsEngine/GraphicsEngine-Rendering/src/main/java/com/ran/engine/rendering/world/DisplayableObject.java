@@ -5,21 +5,13 @@ import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 public class DisplayableObject {
 
-    public static final Color DEFAULT_FIGURE_COLOR = Color.BLACK;
-    public static final float DEFAULT_EDGE_PAINT_WIDTH = 1.0f;
-    public static final int DEFAULT_VERTICE_PAINT_RADIUS = 2;
-    
-    private final Figure figure;
-    private List<ThreeDoubleVector> currentFigureVertices = null;
-    private Color color;
-    private float edgePaintWidth;
-    private int verticePaintRadius;
+    private List<DisplayableObjectPart> displayableObjectParts;
     private boolean visible;
-
     private final DoubleFunction<Quaternion> animationFunction;
     private double currentAnimationTime = 0;
     private ThreeDoubleVector offset;
@@ -31,10 +23,12 @@ public class DisplayableObject {
                              int verticePaintRadius, boolean visible,
                              DoubleFunction<Quaternion> animationFunction,
                              ThreeDoubleVector offset, boolean animationCyclic) {
-        this.figure = figure;
-        this.color = color;
-        this.edgePaintWidth = edgePaintWidth;
-        this.verticePaintRadius = verticePaintRadius;
+        this.displayableObjectParts = Collections.singletonList(new DisplayableObjectPart(
+                figure,
+                color,
+                edgePaintWidth,
+                verticePaintRadius
+        ));
         this.visible = visible;
         this.animationFunction = animationFunction;
         this.offset = offset;
@@ -42,32 +36,8 @@ public class DisplayableObject {
         this.currentOrientation = new Orientation(offset, animationFunction.apply(currentAnimationTime));
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public float getEdgePaintWidth() {
-        return edgePaintWidth;
-    }
-
-    public void setEdgePaintWidth(float edgePaintWidth) {
-        this.edgePaintWidth = edgePaintWidth;
-    }
-
-    public int getVerticePaintRadius() {
-        return verticePaintRadius;
-    }
-
-    public void setVerticePaintRadius(int verticePaintRadius) {
-        this.verticePaintRadius = verticePaintRadius;
-    }
-
-    public Figure getFigure() {
-        return figure;
+    public List<DisplayableObjectPart> getDisplayableObjectParts() {
+        return displayableObjectParts;
     }
 
     public boolean isVisible() {
@@ -113,19 +83,19 @@ public class DisplayableObject {
 
     public void setCurrentOrientation(Orientation currentOrientation) {
         this.currentOrientation = currentOrientation;
-        this.currentFigureVertices = null;
-    }
-
-    public List<ThreeDoubleVector> getCurrentFigureVertices() {
-        updateCurrentFigureVertices();
-        return currentFigureVertices;
+        for (DisplayableObjectPart part: displayableObjectParts) {
+            part.setCurrentFigureVertices(null);
+        }
     }
     
-    public void updateCurrentFigureVertices() {
-        if (currentFigureVertices != null) {
-            return;
+    public void updateCurrentFiguresVertices() {
+        for (DisplayableObjectPart part: displayableObjectParts) {
+            if (part.getCurrentFigureVertices() != null) {
+                return;
+            }
+            part.setCurrentFigureVertices(OrientationMapper.getInstance()
+                    .orientVertices(part.getFigure().getVertices(), currentOrientation));
         }
-        currentFigureVertices = OrientationMapper.getInstance().orientVertices(figure.getVertices(), currentOrientation);
     }
 
     public void updateAnimationForDeltaTime(double deltaTime) {

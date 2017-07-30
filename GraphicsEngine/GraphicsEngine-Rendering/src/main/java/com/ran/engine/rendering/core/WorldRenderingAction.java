@@ -8,6 +8,7 @@ import com.ran.engine.algebra.vector.TwoDoubleVector;
 import com.ran.engine.algebra.vector.TwoIntVector;
 import com.ran.engine.rendering.world.Camera;
 import com.ran.engine.rendering.world.DisplayableObject;
+import com.ran.engine.rendering.world.DisplayableObjectPart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,26 +31,36 @@ public class WorldRenderingAction implements RenderingAction {
         }
     }
 
-    private void paintDisplayableObject(DisplayableObject displayableObject, Camera camera,
+    private void paintDisplayableObject(DisplayableObject displayableObject,
+                                        Camera camera,
                                         RenderingDelegate delegate) {
         if (!displayableObject.isVisible()) {
             return;
         }
+        displayableObject.updateCurrentFiguresVertices();
+        for (DisplayableObjectPart part: displayableObject.getDisplayableObjectParts()) {
+            paintDisplayableObjectPart(part, camera, delegate);
+        }
+    }
+
+    private void paintDisplayableObjectPart(DisplayableObjectPart displayableObjectPart,
+                                            Camera camera,
+                                            RenderingDelegate delegate) {
         List<TwoIntVector> displayCoordinates = convertWorldCoordinatesToDiplayCoordinates(
-                displayableObject.getCurrentFigureVertices(), camera, delegate.getWidth(), delegate.getHeight());
-        for (Pair<Integer, Integer> figureEdge: displayableObject.getFigure().getFigureEdges()) {
+                displayableObjectPart.getCurrentFigureVertices(), camera, delegate.getWidth(), delegate.getHeight());
+        for (Pair<Integer, Integer> figureEdge: displayableObjectPart.getFigure().getFigureEdges()) {
             TwoIntVector firstPoint = displayCoordinates.get(figureEdge.getLeft());
             TwoIntVector secondPoint = displayCoordinates.get(figureEdge.getRight());
             if (firstPoint == null || secondPoint == null) {
                 continue;
             }
-            delegate.drawLine(firstPoint, secondPoint, displayableObject.getColor(),
-                    displayableObject.getEdgePaintWidth());
+            delegate.drawLine(firstPoint, secondPoint, displayableObjectPart.getColor(),
+                    displayableObjectPart.getEdgePaintWidth());
         }
         for (TwoIntVector point: displayCoordinates) {
             if (point != null) {
-                delegate.drawCircle(point, displayableObject.getColor(),
-                        displayableObject.getVerticePaintRadius());
+                delegate.drawCircle(point, displayableObjectPart.getColor(),
+                        displayableObjectPart.getVerticePaintRadius());
             }
         }
     }
