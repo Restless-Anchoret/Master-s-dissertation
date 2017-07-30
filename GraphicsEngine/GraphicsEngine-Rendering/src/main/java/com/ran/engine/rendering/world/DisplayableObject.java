@@ -19,6 +19,17 @@ public class DisplayableObject {
     private boolean animationTurnedOn = false;
     private final boolean animationCyclic;
 
+    public DisplayableObject(List<DisplayableObjectPart> displayableObjectParts, boolean visible,
+                             DoubleFunction<Quaternion> animationFunction,
+                             ThreeDoubleVector offset, boolean animationCyclic) {
+        this.displayableObjectParts = displayableObjectParts;
+        this.visible = visible;
+        this.animationFunction = animationFunction;
+        this.offset = offset;
+        this.animationCyclic = animationCyclic;
+        this.currentOrientation = new Orientation(offset, animationFunction.apply(currentAnimationTime));
+    }
+
     public DisplayableObject(Figure figure, Color color, float edgePaintWidth,
                              int verticePaintRadius, boolean visible,
                              DoubleFunction<Quaternion> animationFunction,

@@ -4,18 +4,24 @@ import com.ran.engine.algebra.function.DoubleFunction;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
-import java.awt.Color;
+import java.awt.*;
+import java.util.List;
 
 public class DisplayableObjectBuilder {
 
-    private final Figure figure;
-    private final DoubleFunction<Quaternion> animationFunction;
+    private List<DisplayableObjectPart> displayableObjectParts = null;
+    private Figure figure = null;
+    private DoubleFunction<Quaternion> animationFunction = null;
     private ThreeDoubleVector offset = ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR;
     private Color color = DisplayableObjectPart.DEFAULT_FIGURE_COLOR;
     private float edgePaintWidth = DisplayableObjectPart.DEFAULT_EDGE_PAINT_WIDTH;
     private int verticePaintRadius = DisplayableObjectPart.DEFAULT_VERTICE_PAINT_RADIUS;
     private boolean visible = true;
     private boolean animationCyclic = true;
+
+    public DisplayableObjectBuilder(List<DisplayableObjectPart> displayableObjectParts) {
+        this.displayableObjectParts = displayableObjectParts;
+    }
 
     public DisplayableObjectBuilder(Figure figure, DoubleFunction<Quaternion> animationFunction) {
         this.figure = figure;
@@ -53,8 +59,13 @@ public class DisplayableObjectBuilder {
     }
 
     public DisplayableObject build() {
-        return new DisplayableObject(figure, color, edgePaintWidth, verticePaintRadius, visible,
-                animationFunction, offset, animationCyclic);
+        if (displayableObjectParts != null) {
+            return new DisplayableObject(displayableObjectParts, visible,
+                    animationFunction, offset, animationCyclic);
+        } else {
+            return new DisplayableObject(figure, color, edgePaintWidth, verticePaintRadius, visible,
+                    animationFunction, offset, animationCyclic);
+        }
     }
 
 }

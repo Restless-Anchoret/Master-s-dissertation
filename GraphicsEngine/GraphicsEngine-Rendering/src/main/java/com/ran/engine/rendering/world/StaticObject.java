@@ -3,10 +3,18 @@ package com.ran.engine.rendering.world;
 import com.ran.engine.algebra.function.DoubleFunction;
 
 import java.awt.*;
+import java.util.List;
 
 import static com.ran.engine.rendering.world.DisplayableObjectPart.*;
 
 public class StaticObject extends DisplayableObject {
+
+    public StaticObject(List<DisplayableObjectPart> displayableObjectPartList,
+                        Orientation orientation, boolean visible) {
+        super(displayableObjectPartList, visible,
+                new DoubleFunction<>(time -> orientation.getRotation()),
+                orientation.getOffset(), false);
+    }
 
     public StaticObject(Figure figure, Orientation orientation, Color color,
                         float edgePaintWidth, int verticePaintRadius, boolean visible) {
