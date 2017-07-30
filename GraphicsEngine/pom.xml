@@ -14,7 +14,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <module>GraphicsEngine-Rendering</module>
         <module>GraphicsEngine-Factories</module>
         <module>GraphicsEngine-OpenGLRunner</module>
-        <module>GraphicsEngine-SwingRunner</module>
     </modules>
 
     <properties>
