@@ -1,6 +1,6 @@
 package com.ran.engine.factories.util;
 
-import com.ran.engine.rendering.algebraic.common.AlgebraicObject;
+import com.ran.engine.algebra.common.AlgebraicObject;
 import java.util.function.BiFunction;
 
 public class GroupMultiplicationOperationFactory {

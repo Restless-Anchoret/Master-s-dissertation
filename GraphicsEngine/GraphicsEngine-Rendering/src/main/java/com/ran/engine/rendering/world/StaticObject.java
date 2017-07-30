@@ -1,6 +1,6 @@
 package com.ran.engine.rendering.world;
 
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
+import com.ran.engine.algebra.function.DoubleFunction;
 
 import java.awt.*;
 

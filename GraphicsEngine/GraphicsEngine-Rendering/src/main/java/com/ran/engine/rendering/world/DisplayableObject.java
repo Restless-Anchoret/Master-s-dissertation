@@ -1,8 +1,8 @@
 package com.ran.engine.rendering.world;
 
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.quaternion.Quaternion;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 import java.awt.*;
 import java.util.List;

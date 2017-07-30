@@ -1,7 +1,7 @@
 package com.ran.engine.rendering.world;
 
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import java.util.Collections;
 import java.util.List;
 

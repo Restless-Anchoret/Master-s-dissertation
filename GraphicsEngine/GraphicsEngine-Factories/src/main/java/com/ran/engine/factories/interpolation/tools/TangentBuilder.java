@@ -1,10 +1,10 @@
 package com.ran.engine.factories.interpolation.tools;
 
-import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.common.ArithmeticOperations;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.matrix.DoubleMatrix;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

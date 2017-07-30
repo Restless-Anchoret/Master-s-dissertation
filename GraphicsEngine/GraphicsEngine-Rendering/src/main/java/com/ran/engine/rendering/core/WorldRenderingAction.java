@@ -1,11 +1,11 @@
 package com.ran.engine.rendering.core;
 
-import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
-import com.ran.engine.rendering.algebraic.vector.TwoIntVector;
+import com.ran.engine.algebra.common.ArithmeticOperations;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.matrix.DoubleMatrix;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
+import com.ran.engine.algebra.vector.TwoIntVector;
 import com.ran.engine.rendering.world.Camera;
 import com.ran.engine.rendering.world.DisplayableObject;
 

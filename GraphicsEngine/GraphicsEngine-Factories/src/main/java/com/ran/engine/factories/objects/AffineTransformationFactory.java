@@ -1,7 +1,7 @@
 package com.ran.engine.factories.objects;
 
-import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.quaternion.Quaternion;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.AffineTransformation;
 
 public class AffineTransformationFactory {

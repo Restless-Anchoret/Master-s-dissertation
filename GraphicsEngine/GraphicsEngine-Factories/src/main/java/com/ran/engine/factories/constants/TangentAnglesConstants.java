@@ -1,7 +1,7 @@
 package com.ran.engine.factories.constants;
 
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 import java.awt.*;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package com.ran.engine.opengl.delegate;
 
-import com.ran.engine.rendering.algebraic.vector.TwoIntVector;
+import com.ran.engine.algebra.vector.TwoIntVector;
 import com.ran.engine.rendering.core.RenderingDelegate;
 import org.lwjgl.opengl.*;
 

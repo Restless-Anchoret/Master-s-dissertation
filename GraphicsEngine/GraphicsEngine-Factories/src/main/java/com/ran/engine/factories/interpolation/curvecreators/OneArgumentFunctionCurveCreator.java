@@ -4,11 +4,11 @@ import com.ran.engine.factories.interpolation.input.EmptyInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.ParabolaBuilder;
 import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.exception.AlgebraicException;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
-import com.ran.engine.rendering.algebraic.vector.SingleDouble;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.exception.AlgebraicException;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.function.DoubleMultifunction;
+import com.ran.engine.algebra.vector.SingleDouble;
 
 import java.util.ArrayList;
 import java.util.List;

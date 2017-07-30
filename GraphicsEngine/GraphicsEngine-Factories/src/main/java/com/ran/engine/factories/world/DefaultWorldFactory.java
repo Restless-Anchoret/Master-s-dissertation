@@ -3,9 +3,9 @@ package com.ran.engine.factories.world;
 import com.ran.engine.factories.objects.AnimationFactory;
 import com.ran.engine.factories.objects.FigureFactory;
 import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.quaternion.Quaternion;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.*;
 
 import java.util.Arrays;

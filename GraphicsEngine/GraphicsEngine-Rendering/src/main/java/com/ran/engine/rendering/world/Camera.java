@@ -1,7 +1,7 @@
 package com.ran.engine.rendering.world;
 
-import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.matrix.DoubleMatrix;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 public class Camera {
 

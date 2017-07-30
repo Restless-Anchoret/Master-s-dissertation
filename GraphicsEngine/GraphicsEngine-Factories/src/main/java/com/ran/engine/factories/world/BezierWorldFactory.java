@@ -3,7 +3,7 @@ package com.ran.engine.factories.world;
 import com.ran.engine.factories.objects.DemonstrationFiguresFactory;
 import com.ran.engine.factories.objects.FigureFactory;
 import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.*;
 
 import java.awt.*;
