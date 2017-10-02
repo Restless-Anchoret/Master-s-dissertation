@@ -1,13 +1,12 @@
 package com.ran.engine.rendering.core;
 
-import com.ran.engine.rendering.algebraic.common.ArithmeticOperations;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.matrix.DoubleMatrix;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
-import com.ran.engine.rendering.algebraic.vector.TwoIntVector;
-import com.ran.engine.rendering.world.Camera;
-import com.ran.engine.rendering.world.DisplayableObject;
+import com.ran.engine.algebra.common.ArithmeticOperations;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.matrix.DoubleMatrix;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
+import com.ran.engine.algebra.vector.TwoIntVector;
+import com.ran.engine.rendering.world.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,31 +24,38 @@ public class WorldRenderingAction implements RenderingAction {
     @Override
     public void performRendering(RenderingDelegate delegate, RenderingInfo info) {
         delegate.clear(info.getBackgroundColor());
-        for (DisplayableObject displayableObject: info.getCurrentWorld().getDisplayableObjects()) {
-            paintDisplayableObject(displayableObject, info.getCurrentWorld().getCamera(), delegate);
+        for (WorldObject worldObject: info.getCurrentWorld().getWorldObjects()) {
+            paintDisplayableObject(worldObject, info.getCurrentWorld().getCamera(), delegate);
         }
     }
 
-    private void paintDisplayableObject(DisplayableObject displayableObject, Camera camera,
+    private void paintDisplayableObject(WorldObject worldObject,
+                                        Camera camera,
                                         RenderingDelegate delegate) {
-        if (!displayableObject.isVisible()) {
-            return;
+        worldObject.updateCurrentFiguresVertices();
+        for (WorldObjectPart part: worldObject.getWorldObjectContent().getWorldObjectParts()) {
+            paintDisplayableObjectPart(part, camera, delegate);
         }
+    }
+
+    private void paintDisplayableObjectPart(WorldObjectPart displayableObjectPart,
+                                            Camera camera,
+                                            RenderingDelegate delegate) {
         List<TwoIntVector> displayCoordinates = convertWorldCoordinatesToDiplayCoordinates(
-                displayableObject.getCurrentFigureVertices(), camera, delegate.getWidth(), delegate.getHeight());
-        for (Pair<Integer, Integer> figureEdge: displayableObject.getFigure().getFigureEdges()) {
+                displayableObjectPart.getCurrentFigureVertices(), camera, delegate.getWidth(), delegate.getHeight());
+        for (Pair<Integer, Integer> figureEdge: displayableObjectPart.getFigure().getFigureEdges()) {
             TwoIntVector firstPoint = displayCoordinates.get(figureEdge.getLeft());
             TwoIntVector secondPoint = displayCoordinates.get(figureEdge.getRight());
             if (firstPoint == null || secondPoint == null) {
                 continue;
             }
-            delegate.drawLine(firstPoint, secondPoint, displayableObject.getColor(),
-                    displayableObject.getEdgePaintWidth());
+            delegate.drawLine(firstPoint, secondPoint, displayableObjectPart.getColor(),
+                    displayableObjectPart.getEdgePaintWidth());
         }
         for (TwoIntVector point: displayCoordinates) {
             if (point != null) {
-                delegate.drawCircle(point, displayableObject.getColor(),
-                        displayableObject.getVerticePaintRadius());
+                delegate.drawCircle(point, displayableObjectPart.getColor(),
+                        displayableObjectPart.getVerticePaintRadius());
             }
         }
     }

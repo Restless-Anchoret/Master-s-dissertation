@@ -1,6 +1,6 @@
 package com.ran.engine.factories.constants;
 
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
 
 import java.util.Arrays;
 import java.util.Collections;

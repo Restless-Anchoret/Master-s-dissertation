@@ -1,11 +1,11 @@
 package com.ran.engine.factories.interpolation.tools;
 
-import com.ran.engine.rendering.algebraic.common.LineEvaluator;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.common.VectorManipulator;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.line.Line;
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
+import com.ran.engine.algebra.common.LineEvaluator;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.common.VectorManipulator;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.line.Line;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
 
 public class CircleArcsBuilder {
 

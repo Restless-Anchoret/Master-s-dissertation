@@ -1,48 +1,53 @@
 package com.ran.engine.rendering.world;
 
-import java.util.ArrayList;
+import com.ran.engine.rendering.control.Control;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class World {
 
-    private final List<DisplayableObject> displayableObjects;
-    private int chosenObjectIndex = -1;
-    private List<StaticObject> staticObjects;
+    private final List<WorldObject> worldObjects;
     private final Camera camera;
 
-    public World(List<DisplayableObject> displayableObjects, Camera camera) {
-        this.displayableObjects = displayableObjects;
+    private List<Control> controls;
+    private int chosenControlIndex = -1;
+
+    public World(List<WorldObject> worldObjects, Camera camera) {
+        this.worldObjects = worldObjects;
         this.camera = camera;
-        initializeStaticObjects();
+        initializeControls();
     }
 
-    public List<DisplayableObject> getDisplayableObjects() {
-        return displayableObjects;
-    }
-
-    public int getChosenObjectIndex() {
-        return chosenObjectIndex;
-    }
-
-    public void setChosenObjectIndex(int chosenObjectIndex) {
-        this.chosenObjectIndex = chosenObjectIndex;
-    }
-
-    public List<StaticObject> getStaticObjects() {
-        return staticObjects;
+    public List<WorldObject> getWorldObjects() {
+        return worldObjects;
     }
 
     public Camera getCamera() {
         return camera;
     }
 
-    private void initializeStaticObjects() {
-        staticObjects = new ArrayList<>();
-        for (DisplayableObject displayableObject: displayableObjects) {
-            if (displayableObject instanceof StaticObject) {
-                staticObjects.add((StaticObject)displayableObject);
-            }
-        }
+    public List<Control> getControls() {
+        return controls;
+    }
+
+    public int getChosenControlIndex() {
+        return chosenControlIndex;
+    }
+
+    public void setChosenControlIndex(int chosenControlIndex) {
+        this.chosenControlIndex = chosenControlIndex;
+    }
+
+    public Control getCurrentControl() {
+        return controls.get(chosenControlIndex);
+    }
+
+    private void initializeControls() {
+        controls = worldObjects.stream()
+                .flatMap(worldObject -> worldObject.getWorldObjectCreator()
+                        .getControls().stream())
+                .collect(Collectors.toList());
     }
     
 }

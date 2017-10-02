@@ -5,10 +5,10 @@ import com.ran.engine.factories.interpolation.tools.CircleArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
 import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.function.DoubleMultifunction;
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.function.DoubleMultifunction;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
 
 import java.util.ArrayList;
 import java.util.List;

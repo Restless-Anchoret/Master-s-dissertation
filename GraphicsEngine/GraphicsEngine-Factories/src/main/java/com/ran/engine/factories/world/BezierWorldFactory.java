@@ -1,53 +1,42 @@
 package com.ran.engine.factories.world;
 
-import com.ran.engine.factories.objects.DemonstrationFiguresFactory;
-import com.ran.engine.factories.objects.FigureFactory;
-import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import com.ran.engine.rendering.world.*;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.rendering.world.Camera;
+import com.ran.engine.rendering.world.Orientation;
+import com.ran.engine.rendering.world.WorldObjectCreator;
+import com.ran.engine.rendering.world.WorldObjectPartBuilder;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+public class BezierWorldFactory extends BaseWorldFactory {
 
-public class BezierWorldFactory implements WorldFactory {
-
-    private static final BezierWorldFactory INSTANCE = new BezierWorldFactory();
-
-    public static BezierWorldFactory getInstance() {
-        return INSTANCE;
+    @Override
+    protected Camera getCamera() {
+        return Camera.createForPositionAndAngles(new ThreeDoubleVector(-3.0, 4.0, 6.0), 0.5, 0.35);
     }
 
     @Override
-    public World createWorld() {
-        FigureFactory figureFactory = FigureFactory.getInstance();
-        InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
-        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
-
+    protected List<WorldObjectCreator> getWorldObjectCreators() {
         List<ThreeDoubleVector> sphereCurveVertices = makeVerticesForInterpolationList();
-        Orientation firstSphereOrientation = Orientation.createForOffset(-6.0, 0.0, 4.0);
+        Orientation sphereOrientation = Orientation.createForOffset(-6.0, 0.0, 4.0);
 
-        List<DisplayableObject> displayableObjects = Arrays.asList(
-                new StaticObject(figureFactory.makePlainGrid(20, 8, 1.0, 1.0),
-                        Orientation.INITIAL_ORIENTATION,
-                        DARK_GRAY_COLOR),
-                new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        firstSphereOrientation,
-                        DARK_GRAY_COLOR, 1, 0),
-                new StaticObject(demonstrationFiguresFactory.makeFigureByBigArcs(sphereCurveVertices, 20),
-                        firstSphereOrientation,
-                        Color.BLUE, 1.5f, 2),
-                new StaticObject(interpolatedFiguresFactory.makeBezierCurveByMiddlePoints(
-                        sphereCurveVertices, 1, 100),
-                        firstSphereOrientation),
-                new StaticObject(new Figure(sphereCurveVertices, Collections.emptyList()),
-                        firstSphereOrientation, Color.RED, 0, 7)
-        );
-        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(-3.0, 4.0, 6.0), 0.5, 0.35);
-        return new World(displayableObjects, camera);
+        return Arrays.asList(
+                plainGridCreator(20, 16, 1.0, 1.0,
+                        Orientation.INITIAL_ORIENTATION),
+                fixedObjectCreator(Arrays.asList(
+                        createStandardGlobe(3.0),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getDemonstrationFiguresFactory().makeFigureByBigArcs(sphereCurveVertices, 20))
+                                .setColor(Color.BLUE).setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getInterpolatedFiguresFactory().makeBezierCurveByMiddlePoints(sphereCurveVertices, 1, 100))
+                                .setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getFigureFactory().makeFigureByPoints(sphereCurveVertices))
+                                .setColor(Color.RED).setVerticePaintRadius(7).build()),
+                        sphereOrientation));
     }
 
     private List<ThreeDoubleVector> makeVerticesForInterpolationList() {

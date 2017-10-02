@@ -15,4 +15,13 @@
     <packaging>jar</packaging>
 
     <name>GraphicsEngine-Rendering</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ran</groupId>
+            <artifactId>GraphicsEngine-Algebra</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 </project>

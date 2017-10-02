@@ -1,8 +1,8 @@
 package com.ran.engine.factories.interpolation.tools;
 
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.vector.SingleDouble;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.vector.SingleDouble;
 import java.util.ArrayList;
 import java.util.List;
 

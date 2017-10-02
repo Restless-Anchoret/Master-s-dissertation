@@ -1,9 +1,9 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.function.DoubleFunction;
-import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.quaternion.Quaternion;
 
 import java.util.List;
 

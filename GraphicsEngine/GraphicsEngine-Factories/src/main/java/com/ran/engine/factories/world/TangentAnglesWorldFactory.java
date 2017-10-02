@@ -1,11 +1,8 @@
 package com.ran.engine.factories.world;
 
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.factories.constants.TangentAnglesConstants;
-import com.ran.engine.factories.objects.DemonstrationFiguresFactory;
-import com.ran.engine.factories.objects.FigureFactory;
-import com.ran.engine.factories.objects.InterpolatedFiguresFactory;
-import com.ran.engine.rendering.algebraic.common.Pair;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,20 +13,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
-
-public class TangentAnglesWorldFactory implements WorldFactory {
+public class TangentAnglesWorldFactory extends BaseWorldFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(TangentAnglesWorldFactory.class);
 
-    private static final TangentAnglesWorldFactory INSTANCE = new TangentAnglesWorldFactory();
-
-    public static TangentAnglesWorldFactory getInstance() {
-        return INSTANCE;
-    }
-
     @Override
-    public World createWorld() {
+    protected List<WorldObjectCreator> getWorldObjectCreators() {
         LOG.trace("TangentAnglesWorldFactory started creating");
         List<Pair<ThreeDoubleVector, Double>> sphereCurveVerticesWithoutAngles = TangentAnglesConstants.getListWithoutTangentAngles();
         List<Pair<ThreeDoubleVector, Double>> sphereCurveVerticesWithSomeAngles = TangentAnglesConstants.getListWithSomeTangentAngles();
@@ -43,74 +32,74 @@ public class TangentAnglesWorldFactory implements WorldFactory {
         Orientation firstCloseSphereOrientation = Orientation.createForOffset(-12.0, 0.0, -8.0);
         Orientation secondCloseSphereOrientation = Orientation.createForOffset(0.0, 0.0, -8.0);
 
-        List<DisplayableObject> displayableObjects = new ArrayList<>();
-//        displayableObjects.add(new StaticObject(figureFactory.makePlainGrid(32, 8, 1.0, 1.0),
-//                Orientation.INITIAL_ORIENTATION, Color.LIGHT_GRAY));
+        List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
 
-        displayableObjects.addAll(createDisplayableObjectsGroup(
+        worldObjectCreators.addAll(getWorldObjectCreatorsGroup(
                 sphereCurveVerticesWithoutAngles, firstSphereOrientation));
-        displayableObjects.addAll(createDisplayableObjectsGroup(
+        worldObjectCreators.addAll(getWorldObjectCreatorsGroup(
                 sphereCurveVerticesWithSomeAngles, secondSphereOrientation));
-        displayableObjects.addAll(createDisplayableObjectsGroup(
+        worldObjectCreators.addAll(getWorldObjectCreatorsGroup(
                 sphereCurveVerticesWithAllAngles, thirdSphereOrientation));
 
-        displayableObjects.addAll(createDisplayableObjectsGroup(
+        worldObjectCreators.addAll(getWorldObjectCreatorsGroup(
                 sphereCurveCloseVerticesWithoutAngles, firstCloseSphereOrientation));
-        displayableObjects.addAll(createDisplayableObjectsGroup(
+        worldObjectCreators.addAll(getWorldObjectCreatorsGroup(
                 sphereCurveCloseVerticesWithSomeAngles, secondCloseSphereOrientation));
 
-        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 10.0, 4.0), 0.0, 0.0);
         LOG.trace("TangentAnglesWorldFactory finished creating");
-        return new World(displayableObjects, camera);
+        return worldObjectCreators;
     }
 
-    private List<DisplayableObject> createDisplayableObjectsGroup(
+    @Override
+    protected Camera getCamera() {
+        return Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 10.0, 4.0), 0.0, 0.0);
+    }
+
+    private List<WorldObjectCreator> getWorldObjectCreatorsGroup(
             List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
             Orientation orientation) {
-        FigureFactory figureFactory = FigureFactory.getInstance();
-        InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
-
-        List<DisplayableObject> displayableObjects = new ArrayList<>();
-        displayableObjects.add(new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 3.0, 12),
-                        orientation, DARK_GRAY_COLOR, 1, 0));
-        displayableObjects.add(new StaticObject(interpolatedFiguresFactory.makeInterpolatedCurveByTangentAngles(
-                        verticesWithAnglesList, 2, 150), orientation));
-//        displayableObjects.addAll(createSmallArcs(verticesWithAnglesList, orientation));
-//        displayableObjects.addAll(createBigArcs(verticesWithAnglesList, orientation));
-        displayableObjects.addAll(createTangents(verticesWithAnglesList, orientation));
+        List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
+        worldObjectCreators.add(fixedObjectCreator(createStandardGlobe(3.0), orientation));
+        worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
+                .setFigure(getInterpolatedFiguresFactory().makeInterpolatedCurveByTangentAngles(
+                        verticesWithAnglesList, 2, 150)).build(),
+                orientation));
+        worldObjectCreators.addAll(createSmallArcs(verticesWithAnglesList, orientation));
+        worldObjectCreators.addAll(createBigArcs(verticesWithAnglesList, orientation));
+        worldObjectCreators.addAll(createTangents(verticesWithAnglesList, orientation));
 
         List<ThreeDoubleVector> vertices = verticesWithAnglesList.stream()
                 .map(Pair::getLeft).collect(Collectors.toList());
-        displayableObjects.add(new StaticObject(new Figure(vertices, Collections.emptyList()),
-                orientation, Color.RED, 0, 5));
-        return displayableObjects;
+        worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
+                .setFigure(getFigureFactory().makeFigureByPoints(vertices))
+                .setColor(Color.RED).setVerticePaintRadius(5).build(),
+                orientation));
+        return worldObjectCreators;
     }
 
-//    private List<DisplayableObject> createSmallArcs(
-//            List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
-//            Orientation orientation) {
-//        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
-//        return Collections.emptyList();
-//    }
-//
-//    private List<DisplayableObject> createBigArcs(
-//            List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
-//            Orientation orientation) {
-//        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
-//        return Collections.emptyList();
-//    }
-
-    private List<DisplayableObject> createTangents(
+    private List<WorldObjectCreator> createSmallArcs(
             List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
             Orientation orientation) {
-        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
-        List<DisplayableObject> displayableObjects = new ArrayList<>();
+        return Collections.emptyList();
+    }
+
+    private List<WorldObjectCreator> createBigArcs(
+            List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
+            Orientation orientation) {
+        return Collections.emptyList();
+    }
+
+    private List<WorldObjectCreator> createTangents(
+            List<Pair<ThreeDoubleVector, Double>> verticesWithAnglesList,
+            Orientation orientation) {
+        List<WorldObjectCreator> displayableObjects = new ArrayList<>();
         for (Pair<ThreeDoubleVector, Double> pair: verticesWithAnglesList) {
             if (pair.getRight() != null) {
-                displayableObjects.add(new StaticObject(
-                        demonstrationFiguresFactory.makeTangentOnSphereByPoint(
-                                pair.getLeft(), pair.getRight(), 6),
-                        orientation, Color.BLUE));
+                WorldObjectPart worldObjectPart = new WorldObjectPartBuilder()
+                        .setFigure(getDemonstrationFiguresFactory().makeTangentOnSphereByPoint(
+                                pair.getLeft(), pair.getRight(), 6))
+                        .setColor(Color.BLUE).build();
+                displayableObjects.add(fixedObjectCreator(worldObjectPart, orientation));
             }
         }
         return displayableObjects;

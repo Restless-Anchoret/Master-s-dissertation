@@ -1,8 +1,8 @@
 package com.ran.engine.rendering.world;
 
-import com.ran.engine.rendering.algebraic.exception.CreationException;
-import com.ran.engine.rendering.algebraic.quaternion.Quaternion;
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.exception.CreationException;
+import com.ran.engine.algebra.quaternion.Quaternion;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 public class Orientation {
 

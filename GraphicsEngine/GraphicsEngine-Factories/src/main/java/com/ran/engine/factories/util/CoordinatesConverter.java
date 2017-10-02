@@ -1,7 +1,7 @@
 package com.ran.engine.factories.util;
 
-import com.ran.engine.rendering.algebraic.vector.ThreeDoubleVector;
-import com.ran.engine.rendering.algebraic.vector.TwoDoubleVector;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
 import java.util.function.Function;
 
 public enum CoordinatesConverter {

@@ -1,6 +1,6 @@
 package com.ran.engine.rendering.core;
 
-import com.ran.engine.rendering.algebraic.vector.TwoIntVector;
+import com.ran.engine.algebra.vector.TwoIntVector;
 
 import java.awt.*;
 

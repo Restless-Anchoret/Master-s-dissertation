@@ -1,6 +1,6 @@
 package com.ran.engine.opengl.runner;
 
-import com.ran.engine.factories.world.WorldFactory;
+import com.ran.engine.rendering.world.WorldFactory;
 import com.ran.engine.opengl.delegate.OpenGLRenderingDelegate;
 import com.ran.engine.opengl.handlers.EventHandler;
 import com.ran.engine.opengl.handlers.keyboard.*;
@@ -54,7 +54,7 @@ public class OpenGLRunner {
 
     private List<EventHandler> createKeyboardEventHandlers() {
         return Arrays.asList(
-                new AnimationControlHandler(renderingEngine),
+                new ControlSwitchHandler(renderingEngine),
                 new WorldSwitchHandler(renderingEngine),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),

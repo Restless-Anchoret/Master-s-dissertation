@@ -20,10 +20,10 @@ public class WorldSwitchHandler implements EventHandler {
         int currentWorldIndex = renderingEngine.getRenderingInfo().getCurrentWorldIndex();
         int worldsQuantity = renderingEngine.getRenderingInfo().getWorlds().size();
         switch (Keyboard.getEventKey()) {
-            case Keyboard.KEY_UP:
+            case Keyboard.KEY_NUMPAD8:
                 currentWorldIndex++;
                 break;
-            case Keyboard.KEY_DOWN:
+            case Keyboard.KEY_NUMPAD2:
                 currentWorldIndex--;
                 break;
             default:
