@@ -1,4 +1,4 @@
-package com.ran.engine.factories.objects;
+package com.ran.engine.factories.figures;
 
 import com.ran.engine.factories.interpolation.curvecreators.*;
 import com.ran.engine.factories.interpolation.input.EmptyInputParameters;
@@ -20,11 +20,7 @@ public class InterpolatedFiguresFactory extends FigureFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(InterpolatedFiguresFactory.class);
 
-    private static final InterpolatedFiguresFactory INSTANCE = new InterpolatedFiguresFactory();
-
-    public static InterpolatedFiguresFactory getInstance() {
-        return INSTANCE;
-    }
+    private FigureFactory figureFactory = new FigureFactory();
 
     public Figure makeInterpolatedCurve(List<ThreeDoubleVector> verticesForInterpolation, int degree, int segments) {
         DoubleFunction<ThreeDoubleVector> interpolatedCurve = SphereByPointsCurveCreator.getInstance()

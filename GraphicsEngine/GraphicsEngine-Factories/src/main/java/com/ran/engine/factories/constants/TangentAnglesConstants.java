@@ -9,8 +9,6 @@ import java.util.List;
 
 public class TangentAnglesConstants {
 
-    public final static Color DARK_GRAY_COLOR = new Color(115, 115, 115);
-
     private TangentAnglesConstants() { }
 
     public static List<Pair<ThreeDoubleVector, Double>> getListWithoutTangentAngles() {

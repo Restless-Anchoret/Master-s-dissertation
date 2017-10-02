@@ -1,4 +1,4 @@
-package com.ran.engine.factories.objects;
+package com.ran.engine.factories.figures;
 
 import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.algebra.common.Pair;
@@ -15,12 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FigureFactory {
-    
-    private static final FigureFactory INSTANCE = new FigureFactory();
-
-    public static FigureFactory getInstance() {
-        return INSTANCE;
-    }
     
     public Figure makeFigureWithOneVertice(ThreeDoubleVector vertice) {
         return new Figure(Collections.singletonList(vertice), Collections.emptyList());
@@ -137,6 +131,10 @@ public class FigureFactory {
             circles.add(makeOval(center, zAxis, meridianAxis, meridiansHalfQuantity * 2));
         }
         return makeMultiFigure(circles);
+    }
+
+    public Figure makeFigureByPoints(List<ThreeDoubleVector> points) {
+        return new Figure(points, Collections.emptyList());
     }
 
     public Figure makeFigureByPoints(List<TwoDoubleVector> points,

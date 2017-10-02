@@ -1,102 +1,104 @@
 package com.ran.engine.factories.world;
 
-import com.ran.engine.factories.objects.*;
-import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.algebra.common.Pair;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.factories.animations.AffineTransformationFactory;
+import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.world.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ran.engine.factories.constants.TangentAnglesConstants.DARK_GRAY_COLOR;
+public class InterpolationPresentationWorldFactory extends BaseWorldFactory {
 
-public class InterpolationPresentationWorldFactory implements WorldFactory {
+    @Override
+    protected Camera getCamera() {
+        // Camera for plain curve interpolation presentation
+//        return Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.0, 0.0);
 
-    private static final InterpolationPresentationWorldFactory INSTANCE = new InterpolationPresentationWorldFactory();
+        // Camera for sphere curve interpolation presentation
+        return Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 7.0, 5.5), 0.0, 0.7);
 
-    public static InterpolationPresentationWorldFactory getInstance() {
-        return INSTANCE;
+        // Camera for orientation curve interpolation presentation
+//        return Camera.createForPositionAndAngles(new ThreeDoubleVector(54.5, 10.0, 2.5), -0.5, 0.3);
     }
 
     @Override
-    public World createWorld() {
-        FigureFactory figureFactory = FigureFactory.getInstance();
-        InterpolatedFiguresFactory interpolatedFiguresFactory = InterpolatedFiguresFactory.getInstance();
-        DemonstrationFiguresFactory demonstrationFiguresFactory = DemonstrationFiguresFactory.getInstance();
-        AnimationFactory animationFactory = AnimationFactory.getInstance();
-        
+    protected List<WorldObjectCreator> getWorldObjectCreators() {
         List<Pair<Double, Double>> pointsWithValues = makePointsWithValuesForInterpolationList();
         List<ThreeDoubleVector> sphereCurveVertices = makeVerticesForInterpolationList();
         List<Quaternion> quaternions = makeQuaternionsForInterpolationList();
-        
+
         Orientation sphereOrientation = Orientation.createForOffset(30.0, 0.0, 0.0);
         Orientation cubeOrientation = Orientation.createForOffset(60.0, 0.0, 0.0);
-        Figure figureForRotation = figureFactory.makeAeroplane(1.5);
-        
-        List<DisplayableObject> displayableObjects = new ArrayList<>();
-        displayableObjects.addAll(Arrays.asList(
+        Figure figureForRotation = getFigureFactory().makeAeroplane(1.5);
+
+        List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
+        worldObjectCreators.addAll(Arrays.asList(
                 // Plain curve interpolation
-                new StaticObject(figureFactory.makeGrid(20, 0, 16, 1.0, 0.0, 1.0),
-                        Orientation.INITIAL_ORIENTATION,
-                        DARK_GRAY_COLOR),
-                new StaticObject(figureFactory.makeGrid(20, 0, 0, 1.0, 0.0, 0.0)),
-                new StaticObject(figureFactory.makeGrid(0, 0, 16, 0.0, 0.0, 1.0)),
-                new StaticObject(demonstrationFiguresFactory.makeFigureByParabolas(pointsWithValues, 20,
-                        CoordinatesConverter.CONVERTER_TO_XZ),
-                        Orientation.INITIAL_ORIENTATION, Color.BLUE, 1.5f, 2),
-                new StaticObject(interpolatedFiguresFactory.makeSpline(pointsWithValues, 1, 140,
-                        CoordinatesConverter.CONVERTER_TO_XZ),
-                        Orientation.INITIAL_ORIENTATION, Color.BLACK, 1.5f, 2),
-                new StaticObject(figureFactory.makeFigureByPointsWithValues(pointsWithValues,
-                        CoordinatesConverter.CONVERTER_TO_XZ),
-                        Orientation.INITIAL_ORIENTATION, Color.RED, 0, 7),
-                
+                plainGridCreator(20, 16, 1.0, 1.0,
+                        Orientation.INITIAL_ORIENTATION, true),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getFigureFactory()
+                        .makeGrid(20, 0, 0, 1.0, 0.0, 0.0)).build(),
+                        Orientation.INITIAL_ORIENTATION),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getFigureFactory()
+                        .makeGrid(0, 0, 16, 0.0, 0.0, 1.0)).build(),
+                        Orientation.INITIAL_ORIENTATION),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getDemonstrationFiguresFactory()
+                        .makeFigureByParabolas(pointsWithValues, 20, CoordinatesConverter.CONVERTER_TO_XZ))
+                        .setColor(Color.BLUE).setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        Orientation.INITIAL_ORIENTATION),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getInterpolatedFiguresFactory()
+                        .makeSpline(pointsWithValues, 1, 140, CoordinatesConverter.CONVERTER_TO_XZ))
+                        .setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        Orientation.INITIAL_ORIENTATION),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getFigureFactory()
+                        .makeFigureByPointsWithValues(pointsWithValues, CoordinatesConverter.CONVERTER_TO_XZ))
+                        .setColor(Color.RED).setEdgePaintWidth(0f).setVerticePaintRadius(7).build(),
+                        Orientation.INITIAL_ORIENTATION),
+
                 // Sphere curve interpolation
-                new StaticObject(figureFactory.makeGlobe(ThreeDoubleVector.ZERO_THREE_DOUBLE_VECTOR, 5.0, 12),
-                        sphereOrientation, DARK_GRAY_COLOR, 1, 0),
-                new StaticObject(demonstrationFiguresFactory.makeFigureByArcs(sphereCurveVertices, 20),
-                        sphereOrientation, Color.BLUE, 1.5f, 2),
-                new StaticObject(interpolatedFiguresFactory.makeInterpolatedCurve(sphereCurveVertices, 1, 100),
-                        sphereOrientation, Color.BLACK, 1.5f, 2),
-                new StaticObject(new Figure(sphereCurveVertices, Collections.emptyList()),
-                        sphereOrientation, Color.RED, 0, 7)
-                
+                fixedObjectCreator(Arrays.asList(
+                        createStandardGlobe(5.0),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getDemonstrationFiguresFactory().makeFigureByArcs(sphereCurveVertices, 20))
+                                .setColor(Color.BLUE).setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getInterpolatedFiguresFactory().makeInterpolatedCurve(sphereCurveVertices, 1, 100))
+                                .setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build(),
+                        new WorldObjectPartBuilder()
+                                .setFigure(getFigureFactory().makeFigureByPoints(sphereCurveVertices))
+                                .setColor(Color.RED).setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build()
+                ), sphereOrientation)
+
                 // Orientation curve interpolation
-//                new StaticObject(figureFactory.makeCube(10.0),
-//                        cubeOrientation, DARK_GRAY_COLOR)
+//                fixedObjectCreator(new WorldObjectPartBuilder()
+//                        .setFigure(getFigureFactory().makeCube(10.0))
+//                        .setColor(DARK_GRAY_COLOR).build(), cubeOrientation)
         ));
-        
+
         for (Quaternion quaternion: quaternions) {
-            displayableObjects.add(new StaticObject(figureForRotation,
-                    new Orientation(cubeOrientation.getOffset(), quaternion), Color.RED));
+            worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
+                    .setFigure(figureForRotation).setColor(Color.RED).build(),
+                    new Orientation(cubeOrientation.getOffset(), quaternion)));
         }
 
-        displayableObjects.add(
-                new DisplayableObjectBuilder(figureForRotation,
-                        animationFactory.makeInterpolatedOrientationCurveAnimation(
-                        quaternions, 2, 15))
-                        .setOffset(cubeOrientation.getOffset())
-                        .setEdgePaintWidth(2.0f)
-                        .setVerticePaintRadius(2)
-                        .setAnimationCyclic(false).build()
-        );
+        worldObjectCreators.add(animatedObjectCreator(
+                new AnimationInfoBuilder()
+                        .setAnimationFunctionAndOffset(getAnimationFactory()
+                                .makeInterpolatedOrientationCurveAnimation(quaternions, 2, 15),
+                                cubeOrientation.getOffset())
+                        .setAnimationCyclic(false).build(),
+                new WorldObjectPartBuilder()
+                        .setFigure(figureForRotation)
+                        .setEdgePaintWidth(2.0f).build()
+        ));
 
-        // Camera for plain curve interpolation presentation
-//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(0.0, 6.0, 0.0), 0.0, 0.0);
-
-        // Camera for sphere curve interpolation presentation
-        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(31.0, 7.0, 5.5), 0.0, 0.7);
-        
-        // Camera for orientation curve interpolation presentation
-//        Camera camera = Camera.createForPositionAndAngles(new ThreeDoubleVector(54.5, 10.0, 2.5), -0.5, 0.3);
-
-        return new World(displayableObjects, camera);
+        return worldObjectCreators;
     }
     
     private List<ThreeDoubleVector> makeVerticesForInterpolationList() {
@@ -151,7 +153,7 @@ public class InterpolationPresentationWorldFactory implements WorldFactory {
     }
 
     private List<AffineTransformation> makeAffineTransformationsList() {
-        AffineTransformationFactory affineTransformationFactory = AffineTransformationFactory.getInstance();
+        AffineTransformationFactory affineTransformationFactory = getAffineTransformationFactory();
 //        List<AffineTransformation> affineTransformations = Arrays.asList(
 //                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),
 //                affineTransformationFactory.createXAxisRotationAffineTransformation(Math.PI / 4.0),

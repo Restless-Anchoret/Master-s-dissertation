@@ -54,7 +54,7 @@ public class OpenGLRunner {
 
     private List<EventHandler> createKeyboardEventHandlers() {
         return Arrays.asList(
-                new AnimationControlHandler(renderingEngine),
+                new ControlSwitchHandler(renderingEngine),
                 new WorldSwitchHandler(renderingEngine),
                 new RenderingModeSwitchHandler(),
                 new ScreenshotSaverHandler(),

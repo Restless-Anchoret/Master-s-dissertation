@@ -1,16 +1,10 @@
-package com.ran.engine.factories.objects;
+package com.ran.engine.factories.animations;
 
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.rendering.world.AffineTransformation;
 
 public class AffineTransformationFactory {
-
-    private static AffineTransformationFactory INSTANCE = new AffineTransformationFactory();
-    
-    public static AffineTransformationFactory getInstance() {
-        return INSTANCE;
-    }
     
     public AffineTransformation createIdenticalAffineTransformation() {
         return new AffineTransformation(orientation -> orientation);

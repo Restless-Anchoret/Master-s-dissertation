@@ -1,4 +1,4 @@
-package com.ran.engine.factories.objects;
+package com.ran.engine.factories.animations;
 
 import com.ran.engine.factories.interpolation.curvecreators.OrientationByPointsCurveCreator;
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
@@ -9,12 +9,6 @@ import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import java.util.List;
 
 public class AnimationFactory {
-
-    private static final AnimationFactory INSTANCE = new AnimationFactory();
-
-    public static AnimationFactory getInstance() {
-        return INSTANCE;
-    }
     
     public DoubleFunction<Quaternion> makeZRotationAnimation(double timePeriod) {
         return makeRotationAnimation(new ThreeDoubleVector(0.0, 0.0, 1.0), timePeriod);

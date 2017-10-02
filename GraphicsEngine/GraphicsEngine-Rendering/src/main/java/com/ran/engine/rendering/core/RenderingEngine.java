@@ -1,7 +1,7 @@
 package com.ran.engine.rendering.core;
 
-import com.ran.engine.rendering.world.DisplayableObject;
 import com.ran.engine.rendering.world.World;
+import com.ran.engine.rendering.world.WorldObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ public class RenderingEngine {
     }
 
     public void updateAnimationForDeltaTime(double deltaTime) {
-        for (DisplayableObject displayableObject: renderingInfo.getCurrentWorld().getDisplayableObjects()) {
-            displayableObject.updateAnimationForDeltaTime(deltaTime);
+        for (WorldObject worldObject: renderingInfo.getCurrentWorld().getWorldObjects()) {
+            worldObject.updateAnimationForDeltaTime(deltaTime);
         }
     }
 

@@ -6,9 +6,7 @@ import com.ran.engine.algebra.matrix.DoubleMatrix;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.algebra.vector.TwoDoubleVector;
 import com.ran.engine.algebra.vector.TwoIntVector;
-import com.ran.engine.rendering.world.Camera;
-import com.ran.engine.rendering.world.DisplayableObject;
-import com.ran.engine.rendering.world.DisplayableObjectPart;
+import com.ran.engine.rendering.world.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,24 +24,21 @@ public class WorldRenderingAction implements RenderingAction {
     @Override
     public void performRendering(RenderingDelegate delegate, RenderingInfo info) {
         delegate.clear(info.getBackgroundColor());
-        for (DisplayableObject displayableObject: info.getCurrentWorld().getDisplayableObjects()) {
-            paintDisplayableObject(displayableObject, info.getCurrentWorld().getCamera(), delegate);
+        for (WorldObject worldObject: info.getCurrentWorld().getWorldObjects()) {
+            paintDisplayableObject(worldObject, info.getCurrentWorld().getCamera(), delegate);
         }
     }
 
-    private void paintDisplayableObject(DisplayableObject displayableObject,
+    private void paintDisplayableObject(WorldObject worldObject,
                                         Camera camera,
                                         RenderingDelegate delegate) {
-        if (!displayableObject.isVisible()) {
-            return;
-        }
-        displayableObject.updateCurrentFiguresVertices();
-        for (DisplayableObjectPart part: displayableObject.getDisplayableObjectParts()) {
+        worldObject.updateCurrentFiguresVertices();
+        for (WorldObjectPart part: worldObject.getWorldObjectContent().getWorldObjectParts()) {
             paintDisplayableObjectPart(part, camera, delegate);
         }
     }
 
-    private void paintDisplayableObjectPart(DisplayableObjectPart displayableObjectPart,
+    private void paintDisplayableObjectPart(WorldObjectPart displayableObjectPart,
                                             Camera camera,
                                             RenderingDelegate delegate) {
         List<TwoIntVector> displayCoordinates = convertWorldCoordinatesToDiplayCoordinates(

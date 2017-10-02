@@ -1,4 +1,4 @@
-package com.ran.engine.factories.objects;
+package com.ran.engine.factories.figures;
 
 import com.ran.engine.factories.interpolation.tools.*;
 import com.ran.engine.factories.util.CoordinatesConverter;
@@ -14,20 +14,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DemonstrationFiguresFactory extends FigureFactory {
+public class DemonstrationFiguresFactory {
 
-    private static final DemonstrationFiguresFactory INSTANCE = new DemonstrationFiguresFactory();
-
-    public static DemonstrationFiguresFactory getInstance() {
-        return INSTANCE;
-    }
+    private FigureFactory figureFactory = new FigureFactory();
 
     public Figure makeParabolaByPoints(Pair<Double, Double> firstPoint,
                                        Pair<Double, Double> secondPoint, Pair<Double, Double> thirdPoint,
                                        int segments, CoordinatesConverter converter) {
         DoubleFunction<SingleDouble> parabolaFunction = ParabolaBuilder.getInstance()
                 .buildParabolaByThreePoints(firstPoint, secondPoint, thirdPoint);
-        return makeFigureByFunction(parabolaFunction, segments, converter);
+        return figureFactory.makeFigureByFunction(parabolaFunction, segments, converter);
     }
 
     public Figure makeFigureByParabolas(List<Pair<Double, Double>> pointsWithValues,
@@ -37,7 +33,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
             figures.add(makeParabolaByPoints(pointsWithValues.get(i), pointsWithValues.get(i + 1),
                     pointsWithValues.get(i + 2), segmentsPerParabola, converter));
         }
-        return makeMultiFigure(figures);
+        return figureFactory.makeMultiFigure(figures);
     }
 
     public Figure makeArcOnSphereByPoints(ThreeDoubleVector firstPoint,
@@ -57,7 +53,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
                 vertices.add(currentVertice);
             }
         }
-        return new Figure(vertices, makeEdgesSimpleList(halfSegments * 2));
+        return new Figure(vertices, figureFactory.makeEdgesSimpleList(halfSegments * 2));
     }
 
     public Figure makeFigureByArcs(List<ThreeDoubleVector> vertices, int halfSegmentsPerArc) {
@@ -66,7 +62,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
             figures.add(makeArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1),
                     vertices.get(i + 2), halfSegmentsPerArc));
         }
-        return makeMultiFigure(figures);
+        return figureFactory.makeMultiFigure(figures);
     }
 
     public Figure makeBigArcOnSphereByPoints(ThreeDoubleVector firstPoint,
@@ -82,7 +78,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
                     currentRotation.multiply(firstPoint.getDoubleVector()));
             vertices.add(currentVertice);
         }
-        return new Figure(vertices, makeEdgesSimpleList(segments));
+        return new Figure(vertices, figureFactory.makeEdgesSimpleList(segments));
     }
 
     public Figure makeFigureByBigArcs(List<ThreeDoubleVector> vertices, int segmentsPerArc) {
@@ -90,7 +86,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
         for (int i = 0; i < vertices.size() - 1; i++) {
             figures.add(makeBigArcOnSphereByPoints(vertices.get(i), vertices.get(i + 1), segmentsPerArc));
         }
-        return makeMultiFigure(figures);
+        return figureFactory.makeMultiFigure(figures);
     }
 
     public Figure makeTangentOnSphereByPoint(ThreeDoubleVector point, double tangentAngle, int halfSegments) {
@@ -111,7 +107,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
                     currentRotation.multiply(point.getDoubleVector()));
             vertices.add(currentVertice);
         }
-        return new Figure(vertices, makeEdgesSimpleList(2 * halfSegments));
+        return new Figure(vertices, figureFactory.makeEdgesSimpleList(2 * halfSegments));
     }
 
     public Figure makeCircleArcByPoints(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint,
@@ -130,7 +126,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
                 vertices.add(currentVertice);
             }
         }
-        return new Figure(vertices, makeEdgesSimpleList(halfSegments * 2));
+        return new Figure(vertices, figureFactory.makeEdgesSimpleList(halfSegments * 2));
     }
 
     public Figure makeFigureByCircleArcs(List<TwoDoubleVector> vertices, int halfSegmentsPerArc) {
@@ -139,7 +135,7 @@ public class DemonstrationFiguresFactory extends FigureFactory {
             figures.add(makeCircleArcByPoints(vertices.get(i), vertices.get(i + 1),
                     vertices.get(i + 2), halfSegmentsPerArc));
         }
-        return makeMultiFigure(figures);
+        return figureFactory.makeMultiFigure(figures);
     }
 
 }

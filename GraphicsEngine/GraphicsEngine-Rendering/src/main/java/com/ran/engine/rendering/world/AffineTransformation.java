@@ -10,9 +10,10 @@ public class AffineTransformation implements Function<Orientation, Orientation> 
         this.orientationMaker = orientationMaker;
     }
     
-    public void performTransformation(DisplayableObject displayableObject) {
-        displayableObject.setCurrentOrientation(
-                orientationMaker.apply(displayableObject.getCurrentOrientation()));
+    public void performTransformation(WorldObject worldObject) {
+        worldObject.setCurrentOrientation(
+                orientationMaker.apply(worldObject.getWorldObjectContent()
+                        .getAnimationInfo().getCurrentOrientation()));
     }
 
     @Override

@@ -9,11 +9,11 @@ public class Main {
 
     public static void main(String[] args) {
         OpenGLRunner runner = new OpenGLRunner(Arrays.asList(
-                PlaneWorldFactory.getInstance(),
-                TangentAnglesWorldFactory.getInstance(),
-                BezierWorldFactory.getInstance(),
-                InterpolationPresentationWorldFactory.getInstance(),
-                DefaultWorldFactory.getInstance()
+                new PlaneWorldFactory(),
+                new TangentAnglesWorldFactory(),
+                new BezierWorldFactory(),
+                new InterpolationPresentationWorldFactory(),
+                new DefaultWorldFactory()
         ));
         runner.run();
     }
