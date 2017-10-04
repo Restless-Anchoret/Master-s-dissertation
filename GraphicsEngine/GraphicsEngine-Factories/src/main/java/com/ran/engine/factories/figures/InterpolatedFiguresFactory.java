@@ -76,4 +76,16 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         return new Figure(vertices, figureEdges);
     }
 
+    public Figure makePlaneBezierCurveByPoints(List<TwoDoubleVector> verticesForInterpolation, int degree, int segments) {
+        DoubleFunction<TwoDoubleVector> interpolatedCurve = PlaneBezierCurveCreator.getInstance()
+                .interpolateCurve(verticesForInterpolation, new SimpleInputParameters(0.0, 1.0), degree);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments)
+                .stream().map(point -> new ThreeDoubleVector(point.getX(), 0.0, point.getY()))
+                .collect(Collectors.toList());
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
+        return new Figure(vertices, figureEdges);
+    }
+
 }

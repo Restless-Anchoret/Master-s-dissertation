@@ -138,4 +138,26 @@ public class DemonstrationFiguresFactory {
         return figureFactory.makeMultiFigure(figures);
     }
 
+    public Figure makeSegmentByPoints(TwoDoubleVector firstPoint, TwoDoubleVector secondPoint, int segments) {
+        CoordinatesConverter converter = CoordinatesConverter.CONVERTER_TO_XZ;
+        SegmentsBuilder.Result segmentsBuilderResult = SegmentsBuilder.getInstance()
+                .buildSegment(firstPoint, secondPoint);
+        List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
+        for (int i = 0; i <= segments; i++) {
+            double parameter = (double) i / (double) segments;
+            TwoDoubleVector currentPoint = segmentsBuilderResult.getSegment().apply(parameter);
+            ThreeDoubleVector currentVertice = converter.convert(currentPoint);
+            vertices.add(currentVertice);
+        }
+        return new Figure(vertices, figureFactory.makeEdgesSimpleList(segments));
+    }
+
+    public Figure makeFigureBySegments(List<TwoDoubleVector> vertices, int segmentsPerSegment) {
+        List<Figure> figures = new ArrayList<>(vertices.size() - 1);
+        for (int i = 0; i < vertices.size() - 1; i++) {
+            figures.add(makeSegmentByPoints(vertices.get(i), vertices.get(i + 1), segmentsPerSegment));
+        }
+        return figureFactory.makeMultiFigure(figures);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.ran.engine.factories.world;
 
+import com.ran.engine.algebra.common.Pair;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.algebra.vector.TwoDoubleVector;
 import com.ran.engine.factories.constants.PlanePointsConstants;
@@ -27,6 +28,7 @@ public class PlaneWorldFactory extends BaseWorldFactory {
         Orientation tangentInterpolationOrientation = Orientation.createForOffset(30.0, 0.0, 0.0);
 
         List<TwoDoubleVector> simpleInterpolationVertices = PlanePointsConstants.getListForSimpleInterpolation();
+        List<Pair<TwoDoubleVector, Double>> tangentInterpolationVertices = PlanePointsConstants.getListForTangentInterpolation();
 
         return Arrays.asList(
                 // Interpolation by points
@@ -47,7 +49,17 @@ public class PlaneWorldFactory extends BaseWorldFactory {
                 // Bezier interpolation
                 plainGridCreator(20, 16, 1.0, 1.0,
                         bezierInterpolationOrientation, true),
-                // todo: add some objects
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getDemonstrationFiguresFactory()
+                                .makeFigureBySegments(simpleInterpolationVertices, 20))
+                                .setColor(Color.BLUE).build(),
+                        bezierInterpolationOrientation),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getInterpolatedFiguresFactory()
+                                .makePlaneBezierCurveByPoints(simpleInterpolationVertices, 2, 200)).build(),
+                        bezierInterpolationOrientation),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getFigureFactory()
+                                .makeFigureByPoints(simpleInterpolationVertices, CoordinatesConverter.CONVERTER_TO_XZ))
+                                .setColor(Color.RED).setEdgePaintWidth(0f).setVerticePaintRadius(7).build(),
+                        bezierInterpolationOrientation),
 
                 // Interpolation by tangent angles
                 plainGridCreator(20, 16, 1.0, 1.0,

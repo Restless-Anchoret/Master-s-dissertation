@@ -7,6 +7,7 @@ import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesSmoothingCreator;
 import com.ran.engine.factories.interpolation.tools.SegmentsBuilder;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
+import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,11 @@ public class PlaneBezierCurveCreator extends AbstractPlainCurveCreator {
         CurvesSmoothingCreator curvesSmoothingCreator = CurvesSmoothingCreator.getInstance();
         SegmentsBuilder segmentsBuilder = SegmentsBuilder.getInstance();
         TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
+
+        List<DoubleFunction<TwoDoubleVector>> constantFunctions = new ArrayList<>(k);
+        for (int i = 0; i < k; i++) {
+            constantFunctions.add(DoubleFunction.createConstantFunction(vertices.get(i)));
+        }
 
         List<TwoDoubleVector> segmentsCenters = new ArrayList<>(k - 1);
         for (int i = 0; i < k - 1; i++) {
@@ -57,7 +63,10 @@ public class PlaneBezierCurveCreator extends AbstractPlainCurveCreator {
         smoothedSegments.add(halfSegmentsForward.get(0));
         for (int i = 1; i < k - 1; i++) {
             smoothedSegments.add(curvesSmoothingCreator.smoothCurves(
-                    halfSegmentsBack.get(i - 1), halfSegmentsForward.get(i), degree));
+                    halfSegmentsBack.get(i - 1).substract(constantFunctions.get(i)),
+                    halfSegmentsForward.get(i).substract(constantFunctions.get(i)),
+                    degree, GroupMultiplicationOperationFactory.getSummationOperation())
+                    .add(constantFunctions.get(i)));
         }
         smoothedSegments.add(new DoubleFunction<>(
                 point -> halfSegmentsBack.get(k - 2).apply(1.0 - point)));
