@@ -1,5 +1,6 @@
 package com.ran.engine.opengl.runner;
 
+import com.ran.engine.opengl.handlers.mouse.CameraControlMode;
 import com.ran.engine.rendering.world.WorldFactory;
 import com.ran.engine.opengl.delegate.OpenGLRenderingDelegate;
 import com.ran.engine.opengl.handlers.EventHandler;
@@ -24,13 +25,19 @@ public class OpenGLRunner {
     private final int FPS_GARDIAN = 100;
 
     private final List<WorldFactory> worldFactories;
+    private final CameraControlMode cameraControlMode;
     private final ApplicationState applicationState = new ApplicationState();
     private RenderingEngine renderingEngine = null;
     private List<EventHandler> mouseEventHandlers = null;
     private List<EventHandler> keyboardEventHandlers = null;
 
-    public OpenGLRunner(List<WorldFactory> worldFactories) {
+    public OpenGLRunner(List<WorldFactory> worldFactories, CameraControlMode cameraControlMode) {
         this.worldFactories = worldFactories;
+        this.cameraControlMode = cameraControlMode;
+    }
+
+    public OpenGLRunner(List<WorldFactory> worldFactories) {
+        this(worldFactories, CameraControlMode.THREE_DIMENTION);
     }
 
     public void run() {
@@ -49,7 +56,7 @@ public class OpenGLRunner {
     }
 
     private List<EventHandler> createMouseEventHandlers() {
-        return Collections.singletonList(new CameraControlHandler(renderingEngine));
+        return Collections.singletonList(CameraControlHandler.create(renderingEngine, cameraControlMode));
     }
 
     private List<EventHandler> createKeyboardEventHandlers() {
