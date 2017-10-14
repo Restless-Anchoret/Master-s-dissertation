@@ -4,7 +4,6 @@ import com.ran.engine.algebra.common.Pair;
 import com.ran.engine.algebra.vector.TwoDoubleVector;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class PlanePointsConstants {
@@ -33,7 +32,13 @@ public class PlanePointsConstants {
     }
 
     public static List<Pair<TwoDoubleVector, Double>> getListForTangentInterpolation() {
-        return Collections.emptyList();
+        return Arrays.asList(
+                new Pair<>(new TwoDoubleVector(-8.0, -1.0), Math.PI / 8.0),
+                new Pair<>(new TwoDoubleVector(-4.0, 2.0), -Math.PI / 8.0),
+                new Pair<>(new TwoDoubleVector(0.0, -2.0), Math.PI / 16.0),
+                new Pair<>(new TwoDoubleVector(6.0, 4.0), 0.0),
+                new Pair<>(new TwoDoubleVector(8.0, 0.0), -Math.PI)
+        );
     }
 
 }

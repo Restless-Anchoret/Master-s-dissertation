@@ -13,6 +13,7 @@ import com.ran.engine.rendering.world.WorldObjectPartBuilder;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlaneWorldFactory extends BaseWorldFactory {
 
@@ -63,8 +64,19 @@ public class PlaneWorldFactory extends BaseWorldFactory {
 
                 // Interpolation by tangent angles
                 plainGridCreator(20, 16, 1.0, 1.0,
-                        tangentInterpolationOrientation, true)
-                // todo: add some objects
+                        tangentInterpolationOrientation, true),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getDemonstrationFiguresFactory()
+                                .makeTangentsOnPlane(tangentInterpolationVertices, 10))
+                                .setColor(Color.BLUE).build(),
+                        tangentInterpolationOrientation),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getInterpolatedFiguresFactory()
+                                .makePlaneInterpolatedCurveByTangentAngles(tangentInterpolationVertices, 2, 200)).build(),
+                        tangentInterpolationOrientation),
+                fixedObjectCreator(new WorldObjectPartBuilder().setFigure(getFigureFactory()
+                                .makeFigureByPoints(tangentInterpolationVertices.stream()
+                                        .map(Pair::getLeft).collect(Collectors.toList()), CoordinatesConverter.CONVERTER_TO_XZ))
+                                .setColor(Color.RED).setEdgePaintWidth(0f).setVerticePaintRadius(7).build(),
+                        tangentInterpolationOrientation)
         );
     }
 

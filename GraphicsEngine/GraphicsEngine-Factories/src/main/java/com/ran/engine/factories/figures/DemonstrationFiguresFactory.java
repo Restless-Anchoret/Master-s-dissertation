@@ -13,6 +13,7 @@ import com.ran.engine.rendering.world.Figure;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DemonstrationFiguresFactory {
 
@@ -156,6 +157,37 @@ public class DemonstrationFiguresFactory {
         List<Figure> figures = new ArrayList<>(vertices.size() - 1);
         for (int i = 0; i < vertices.size() - 1; i++) {
             figures.add(makeSegmentByPoints(vertices.get(i), vertices.get(i + 1), segmentsPerSegment));
+        }
+        return figureFactory.makeMultiFigure(figures);
+    }
+
+    public Figure makeTangentOnPlane(TwoDoubleVector point, double tangentAngle, int halfSegments) {
+        CoordinatesConverter converter = CoordinatesConverter.CONVERTER_TO_XZ;
+        TangentSegmentBuilder.Result tangentSegmentBuilderResult = TangentSegmentBuilder.getInstance()
+                .buildTangent(point, tangentAngle, 2.0, 2.0);
+        List<TwoDoubleVector> vertices = new ArrayList<>(2 * halfSegments + 1);
+        for (int i = halfSegments; i > 0; i--) {
+            double parameter = (double) i / (double) halfSegments;
+            TwoDoubleVector currentVertice = tangentSegmentBuilderResult.getBackSegment().apply(parameter);
+            vertices.add(currentVertice);
+        }
+        for (int i = 0; i <= halfSegments; i++) {
+            double parameter = (double) i / (double) halfSegments;
+            TwoDoubleVector currentVertice = tangentSegmentBuilderResult.getForwardSegment().apply(parameter);
+            vertices.add(currentVertice);
+        }
+        List<ThreeDoubleVector> convertedVertices = vertices.stream()
+                .map(converter::convert).collect(Collectors.toList());
+        return new Figure(convertedVertices, figureFactory.makeEdgesSimpleList(2 * halfSegments));
+    }
+
+    public Figure makeTangentsOnPlane(List<Pair<TwoDoubleVector, Double>> verticesWithTangentAngles,
+                                      int halfSegmentsPerTangent) {
+        List<Figure> figures = new ArrayList<>();
+        for (Pair<TwoDoubleVector, Double> pair: verticesWithTangentAngles) {
+            if (pair.getRight() != null) {
+                figures.add(makeTangentOnPlane(pair.getLeft(), pair.getRight(), halfSegmentsPerTangent));
+            }
         }
         return figureFactory.makeMultiFigure(figures);
     }

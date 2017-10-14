@@ -88,4 +88,17 @@ public class InterpolatedFiguresFactory extends FigureFactory {
         return new Figure(vertices, figureEdges);
     }
 
+    public Figure makePlaneInterpolatedCurveByTangentAngles(List<Pair<TwoDoubleVector, Double>> verticesWithAngles,
+                                                            int degree, int segments) {
+        DoubleFunction<TwoDoubleVector> interpolatedCurve = PlaneByTangentAnglesCurveCreator.getInstance()
+                .interpolateCurve(verticesWithAngles, new SimpleInputParameters(0.0, 1.0), degree);
+        double parameterStart = interpolatedCurve.getMinParameterValue();
+        double parameterEnd = interpolatedCurve.getMaxParameterValue();
+        List<ThreeDoubleVector> vertices = interpolatedCurve.applyForGrid(parameterStart, parameterEnd, segments)
+                .stream().map(point -> new ThreeDoubleVector(point.getX(), 0.0, point.getY()))
+                .collect(Collectors.toList());
+        List<Pair<Integer, Integer>> figureEdges = makeEdgesSimpleList(segments);
+        return new Figure(vertices, figureEdges);
+    }
+
 }

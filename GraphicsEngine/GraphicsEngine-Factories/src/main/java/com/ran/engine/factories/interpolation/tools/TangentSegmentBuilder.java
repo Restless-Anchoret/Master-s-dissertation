@@ -19,7 +19,7 @@ public class TangentSegmentBuilder {
         DoubleFunction<TwoDoubleVector> forwardSegment = createTangentSegment(
                 point, tangentAngle, forwardLength);
         DoubleFunction<TwoDoubleVector> backSegment = createTangentSegment(
-                point, tangentAngle + Math.PI, forwardLength);
+                point, tangentAngle + Math.PI, backLength);
         return new Result(forwardSegment, backSegment, forwardLength, backLength);
     }
 

@@ -105,7 +105,8 @@ public class PlaneByTangentAnglesCurveCreator extends AbstractInterpolatedCurveC
                         tangentSegmentBuilderResults.get(i + 1).getBackSegment().substract(constantFunctions.get(i + 1)), degree,
                         GroupMultiplicationOperationFactory.getSummationOperation());
                 deformedSegments.add(deformationCreator.deformCurves(
-                        firstDeformedCurve, secondDeformedCurve, degree)
+                        firstDeformedCurve, secondDeformedCurve, degree,
+                        GroupMultiplicationOperationFactory.getSummationOperation())
                         .add(constantFunctions.get(i)));
             } else if (verticesWithTangentAnglesList.get(i).getRight() != null) {
                 if (i == k - 2) {
