@@ -31,7 +31,6 @@ public class PlaneBezierCurveCreator extends AbstractPlainCurveCreator {
 
         CurvesSmoothingCreator curvesSmoothingCreator = CurvesSmoothingCreator.getInstance();
         SegmentsBuilder segmentsBuilder = SegmentsBuilder.getInstance();
-        TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
 
         List<DoubleFunction<TwoDoubleVector>> constantFunctions = new ArrayList<>(k);
         for (int i = 0; i < k; i++) {
@@ -76,17 +75,7 @@ public class PlaneBezierCurveCreator extends AbstractPlainCurveCreator {
         for (int i = 0; i < k + 1; i++) {
             timeMoments.add(t0 + i * timeDelta);
         }
-
-        List<DoubleFunction<TwoDoubleVector>> curveSegments = new ArrayList<>(k);
-        for (int i = 0; i < k; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<TwoDoubleVector> currentCurve = smoothedSegments.get(i);
-            DoubleFunction<TwoDoubleVector> alignedCurveSegment =
-                    currentCurve.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            curveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(curveSegments);
+        return buildFinalCurve(timeMoments, smoothedSegments, k);
     }
 
 }

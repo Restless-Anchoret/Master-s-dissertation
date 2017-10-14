@@ -1,14 +1,13 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.vector.TwoDoubleVector;
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CircleArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
 import com.ran.engine.factories.util.GroupMultiplicationOperationFactory;
-import com.ran.engine.algebra.common.Pair;
-import com.ran.engine.algebra.function.DoubleFunction;
-import com.ran.engine.algebra.function.DoubleMultifunction;
-import com.ran.engine.algebra.vector.TwoDoubleVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,16 +59,7 @@ public class PlaneByPointsCurveCreator extends AbstractPlainCurveCreator {
         segments.add(currentArcsBuildingResult.getSecondArc());
 
         List<Double> timeMoments = timeMomentsUtil.countTimeMoments(arcsLengths, t0, t1, k);
-        List<DoubleFunction<TwoDoubleVector>> curveSegments = new ArrayList<>(k - 1);
-        for (int i = 0; i < k - 1; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<TwoDoubleVector> currentSegment = segments.get(i);
-            DoubleFunction<TwoDoubleVector> alignedCurveSegment =
-                    currentSegment.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            curveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(curveSegments);
+        return buildFinalCurve(timeMoments, segments, k - 1);
     }
 
 }
