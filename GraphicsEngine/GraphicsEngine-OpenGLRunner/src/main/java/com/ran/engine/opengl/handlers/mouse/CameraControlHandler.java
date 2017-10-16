@@ -9,7 +9,7 @@ public abstract class CameraControlHandler implements EventHandler {
         switch (cameraControlMode) {
             case TWO_DIMENSION:
                 return new TwoDimensionCameraControlHandler(renderingEngine);
-            case THREE_DIMENTION:
+            case THREE_DIMENSION:
                 return new ThreeDimensionCameraControlHandler(renderingEngine);
             default:
                 throw new UnsupportedOperationException("Unknown camera control mode");

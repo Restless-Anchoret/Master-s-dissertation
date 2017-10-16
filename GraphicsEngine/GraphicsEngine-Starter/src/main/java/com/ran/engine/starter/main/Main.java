@@ -15,6 +15,7 @@ public class Main {
                 new InterpolationPresentationWorldFactory(),
                 new DefaultWorldFactory()
         ));
+        runner.init();
         runner.run();
     }
 

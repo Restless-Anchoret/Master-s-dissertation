@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,14 +23,14 @@ import java.util.stream.Collectors;
 
 public class OpenGLRunner {
 
-    private final int FPS_GARDIAN = 100;
+    private static final int FPS_LIMITER = 100;
 
     private final List<WorldFactory> worldFactories;
     private final CameraControlMode cameraControlMode;
     private final ApplicationState applicationState = new ApplicationState();
     private RenderingEngine renderingEngine = null;
-    private List<EventHandler> mouseEventHandlers = null;
-    private List<EventHandler> keyboardEventHandlers = null;
+    private List<EventHandler> mouseEventHandlers = new ArrayList<>();
+    private List<EventHandler> keyboardEventHandlers = new ArrayList<>();
 
     public OpenGLRunner(List<WorldFactory> worldFactories, CameraControlMode cameraControlMode) {
         this.worldFactories = worldFactories;
@@ -37,14 +38,29 @@ public class OpenGLRunner {
     }
 
     public OpenGLRunner(List<WorldFactory> worldFactories) {
-        this(worldFactories, CameraControlMode.THREE_DIMENTION);
+        this(worldFactories, CameraControlMode.THREE_DIMENSION);
+    }
+
+    public RenderingEngine getRenderingEngine() {
+        return renderingEngine;
+    }
+
+    public List<EventHandler> getMouseEventHandlers() {
+        return mouseEventHandlers;
+    }
+
+    public List<EventHandler> getKeyboardEventHandlers() {
+        return keyboardEventHandlers;
+    }
+
+    public void init() {
+        List<World> worlds = createWorlds();
+        renderingEngine = new RenderingEngine(worlds, new OpenGLRenderingDelegate());
+        mouseEventHandlers.addAll(createDefaultMouseEventHandlers());
+        keyboardEventHandlers.addAll(createDefaultKeyboardEventHandlers());
     }
 
     public void run() {
-        List<World> worlds = createWorlds();
-        renderingEngine = new RenderingEngine(worlds, new OpenGLRenderingDelegate());
-        mouseEventHandlers = createMouseEventHandlers();
-        keyboardEventHandlers = createKeyboardEventHandlers();
         initOpenGL();
         initApplicationState();
         runMainCycle();
@@ -55,11 +71,11 @@ public class OpenGLRunner {
         return worldFactories.stream().map(WorldFactory::createWorld).collect(Collectors.toList());
     }
 
-    private List<EventHandler> createMouseEventHandlers() {
+    private List<EventHandler> createDefaultMouseEventHandlers() {
         return Collections.singletonList(CameraControlHandler.create(renderingEngine, cameraControlMode));
     }
 
-    private List<EventHandler> createKeyboardEventHandlers() {
+    private List<EventHandler> createDefaultKeyboardEventHandlers() {
         return Arrays.asList(
                 new ControlSwitchHandler(renderingEngine),
                 new WorldSwitchHandler(renderingEngine),
@@ -109,7 +125,7 @@ public class OpenGLRunner {
             renderingEngine.updateAnimationForDeltaTime(getDelta());
             renderingEngine.performRendering();
             Display.update();
-            Display.sync(FPS_GARDIAN);
+            Display.sync(FPS_LIMITER);
         }
     }
 
