@@ -14,7 +14,7 @@ public class BigArcsBuilder {
         return INSTANCE;
     }
 
-    public BigArcsBuilder.Result buildBigArcBetweenVerticesOnSphere(
+    public Result buildBigArcBetweenVerticesOnSphere(
             ThreeDoubleVector p1, ThreeDoubleVector p2) {
         ThreeDoubleVector a = p1.multiply(p2);
         double aNorm = a.getNorm();
