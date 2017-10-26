@@ -23,9 +23,10 @@ public class OrientationArcsBuilder {
         Quaternion hNotNormalized = p1.quaternionVectorMultiply(p2, p3);
 //        System.out.println("hNotNormalized = " + hNotNormalized);
         if (ArithmeticOperations.doubleEquals(hNotNormalized.getNorm(), 0.0)) {
-            Pair<Double, DoubleFunction<Quaternion>> firstArc = buildArcOnBigCircle(p1, p2);
-            Pair<Double, DoubleFunction<Quaternion>> secondArc = buildArcOnBigCircle(p2, p3);
-            return new Result(firstArc.getRight(), secondArc.getRight(), firstArc.getLeft(), secondArc.getLeft());
+            OrientationBigArcsBuilder bigArcsBuilder = OrientationBigArcsBuilder.getInstance();
+            OrientationBigArcsBuilder.Result firstArc = bigArcsBuilder.buildOrientationBigArcsBetweenQuaternions(p1, p2);
+            OrientationBigArcsBuilder.Result secondArc = bigArcsBuilder.buildOrientationBigArcsBetweenQuaternions(p2, p3);
+            return new Result(firstArc.getRotation(), secondArc.getRotation(), firstArc.getAngle(), secondArc.getAngle());
         } else {
             Quaternion h = hNotNormalized.normalized();
             Quaternion hConjugate = h.getConjugate();
@@ -70,18 +71,6 @@ public class OrientationArcsBuilder {
                 },
                 0.0, 1.0
         );
-    }
-    
-    private Pair<Double, DoubleFunction<Quaternion>> buildArcOnBigCircle(Quaternion p1, Quaternion p2) {
-        Quaternion r = p2.multiply(p1.getConjugate());
-        ThreeDoubleVector axis = r.getVector().normalized();
-        double cos = r.getScalar();
-        double angle = (Math.acos(cos) * 2.0 + Math.PI) % (2.0 * Math.PI) - Math.PI;
-        DoubleFunction<Quaternion> rotation = new DoubleFunction<>(
-                point -> Quaternion.createForRotation(axis, angle * point),
-                0.0, 1.0
-        );
-        return new Pair<>(angle, rotation);
     }
     
     public static class Result {
