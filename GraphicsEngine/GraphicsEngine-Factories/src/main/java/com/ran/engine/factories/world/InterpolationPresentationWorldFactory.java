@@ -80,7 +80,7 @@ public class InterpolationPresentationWorldFactory extends BaseWorldFactory {
 
         // Orientation curve interpolation
         worldObjectCreators.addAll(animationPresentationObjectCreators(
-                animationOrientation, quaternions,
+                animationOrientation, quaternions, 100,
                 () -> getAnimationFactory().makeInterpolatedOrientationCurveAnimation(quaternions, 2, 15)));
 
         return worldObjectCreators;

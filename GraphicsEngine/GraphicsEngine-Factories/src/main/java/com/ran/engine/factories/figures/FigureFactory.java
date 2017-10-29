@@ -1,11 +1,12 @@
 package com.ran.engine.factories.figures;
 
-import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.algebra.common.Pair;
 import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.SingleDouble;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.algebra.vector.TwoDoubleVector;
+import com.ran.engine.factories.util.CoordinatesConverter;
 import com.ran.engine.rendering.world.Figure;
 
 import java.util.ArrayList;
@@ -163,6 +164,22 @@ public class FigureFactory {
             double point = parameterStart + (parameterEnd - parameterStart) * i / segments;
             double value = function.apply(point).getValue();
             vertices.add(coordinatesConverter.convert(point, value));
+        }
+        return new Figure(vertices, makeEdgesSimpleList(segments));
+    }
+
+    public Figure makeFigureByStartPointAndQuaternionsFunction(ThreeDoubleVector startPoint,
+                                                               DoubleFunction<Quaternion> quaternionsFunction,
+                                                               int segments) {
+        List<ThreeDoubleVector> vertices = new ArrayList<>(segments + 1);
+        for (int i = 0; i <= segments; i++) {
+            double minValue = quaternionsFunction.getMinParameterValue();
+            double maxValue = quaternionsFunction.getMaxParameterValue();
+            double parameter = minValue + (maxValue - minValue) / segments * i;
+            Quaternion quaternion = quaternionsFunction.apply(parameter);
+            ThreeDoubleVector vertice = quaternion.multiply(Quaternion.createFromVector(startPoint))
+                    .multiply(quaternion.getConjugate()).getVector();
+            vertices.add(vertice);
         }
         return new Figure(vertices, makeEdgesSimpleList(segments));
     }

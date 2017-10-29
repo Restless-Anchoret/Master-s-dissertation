@@ -156,8 +156,7 @@ public abstract class BaseWorldFactory extends AbstractWorldFactory {
     }
 
     protected List<WorldObjectCreator> animationPresentationObjectCreators(
-            Orientation orientation,
-            List<Quaternion> quaternions,
+            Orientation orientation, List<Quaternion> quaternions, int segments,
             Supplier<DoubleFunction<Quaternion>> functionSupplier) {
         List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
         Figure figureForRotation = getFigureFactory().makeAeroplane(1.5);
@@ -168,9 +167,16 @@ public abstract class BaseWorldFactory extends AbstractWorldFactory {
                     new Orientation(orientation.getOffset(), quaternion)));
         }
 
+        DoubleFunction<Quaternion> quaternionsFunction = functionSupplier.get();
+        ThreeDoubleVector startPoint = new ThreeDoubleVector(0.0, 0.0, 4.5);
+        worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
+                .setFigure(getFigureFactory().makeFigureByStartPointAndQuaternionsFunction(
+                        startPoint, quaternionsFunction, segments))
+                .setColor(Color.BLUE).build(), orientation));
+
         worldObjectCreators.add(animatedObjectCreator(
                 new AnimationInfoBuilder()
-                        .setAnimationFunctionAndOffset(functionSupplier.get(), orientation.getOffset())
+                        .setAnimationFunctionAndOffset(quaternionsFunction, orientation.getOffset())
                         .setAnimationCyclic(false).build(),
                 new WorldObjectPartBuilder()
                         .setFigure(figureForRotation)
