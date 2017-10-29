@@ -34,8 +34,7 @@ public class InterpolationPresentationWorldFactory extends BaseWorldFactory {
         List<Quaternion> quaternions = makeQuaternionsForInterpolationList();
 
         Orientation sphereOrientation = Orientation.createForOffset(30.0, 0.0, 0.0);
-        Orientation cubeOrientation = Orientation.createForOffset(60.0, 0.0, 0.0);
-        Figure figureForRotation = getFigureFactory().makeAeroplane(1.5);
+        Orientation animationOrientation = Orientation.createForOffset(60.0, 0.0, 0.0);
 
         List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
         worldObjectCreators.addAll(Arrays.asList(
@@ -74,29 +73,11 @@ public class InterpolationPresentationWorldFactory extends BaseWorldFactory {
                                 .setFigure(getFigureFactory().makeFigureByPoints(sphereCurveVertices))
                                 .setColor(Color.RED).setEdgePaintWidth(1.5f).setVerticePaintRadius(2).build()
                 ), sphereOrientation)
-
-                // Orientation curve interpolation
-//                fixedObjectCreator(new WorldObjectPartBuilder()
-//                        .setFigure(getFigureFactory().makeCube(10.0))
-//                        .setColor(DARK_GRAY_COLOR).build(), cubeOrientation)
         ));
 
-        for (Quaternion quaternion: quaternions) {
-            worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
-                    .setFigure(figureForRotation).setColor(Color.RED).build(),
-                    new Orientation(cubeOrientation.getOffset(), quaternion)));
-        }
-
-        worldObjectCreators.add(animatedObjectCreator(
-                new AnimationInfoBuilder()
-                        .setAnimationFunctionAndOffset(getAnimationFactory()
-                                .makeInterpolatedOrientationCurveAnimation(quaternions, 2, 15),
-                                cubeOrientation.getOffset())
-                        .setAnimationCyclic(false).build(),
-                new WorldObjectPartBuilder()
-                        .setFigure(figureForRotation)
-                        .setEdgePaintWidth(2.0f).build()
-        ));
+        // Orientation curve interpolation
+        worldObjectCreators.addAll(animationPresentationObjectCreators(
+                animationOrientation, quaternions, 15));
 
         return worldObjectCreators;
     }

@@ -1,5 +1,6 @@
 package com.ran.engine.factories.world;
 
+import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.factories.animations.AffineTransformationFactory;
 import com.ran.engine.factories.animations.AnimationFactory;
@@ -12,6 +13,8 @@ import com.ran.engine.rendering.control.DoubleParameterControl;
 import com.ran.engine.rendering.control.IntegerParameterControl;
 import com.ran.engine.rendering.world.*;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -146,6 +149,31 @@ public abstract class BaseWorldFactory extends AbstractWorldFactory {
                 .setColor(DARK_GRAY_COLOR)
                 .setVerticePaintRadius(0)
                 .build();
+    }
+
+    protected List<WorldObjectCreator> animationPresentationObjectCreators(Orientation orientation,
+                                                                           List<Quaternion> quaternions,
+                                                                           double timePeriod) {
+        List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
+        Figure figureForRotation = getFigureFactory().makeAeroplane(1.5);
+
+        for (Quaternion quaternion: quaternions) {
+            worldObjectCreators.add(fixedObjectCreator(new WorldObjectPartBuilder()
+                            .setFigure(figureForRotation).setColor(Color.RED).build(),
+                    new Orientation(orientation.getOffset(), quaternion)));
+        }
+
+        worldObjectCreators.add(animatedObjectCreator(
+                new AnimationInfoBuilder()
+                        .setAnimationFunctionAndOffset(getAnimationFactory()
+                                        .makeInterpolatedOrientationCurveAnimation(quaternions, 2, timePeriod),
+                                orientation.getOffset())
+                        .setAnimationCyclic(false).build(),
+                new WorldObjectPartBuilder()
+                        .setFigure(figureForRotation)
+                        .setEdgePaintWidth(2.0f).build()
+        ));
+        return worldObjectCreators;
     }
 
 }
