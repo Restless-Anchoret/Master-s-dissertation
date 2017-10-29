@@ -9,6 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         OpenGLRunner runner = new OpenGLRunner(Arrays.asList(
+                new AnimationWorldFactory(),
                 new PlaneWorldFactory(),
                 new TangentAnglesWorldFactory(),
                 new BezierWorldFactory(),

@@ -1,10 +1,11 @@
 package com.ran.engine.factories.animations;
 
-import com.ran.engine.factories.interpolation.curvecreators.OrientationByPointsCurveCreator;
-import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.algebra.function.DoubleFunction;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
+import com.ran.engine.factories.interpolation.curvecreators.OrientationBezierCurveCreator;
+import com.ran.engine.factories.interpolation.curvecreators.OrientationByPointsCurveCreator;
+import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 
 import java.util.List;
 
@@ -25,6 +26,18 @@ public class AnimationFactory {
             int degree, double timePeriod) {
         DoubleFunction<Quaternion> interpolatedCurve =
                 new OrientationByPointsCurveCreator().interpolateCurve(quaternions, new SimpleInputParameters(0.0, 1.0), degree);
+        double t0 = interpolatedCurve.getMinParameterValue();
+        double t1 = interpolatedCurve.getMaxParameterValue();
+        return new DoubleFunction<>(
+                time -> interpolatedCurve.apply(t0 + (time / timePeriod) * (t1 - t0)),
+                0.0, timePeriod
+        );
+    }
+
+    public DoubleFunction<Quaternion> makeInterpolatedOrientationBezierCurveAnimation(
+            List<Quaternion> quaternions, int degree, double timePeriod) {
+        DoubleFunction<Quaternion> interpolatedCurve = new OrientationBezierCurveCreator()
+                .interpolateCurve(quaternions, new SimpleInputParameters(0.0, 1.0), degree);
         double t0 = interpolatedCurve.getMinParameterValue();
         double t1 = interpolatedCurve.getMaxParameterValue();
         return new DoubleFunction<>(
