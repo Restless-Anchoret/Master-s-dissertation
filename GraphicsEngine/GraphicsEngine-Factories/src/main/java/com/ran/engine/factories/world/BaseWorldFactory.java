@@ -1,5 +1,6 @@
 package com.ran.engine.factories.world;
 
+import com.ran.engine.algebra.function.DoubleFunction;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.factories.animations.AffineTransformationFactory;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.ran.engine.factories.constants.CommonConstants.DARK_GRAY_COLOR;
 
@@ -151,9 +155,10 @@ public abstract class BaseWorldFactory extends AbstractWorldFactory {
                 .build();
     }
 
-    protected List<WorldObjectCreator> animationPresentationObjectCreators(Orientation orientation,
-                                                                           List<Quaternion> quaternions,
-                                                                           double timePeriod) {
+    protected List<WorldObjectCreator> animationPresentationObjectCreators(
+            Orientation orientation,
+            List<Quaternion> quaternions,
+            Supplier<DoubleFunction<Quaternion>> functionSupplier) {
         List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
         Figure figureForRotation = getFigureFactory().makeAeroplane(1.5);
 
@@ -165,9 +170,7 @@ public abstract class BaseWorldFactory extends AbstractWorldFactory {
 
         worldObjectCreators.add(animatedObjectCreator(
                 new AnimationInfoBuilder()
-                        .setAnimationFunctionAndOffset(getAnimationFactory()
-                                        .makeInterpolatedOrientationCurveAnimation(quaternions, 2, timePeriod),
-                                orientation.getOffset())
+                        .setAnimationFunctionAndOffset(functionSupplier.get(), orientation.getOffset())
                         .setAnimationCyclic(false).build(),
                 new WorldObjectPartBuilder()
                         .setFigure(figureForRotation)
