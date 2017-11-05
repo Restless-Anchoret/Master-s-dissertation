@@ -32,7 +32,6 @@ public class SphereBezierCurveCreator extends AbstractSphereCurveCreator {
 
         CurvesSmoothingCreator curvesSmoothingCreator = CurvesSmoothingCreator.getInstance();
         BigArcsBuilder bigArcsBuilder = BigArcsBuilder.getInstance();
-        TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
 
         List<ThreeDoubleVector> arcsCenters = new ArrayList<>(k - 1);
         for (int i = 0; i < k - 1; i++) {
@@ -69,21 +68,7 @@ public class SphereBezierCurveCreator extends AbstractSphereCurveCreator {
         for (int i = 0; i < k + 1; i++) {
             timeMoments.add(t0 + i * timeDelta);
         }
-
-        List<DoubleFunction<ThreeDoubleVector>> curveSegments = new ArrayList<>(k);
-        for (int i = 0; i < k; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<DoubleMatrix> currentRotation = smoothedRotations.get(i);
-            DoubleVector currentVertice = verticesList.get(i).getDoubleVector();
-            DoubleFunction<ThreeDoubleVector> curveSegmentWithoutAligning = new DoubleFunction<>(
-                    point -> new ThreeDoubleVector(currentRotation.apply(point).multiply(currentVertice)), 0.0, 1.0
-            );
-            DoubleFunction<ThreeDoubleVector> alignedCurveSegment =
-                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            curveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(curveSegments);
+        return buildFinalCurve(timeMoments, verticesList, smoothedRotations, k);
     }
 
 }

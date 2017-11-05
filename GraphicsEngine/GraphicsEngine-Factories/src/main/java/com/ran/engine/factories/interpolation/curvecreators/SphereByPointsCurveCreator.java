@@ -1,21 +1,18 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.matrix.DoubleMatrix;
+import com.ran.engine.algebra.vector.ThreeDoubleVector;
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.ArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
-import com.ran.engine.algebra.common.Pair;
-import com.ran.engine.algebra.function.DoubleFunction;
-import com.ran.engine.algebra.function.DoubleMultifunction;
-import com.ran.engine.algebra.matrix.DoubleMatrix;
-import com.ran.engine.algebra.vector.DoubleVector;
-import com.ran.engine.algebra.vector.ThreeDoubleVector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SphereByPointsCurveCreator extends AbstractInterpolatedCurveCreator<
-        ThreeDoubleVector, ThreeDoubleVector, SimpleInputParameters> {
+public class SphereByPointsCurveCreator extends AbstractSphereCurveCreator {
 
     private static final SphereByPointsCurveCreator INSTANCE = new SphereByPointsCurveCreator();
 
@@ -56,20 +53,7 @@ public class SphereByPointsCurveCreator extends AbstractInterpolatedCurveCreator
         rotationsOnSegments.add(currentArcsBuildingResult.getSecondRotation());
         
         List<Double> timeMoments = timeMomentsUtil.countTimeMoments(rotationAngles, t0, t1, k);
-        List<DoubleFunction<ThreeDoubleVector>> curveSegments = new ArrayList<>(k - 1);
-        for (int i = 0; i < k - 1; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<DoubleMatrix> currentRotation = rotationsOnSegments.get(i);
-            DoubleVector currentVertice = vertices.get(i).getDoubleVector();
-            DoubleFunction<ThreeDoubleVector> curveSegmentWithoutAligning = new DoubleFunction<>(
-                    point -> new ThreeDoubleVector(currentRotation.apply(point).multiply(currentVertice)), 0.0, 1.0
-            );
-            DoubleFunction<ThreeDoubleVector> alignedCurveSegment =
-                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            curveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(curveSegments);
+        return buildFinalCurve(timeMoments, vertices, rotationsOnSegments, k - 1);
     }
     
 }
