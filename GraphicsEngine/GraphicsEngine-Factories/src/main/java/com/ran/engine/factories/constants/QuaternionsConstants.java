@@ -51,8 +51,13 @@ public class QuaternionsConstants {
     }
 
     public static List<Double> makeTangentAnglesList() {
-        // todo
-        return Collections.emptyList();
+        return Arrays.asList(
+                null,
+                -Math.PI * 0.75,
+                -Math.PI * 0.5,
+                Math.PI * 0.75,
+                null
+        );
     }
 
     public static List<Pair<Quaternion, Double>> zipQuaternionsAndAnglesLists(List<Quaternion> quaternions,

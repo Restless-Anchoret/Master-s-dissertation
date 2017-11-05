@@ -1,5 +1,6 @@
 package com.ran.engine.factories.world;
 
+import com.ran.engine.algebra.common.Pair;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.factories.constants.QuaternionsConstants;
 import com.ran.engine.rendering.world.Camera;
@@ -19,6 +20,9 @@ public class AnimationWorldFactory extends BaseWorldFactory {
 
         List<Quaternion> quaternions = QuaternionsConstants.makeQuaternionsForInterpolationList(
                 QuaternionsConstants.makeAffineTransformationsList());
+        List<Double> tangentAngles = QuaternionsConstants.makeTangentAnglesList();
+        List<Pair<Quaternion, Double>> quaternionsWithTangentAnglesList =
+                QuaternionsConstants.zipQuaternionsAndAnglesLists(quaternions, tangentAngles);
 
         List<WorldObjectCreator> worldObjectCreators = new ArrayList<>();
 
@@ -33,7 +37,10 @@ public class AnimationWorldFactory extends BaseWorldFactory {
                 () -> getAnimationFactory().makeInterpolatedOrientationBezierCurveAnimation(quaternions, 2, 15)));
 
         // Orientation interpolation by points with tangent angles
-        // todo
+        worldObjectCreators.addAll(animationPresentationObjectCreators(
+                tangentInterpolationOrientation, quaternions, 100,
+                () -> getAnimationFactory().makeInterpolatedOrientationCurveAnimationByTangentAngles(
+                        quaternionsWithTangentAnglesList, 2, 15)));
 
         return worldObjectCreators;
     }

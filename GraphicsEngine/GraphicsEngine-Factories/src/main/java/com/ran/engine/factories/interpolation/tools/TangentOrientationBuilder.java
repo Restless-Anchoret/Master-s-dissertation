@@ -49,14 +49,15 @@ public class TangentOrientationBuilder {
         DoubleFunction<Quaternion> forwardRotation = null;
         DoubleFunction<Quaternion> backRotation = null;
 
+        // todo: find out, why minus is needed before forwardRotationAngle, but not before backRotationAngle
         if (forwardRotationAngle != null) {
             forwardRotation = new DoubleFunction<>(
-                    u -> Quaternion.createForRotation(n, u * forwardRotationAngle),
+                    u -> Quaternion.createForRotation(n, -u * forwardRotationAngle),
                     0.0, 1.0);
         }
         if (backRotationAngle != null) {
             backRotation = new DoubleFunction<>(
-                    u -> Quaternion.createForRotation(n, -u * backRotationAngle),
+                    u -> Quaternion.createForRotation(n, u * backRotationAngle),
                     0.0, 1.0);
         }
         return new Result(forwardRotation, backRotation, forwardRotationAngle, backRotationAngle);
