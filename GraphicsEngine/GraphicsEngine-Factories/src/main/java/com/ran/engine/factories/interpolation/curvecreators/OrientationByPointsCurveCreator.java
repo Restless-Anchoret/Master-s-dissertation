@@ -33,13 +33,12 @@ public class OrientationByPointsCurveCreator extends AbstractOrientationCurveCre
         OrientationArcsBuilder orientationArcsBuilder = OrientationArcsBuilder.getInstance();
         TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
 
-//        System.out.println("Before building segments");
-        List<DoubleFunction<Quaternion>> orientationsOnSegments = new ArrayList<>(k - 1);
+        List<DoubleFunction<Quaternion>> rotationsOnSegments = new ArrayList<>(k - 1);
         List<Pair<Double, Double>> rotationAngles = new ArrayList<>(k - 2);
         OrientationArcsBuilder.Result currentOrientationArcsBuildingResult =
                 orientationArcsBuilder.buildArcsBetweenQuaternionsOnThreeDimensionalSphere(
                         quaternions.get(0), quaternions.get(1), quaternions.get(2));
-        orientationsOnSegments.add(currentOrientationArcsBuildingResult.getFirstRotation());
+        rotationsOnSegments.add(currentOrientationArcsBuildingResult.getFirstRotation());
         rotationAngles.add(currentOrientationArcsBuildingResult.getAngles());
 
 //        System.out.println("Before cycle");
@@ -53,12 +52,12 @@ public class OrientationByPointsCurveCreator extends AbstractOrientationCurveCre
             DoubleFunction<Quaternion> deformedFunction = deformationCreator.deformCurves(
                     currentOrientationArcsBuildingResult.getSecondRotation(),
                     nextOrientationArcsBuildingResult.getFirstRotation(), degree);
-            orientationsOnSegments.add(deformedFunction);
+            rotationsOnSegments.add(deformedFunction);
             rotationAngles.add(nextOrientationArcsBuildingResult.getAngles());
             currentOrientationArcsBuildingResult = nextOrientationArcsBuildingResult;
         }
 //        System.out.println("After cycle");
-        orientationsOnSegments.add(currentOrientationArcsBuildingResult.getSecondRotation());
+        rotationsOnSegments.add(currentOrientationArcsBuildingResult.getSecondRotation());
 //        System.out.println("After building segments");
         
         List<Double> timeMoments = timeMomentsUtil.countTimeMoments(rotationAngles, t0, t1, k);
@@ -66,7 +65,7 @@ public class OrientationByPointsCurveCreator extends AbstractOrientationCurveCre
         for (int i = 0; i < k - 1; i++) {
             double startTime = timeMoments.get(i);
             double endTime = timeMoments.get(i + 1);
-            DoubleFunction<Quaternion> currentRotation = orientationsOnSegments.get(i);
+            DoubleFunction<Quaternion> currentRotation = rotationsOnSegments.get(i);
             Quaternion currentQuaternion = quaternions.get(i);
             DoubleFunction<Quaternion> curveSegmentWithoutAligning = new DoubleFunction<>(
                     point -> currentRotation.apply(point).multiply(currentQuaternion), 0.0, 1.0

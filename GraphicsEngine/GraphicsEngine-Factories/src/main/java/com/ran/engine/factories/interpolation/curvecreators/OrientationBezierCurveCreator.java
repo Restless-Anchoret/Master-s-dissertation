@@ -30,7 +30,7 @@ public class OrientationBezierCurveCreator extends AbstractOrientationCurveCreat
         for (int i = 0; i < k - 1; i++) {
             OrientationBigArcsBuilder.Result bigArcsBuilderResult = bigArcsBuilder
                     .buildOrientationBigArcsBetweenQuaternions(quaternions.get(i), quaternions.get(i + 1));
-            arcsCenters.add(bigArcsBuilderResult.getRotation().apply(0.5));
+            arcsCenters.add(bigArcsBuilderResult.getRotation().apply(0.5).multiply(quaternions.get(i)));
         }
 
         List<DoubleFunction<Quaternion>> halfRotationsForward = new ArrayList<>(k - 1);
@@ -66,8 +66,12 @@ public class OrientationBezierCurveCreator extends AbstractOrientationCurveCreat
             double startTime = timeMoments.get(i);
             double endTime = timeMoments.get(i + 1);
             DoubleFunction<Quaternion> currentRotation = smoothedRotations.get(i);
+            Quaternion currentOrientation = quaternions.get(i);
+            DoubleFunction<Quaternion> curveSegmentWithoutAligning = new DoubleFunction<>(
+                    point -> currentRotation.apply(point).multiply(currentOrientation), 0.0, 1.0
+            );
             DoubleFunction<Quaternion> alignedCurveSegment =
-                    currentRotation.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
+                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
             curveSegments.add(alignedCurveSegment);
         }
         return DoubleMultifunction.makeMultifunction(curveSegments);

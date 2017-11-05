@@ -51,9 +51,9 @@ public class OrientationArcsBuilder {
                     .buildArcsBetweenVerticesOnSphere(m1, m2, m3);
             
             DoubleFunction<Quaternion> firstRotation = buildRotationFunction(
-                    arcsBuilderResult.getFirstRotation(), m1, r1.getConjugate());
+                    arcsBuilderResult.getFirstRotation(), m1, r1);
             DoubleFunction<Quaternion> secondRotation = buildRotationFunction(
-                    arcsBuilderResult.getSecondRotation(), m2, r2.getConjugate());
+                    arcsBuilderResult.getSecondRotation(), m2, r2);
                 
             return new Result(firstRotation, secondRotation,
                     arcsBuilderResult.getFirstAngle(), arcsBuilderResult.getSecondAngle());
@@ -61,13 +61,13 @@ public class OrientationArcsBuilder {
     }
     
     private DoubleFunction<Quaternion> buildRotationFunction(DoubleFunction<DoubleMatrix> matrixRotation,
-            ThreeDoubleVector m, Quaternion rConjugate) {
+            ThreeDoubleVector m, Quaternion r) {
         return new DoubleFunction<>(
                 point -> {
                     DoubleMatrix rotation = matrixRotation.apply(point);
                     Quaternion leftFactor = Quaternion.createFromVector(
                             new ThreeDoubleVector(rotation.multiply(m.getDoubleVector())));
-                    return leftFactor.multiply(rConjugate);
+                    return leftFactor.multiply(r.getConjugate());
                 },
                 0.0, 1.0
         );

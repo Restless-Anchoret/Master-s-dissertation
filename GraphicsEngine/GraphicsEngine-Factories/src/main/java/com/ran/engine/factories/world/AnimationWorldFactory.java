@@ -13,9 +13,9 @@ public class AnimationWorldFactory extends BaseWorldFactory {
 
     @Override
     protected List<WorldObjectCreator> getWorldObjectCreators() {
-        Orientation simpleInterpolationOrientation = Orientation.createForOffset(-30.0, 0.0, 0.0);
+        Orientation simpleInterpolationOrientation = Orientation.createForOffset(-15.0, 0.0, 0.0);
         Orientation bezierInterpolationOrientation = Orientation.INITIAL_ORIENTATION;
-        Orientation tangentInterpolationOrientation = Orientation.createForOffset(30.0, 0.0, 0.0);
+        Orientation tangentInterpolationOrientation = Orientation.createForOffset(15.0, 0.0, 0.0);
 
         List<Quaternion> quaternions = QuaternionsConstants.makeQuaternionsForInterpolationList(
                 QuaternionsConstants.makeAffineTransformationsList());
