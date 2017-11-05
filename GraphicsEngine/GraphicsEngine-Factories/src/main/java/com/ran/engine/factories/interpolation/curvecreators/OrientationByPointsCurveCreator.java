@@ -1,13 +1,12 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
+import com.ran.engine.algebra.common.Pair;
+import com.ran.engine.algebra.function.DoubleFunction;
+import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesDeformationCreator;
 import com.ran.engine.factories.interpolation.tools.OrientationArcsBuilder;
 import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
-import com.ran.engine.algebra.common.Pair;
-import com.ran.engine.algebra.function.DoubleFunction;
-import com.ran.engine.algebra.function.DoubleMultifunction;
-import com.ran.engine.algebra.quaternion.Quaternion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,20 +60,7 @@ public class OrientationByPointsCurveCreator extends AbstractOrientationCurveCre
 //        System.out.println("After building segments");
         
         List<Double> timeMoments = timeMomentsUtil.countTimeMoments(rotationAngles, t0, t1, k);
-        List<DoubleFunction<Quaternion>> orientationCurveSegments = new ArrayList<>(k - 1);
-        for (int i = 0; i < k - 1; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<Quaternion> currentRotation = rotationsOnSegments.get(i);
-            Quaternion currentQuaternion = quaternions.get(i);
-            DoubleFunction<Quaternion> curveSegmentWithoutAligning = new DoubleFunction<>(
-                    point -> currentRotation.apply(point).multiply(currentQuaternion), 0.0, 1.0
-            );
-            DoubleFunction<Quaternion> alignedCurveSegment =
-                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            orientationCurveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(orientationCurveSegments);
+        return buildFinalCurve(timeMoments, quaternions, rotationsOnSegments, k - 1);
     }
     
 }

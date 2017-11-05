@@ -1,12 +1,10 @@
 package com.ran.engine.factories.interpolation.curvecreators;
 
 import com.ran.engine.algebra.function.DoubleFunction;
-import com.ran.engine.algebra.function.DoubleMultifunction;
 import com.ran.engine.algebra.quaternion.Quaternion;
 import com.ran.engine.factories.interpolation.input.SimpleInputParameters;
 import com.ran.engine.factories.interpolation.tools.CurvesSmoothingCreator;
 import com.ran.engine.factories.interpolation.tools.OrientationBigArcsBuilder;
-import com.ran.engine.factories.interpolation.tools.TimeMomentsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ public class OrientationBezierCurveCreator extends AbstractOrientationCurveCreat
 
         CurvesSmoothingCreator curvesSmoothingCreator = CurvesSmoothingCreator.getInstance();
         OrientationBigArcsBuilder bigArcsBuilder = OrientationBigArcsBuilder.getInstance();
-        TimeMomentsUtil timeMomentsUtil = TimeMomentsUtil.getInstance();
 
         List<Quaternion> arcsCenters = new ArrayList<>(k - 1);
         for (int i = 0; i < k - 1; i++) {
@@ -60,21 +57,7 @@ public class OrientationBezierCurveCreator extends AbstractOrientationCurveCreat
         for (int i = 0; i < k + 1; i++) {
             timeMoments.add(t0 + i * timeDelta);
         }
-
-        List<DoubleFunction<Quaternion>> curveSegments = new ArrayList<>(k);
-        for (int i = 0; i < k; i++) {
-            double startTime = timeMoments.get(i);
-            double endTime = timeMoments.get(i + 1);
-            DoubleFunction<Quaternion> currentRotation = smoothedRotations.get(i);
-            Quaternion currentOrientation = quaternions.get(i);
-            DoubleFunction<Quaternion> curveSegmentWithoutAligning = new DoubleFunction<>(
-                    point -> currentRotation.apply(point).multiply(currentOrientation), 0.0, 1.0
-            );
-            DoubleFunction<Quaternion> alignedCurveSegment =
-                    curveSegmentWithoutAligning.superposition(timeMomentsUtil.buildAligningFunction(startTime, endTime));
-            curveSegments.add(alignedCurveSegment);
-        }
-        return DoubleMultifunction.makeMultifunction(curveSegments);
+        return buildFinalCurve(timeMoments, quaternions, smoothedRotations, k);
     }
 
 }
